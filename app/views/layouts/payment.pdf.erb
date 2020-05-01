@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>B2bSystem</title>
+  <!-- Stylesheet -->
+  <%= wicked_pdf_stylesheet_link_tag "bootstrap.min.css" %>
+  <%= wicked_pdf_stylesheet_link_tag "order_to_payments/print_invoice.css" %>
+  <%= csrf_meta_tags %>
+</head>
+  <body>
+    <div class="container-fluid" id="main-container">
+      <div id="page-content">
+        <%=yield%>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<div id="table_report_wrapper" class="dataTables_wrapper" role="grid">
+  <table class="table table-striped table-bordered table-hover" id="results">
+    <thead>
+      <tr>
+        <th class="center">Code</th>
+        <th class="center">Line</th>
+        <th class="center">Quantity</th>
+        <th class="center">Time</th>
+        <th class="center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if results.blank? %>
+        <tr>
+          <td colspan="9" class="center"><span class="red">No match data</span></td>
+        </tr>
+      <%else%>
+        <% results.each do |sl| %>
+          <tr id="row_<%=sl.id%>">
+            <td><%= sl.sl_code %></td>
+            <td><%= sl.sl_line %></td>
+            <td><%= sl.sl_qty %></td>
+            <td><%= sl.sl_time%></td>
+            <td class="td-actions ">
+              <%if can?(:update, sl)%>
+                <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_service_level_path(sl.id), :class =>"btn btn-mini btn-info", :title => "Edit" %>
+              <%end%>
+              <%if can?(:destroy, sl)%>
+                <%=link_to "<i class='icon-trash'></i>".html_safe, "javascript:void(0)", :class => 'btn btn-mini btn-info delete_item', :id=>"item_#{sl.id}", :onclick=>"_remove_data('#{setting_service_level_path(sl.id)}', #{sl.id})"%>
+              <%end%>
+            </td>
+          </tr>
+        <% end %>
+      <%end%>
+    </tbody>
+  </table>
+  <%= render "shared/paginate", :results => results %>
+</div>

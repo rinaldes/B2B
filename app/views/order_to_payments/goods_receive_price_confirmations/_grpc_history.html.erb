@@ -1,0 +1,86 @@
+<div class="row-fluid">
+  <div class="span12 well">
+  	<%@past_grpc.each do |grpc|%>
+    <div class="row-fluid" id="grpc_<%= grpc.id %>">
+      <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>GRPC Number</span>
+            : <%=grpc.po_number%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>GRN Number</span>
+            : <%=grpc.grn_number%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>PO Number</span>
+            : <%=grpc.po_number%>
+          </li>
+        </ul>
+      </div>
+      <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>GRPC Remark</span>
+            : <%=grpc.po_remark%>
+          </li>
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Created</span>
+            : <%=convert_date(grpc.created_at)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Status</span>
+            : <%=grpc_nil_to_unread(grpc)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Last Update By</span>
+            : <%="#{grpc.user.first_name} #{grpc.user.last_name}" rescue ""%>
+          </li>
+        </ul>
+      </div>
+    </div>
+     <table class="table table-striped table-bordered detail-table">
+  	  <thead>
+  	    <tr>
+  	      <th>Item Code</th>
+  	      <th>Barcode</th>
+  	      <th>Item Description</th>
+  	      <th>Qty <br/> (After Disputed)</th>
+          <th>UoM</th>
+          <th>Item Price <br/> (After Disputed)</th>
+  	      <th>Reconciled</th>
+  	      <th>Remark</th>
+  	    </tr>
+  	  </thead>
+  	  <tbody>
+  	  <%if grpc.details_purchase_orders%>
+  	  <%grpc.details_purchase_orders.each do |p|%>
+  	    <tr>
+  	      <td><%=p.product.code%></td>
+  	      <td><%=p.product.apn_number %></td>
+  	      <td><%=p.product.name.html_safe%></td>
+          <td><%=p.dispute_qty.to_i %></td>
+          <td><%=p.item_description %></td>
+          <td><%=total_format(p.dispute_price,"Rp.") %></td>
+  	      <td><%=total_format(p.total_amount_before_tax,"Rp.") %></td>
+  	      <td><%=p.remark%></td>
+  	    </tr>
+  	    <%end%>
+  	  <%end%>
+  	  </tbody>
+  	</table>
+    <hr>
+  	<%end%>
+  </div>
+</div>

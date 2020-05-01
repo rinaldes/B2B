@@ -1,0 +1,58 @@
+<table class="table table-bordered table-striped status">
+  <thead>
+    <tr>
+      <th class="hidden-phone" width="20%">
+        <i class="icon-caret-right blue"></i>
+        Status
+      </th>
+      <th>
+        <i class="icon-caret-right blue"></i>
+        Description
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-success arrowed arrowed-in">new</span>
+      </td>
+      <td><%=count[:new]%> New </td>
+    </tr>
+    <tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-warning arrowed arrowed-in ">open</span>
+      </td>
+      <td><%=count[:open]%> Open</td>
+    </tr>
+    <tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-info arrowed arrowed-in">on time</span>
+      </td>
+      <td><%=count[:on_time]%> FullFilled 100% on time </td>
+    </tr>
+    <tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-info arrowed arrowed-in">on time < 100%</span>
+      </td>
+      <td><%=count[:on_time_less]%> FullFilled < 100% on time </td>
+    </tr>
+    <!--tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-yellow arrowed arrowed-in">late</span>
+      </td>
+      <td><%#=@count[:late]%> FullFilled 100% late </td>
+    </tr>
+    <tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-yellow arrowed arrowed-in">late < 100% </span>
+      </td>
+      <td><%#=@count[:late_less]%> FullFilled < 100% late </td>
+    </tr-->
+    <tr>
+      <td class="hidden-phone">
+        <span class="label label-large label-important arrowed arrowed-in">Expired</span>
+      </td>
+      <td><%=count[:expired]%> Expired </td>
+    </tr>
+  </tbody>
+</table>

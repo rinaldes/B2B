@@ -1,0 +1,41 @@
+ <div class="modal">
+ <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Change Barcode Setting</h3>
+  </div>
+  <div class="modal-body selectbox">
+    <span id="error_barcode" class="help-block red"></span>
+     <h5>Please "Combine" and "Choose" priority :</h5>
+     <div class="row-fluid">
+      <div class="span12">
+      <%= form_for supplier, url: update_barcode_setting_supplier_path(supplier), :html => {:class => 'form-horizontal', :remote=> true} do |f| %> <br>
+      <fieldset>
+      <div class="control-group">
+      <label> One :</label>
+        <%= select_tag "supplier_priority[0]", options_for_select(barcode, barcode_settings[0].priority), :onchange => "getCheckNumber(this.value,0)"  %>
+        <span class="help-block red"></span>
+      </div>
+      <div class="control-group">
+      <label> Two :</label>
+        <%= select_tag "supplier_priority[1]", options_for_select(barcode, barcode_settings[1].priority), :onchange => "getCheckNumber(this.value,1)"  %>
+        <span class="help-block red"></span>
+      </div>
+      <div class="control-group">
+      <label> Three :</label>
+
+        <%= select_tag "supplier_priority[2]", options_for_select(barcode, barcode_settings[2].priority), :onchange => "getCheckNumber(this.value,2)"  %>
+        <span class="help-block red"></span>
+      </div>
+      <div class="control-group">
+      <div class="control">
+        <%= f.button raw('Save changes'), :class => "btn btn-primary" %> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+      </div>
+      </fieldset>
+       <%end%>
+      </div>
+     </div>
+</div>
+<script>
+  auto_selected_priority();
+</script>

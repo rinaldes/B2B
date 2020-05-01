@@ -1,0 +1,20 @@
+<label>
+	Delivery :
+	<div class="input-append date" id="dp3" data-date="<%= Date.today.strftime('%Y-%m-%d') %>" data-date-format="dd-mm-yyyy">
+    <%= text_field_tag :asn_delivery_date, "#{Date.today.strftime('%d-%m-%Y')}", :readonly=>"", :class => "delivery_date" %>
+    <span class="add-on delivery_date_icon"><i class="icon-th"></i></span>
+  </div>
+</label>
+
+<script>
+$(document).ready(function(){
+  $('.date').datepicker({
+      format : "yyyy-mm-dd",
+      autoclose : true
+  });
+
+  $("#asn_delivery_date").change(function(){
+  	$("#purchase_order_asn_delivery_date").val(this.value)
+  })
+})
+</script>

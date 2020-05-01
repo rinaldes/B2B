@@ -1,0 +1,23 @@
+<%= form_for type_of_user, url: setting_type_of_user_path(params[:id]), :html => {:class => 'form-horizontal'} do |f| %>
+<div class="well">
+  <fieldset>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.hidden_field :company_id %>
+        <%= f.text_field :description, :class => "input-xlarge form-control input-lg span6 txt-type-of-user-company", :readonly => :readonly %>
+          <%= link_to "Check this Company", get_this_company_setting_type_of_users_path, :remote => true, :class => "btn btn-mini btn-info" %>
+        <span class="help-block red"><%= type_of_user.errors[:description].join()%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_type_of_users_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>

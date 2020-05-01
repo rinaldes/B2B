@@ -1,0 +1,25 @@
+<div class="row-fluid">
+  <%= wicked_pdf_image_tag_for_logo(@company,"mini") %><%= @company.name %>
+</div>
+<div class='row-fluid list-po'>
+  <center><h3>Proforma <%=@params[:id].split('_').join(' ').camelize%></h3></center>
+  <div class='span6'>
+  <div class="clear"></div>
+    <table class='table date-list-po'>
+      <tr>
+        <td style="padding-left:0"><strong>Date</strong></td>
+        <td>From :<%=@params[:search][:period_1]%></td><td>To : <%=@params[:search][:period_2]%></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row-fluid">
+ 	<div class="span12">
+		<table class="table table-bordered table-list-po">
+        <%=head_for_list_po(params[:id])%>
+			<tbody>
+        <%=body_for_list_po(params[:id],@results)%>
+			</tbody>
+		</table>
+	</div>
+</div>

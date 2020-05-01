@@ -1,0 +1,18 @@
+<% if @flag %>
+  <%if @asn.is_published == true %>
+    $("#form-asn").html("");
+    $("#asn-btn").html("");
+  <%else%>
+    $("#form-asn").hide("");
+    $("#asn-btn").show("");
+  <%end%>
+  $("#flash-message").html(create_alert_notice_for_js("<%=@message%>"));
+  $("html, body").animate({ scrollTop: 0 }, "slow");
+  window.location = '/order_to_payments/purchase_orders'
+<%else%>
+  <%if @asn.instance_of?(PurchaseOrder) && @asn.errors.any?%>
+    $('#error-message2').html("<span class='red'> There is one or more errors, Commited quantity field <%= @asn.errors.messages[:'details_purchase_orders.commited_qty'][0] %></span>");
+  <%else%>
+   $("#error-message2").html("<span class= 'alert alert-error'><%=@message%></span>");
+  <%end%>
+<%end%>

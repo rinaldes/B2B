@@ -1,0 +1,10 @@
+$("#update_limit_date").html("<%= escape_javascript(render 'form_level_limit', :level_limits => @level_limits) %>");
+var _status_return = "<%= @update_limit_date.join(',') %>";
+var counter = 0;
+
+_status_return.split(",").map(function(index){
+  if (index == "false"){
+    $($(".alert_notice")[counter]).html("Failure, please check again.")
+  }
+  counter += 1;
+});

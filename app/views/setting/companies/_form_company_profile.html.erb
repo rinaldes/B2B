@@ -1,0 +1,89 @@
+
+
+
+
+
+<%= form_for company, url: companies_path, :html => {:class => 'form-horizontal', :multipart => true} do |f| %>
+<div class="well">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="Name">Company Logo</label>
+      <div class="controls">
+        <div style="position:relative;">
+        <a class='btn btn-primary' href='javascript:;'>
+            Choose File...
+            <%= f.file_field :asset_name, :class => "btn-file-upload-file" %>
+        </a>
+        &nbsp;
+        <span id="img_logo">
+          <img id="image-logo"/>
+        </span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="Name">Company Name</label>
+      <div class="controls">
+       <%= f.text_field :name, :class => "input-xlarge form-control input-lg span6", id: "company-name", :required=>'required'  %>
+        <span class="help-block red"><%= company.errors[:name].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="Brand">Company Brand</label>
+      <div class="controls">
+       <%= f.text_field :brand_tmp, :class => "input-xlarge form-control input-lg span6", id: "company-brand" , :required=>'required' %>
+        <span class="help-block red"><%= company.errors[:brand_tmp].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="Brand">Tax No</label>
+      <div class="controls">
+       <%= f.text_field :npwp, :class => "input-xlarge form-control input-lg span6", id: "company-brand" , :required=>'required' %>
+        <span class="help-block red"><%= company.errors[:npwp].join(" and ")%></span>
+      </div>
+    </div>
+
+    <%= f.fields_for :addresses do |address| %>
+    <div class="control-group">
+      <label class="control-label" for="address office">Company Office Address</label>
+      <div class="controls">
+       <%= address.text_area :office_address, :class => "input-xlarge form-control input-lg span6", id: "company-office", :rows=>"5"  %>
+        <span class="help-block red"><%= company.errors['addresses.office_address'].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="phone">Company Phone</label>
+      <div class="controls">
+       <%= address.text_field :phone, :class => "input-xlarge form-control input-lg span6", id: "company-phone"  %>
+        <span class="help-block red"><%= company.errors['addresses.phone'].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="fax">Company Fax</label>
+      <div class="controls">
+       <%= address.text_field :fax_no, :class => "input-xlarge form-control input-lg span6", id: "company-fax"  %>
+        <span class="help-block red"><%= company.errors['addresses.fax_no'].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="website">Company Website</label>
+      <div class="controls">
+       <%= address.url_field :website, :class => "input-xlarge form-control input-lg span6", id: "company-website", :pattern => "https?://.+" %>
+        <span class="help-block red"><%= company.errors['addresses.website'].join(" and ")%></span>
+      </div>
+    </div>
+    <%end%>
+
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_companies_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>
+

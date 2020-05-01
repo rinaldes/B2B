@@ -1,0 +1,53 @@
+<%= form_for(@register, :url => setting_dispute_settings_path, :html=> {:class=>"form-horizontal"}) do |f| %>
+  <fieldset>
+     <div class="control-group">
+      <div class="controls">
+       <label for="Account"><strong>New Dispute Setting</strong></label>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right row-fluid">
+         <%= f.select :transaction_type, options_for_select([['GRN', 'GRN'], ['GRPC', 'GRPC'], ['Debit Note', 'Debit Note'], ['Return Process', 'Return Process']]), {}, { :class => "span5" } %>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right row-fluid">
+          <%= f.text_field :max_count, :class => "form-control span3", :placeholder => "Max Round" %>
+          <%= f.select :time_type, options_for_select([['Day', 'Day'], ['Hour', 'Hour']]), {}, { :class => "span2" } %>
+          <span class="help-block red"><%= register.errors[:max_count].join() %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right row-fluid">
+          <%= f.text_field :max_round, :class => "form-control span3", :placeholder => "Max Round" %>
+          <span class="help-block red"><%= register.errors[:max_round].join() %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right row-fluid">
+          <%= f.text_area :email_content, :class => "form-control span5", :placeholder => "Email Content", :style => "height: 100px;" %>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Register<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_users_path, :class => "btn btn-small btn-pink" %>
+      </div>
+    </div>
+  </fieldset>
+<% end %>
+
+<div id="modal-select-warehouse-or-warehouse" class="modal hide fade modal-800" role="dialog" aria-labelledby="Choose Warehouse" aria-hidden="true"></div>
+
+<%= javascript_include_tag 'setting/dispute_settings' %>

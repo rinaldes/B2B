@@ -1,0 +1,1 @@
+<%= select_tag(:supplier, options_for_select(@suppliers), prompt: "Select Supplier", :id => "select_supplier", :onchange => "get_service_level_by_supplier(this.value, 'supp', '/dashboards/get_service_level_flot_by_supplier/')", :style => "width: 18em;margin-left:10px;margin-right:10px;") %>

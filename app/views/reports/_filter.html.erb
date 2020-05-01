@@ -1,0 +1,31 @@
+<% date_filter = true unless params[:action] == "pending_deliveries" || params[:action] == "account_payable" || params[:action] == "account_receivable" %>
+
+<%= form_tag filter_path, :method => 'get', :remote => true, :id => "form_search_reports" do %>
+<div class="table-header" style="height: <%= date_filter.nil? ? 86 : 120 %>px">
+  <div class="site">
+    <div class="site" style="margin-top: -6px;">
+      <label style="width: 90px;">Supplier Code</label>
+      <% if current_user.supplier.present? && !current_user.roles.first.group_flag %>
+        <%= text_field_tag "search[supplier_code]", current_user.supplier.code, :readonly => "readonly" %>
+      <% else %>
+        <%= text_field_tag "search[supplier_code]" %>
+      <% end %>
+    </div>
+    <% unless date_filter.nil? %>
+      <div class="clear"></div>
+      <div class="site" style="margin-top: -6px;">
+        <label style="width: 90px;">Month</label>
+        <%= select_month(Date.today, :prompt => "Choose Month") %>
+      </div>
+      <div class="clear"></div>
+      <div class="site">
+        <label style="width: 90px;">Year</label>
+        <%= select_year(Date.today, prompt: 'Choose Year', start_year: 1992, end_year: Date.today.year) %>
+      </div>
+    <% end %>
+    <div class="clear"></div>
+    <input type="submit" class="btn btn-small btn-info pull-right" id="find_service_level" value="Find" style="margin-left: 0;">
+  </div>
+</div>
+<%end%>
+<div class="clear"></div>

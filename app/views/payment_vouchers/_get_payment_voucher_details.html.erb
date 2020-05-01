@@ -1,0 +1,16 @@
+<%if results.blank?%>
+  <tr><td colspan="7" class="center"><span class="red">No match data</span></td></tr>
+<%else%>
+  <% results.each do |detail| %>
+    <tr id="row_<%=detail.purchase_order.id%>">
+      <td class="level"><%= detail.purchase_order.supplier.code rescue '' %></td>
+      <td class="level"><%= convert_date(detail.purchase_order.po_date) %></td>
+      <td class="level"><%= convert_date(detail.purchase_order.received_date) %></td>
+      <td class="level"><%= convert_date(detail.purchase_order.payment_invoice_due_date) %></td>
+      <td class="level"><%= detail.purchase_order.invoice_number %></td>
+      <td class="level text-right"><%= total_format(detail.purchase_order.charges_total, "Rp.") %></td>
+      <td class="level">No Action</td>
+      <td style="display:none;"></td>
+    </tr>
+  <%end%>
+<%end%>

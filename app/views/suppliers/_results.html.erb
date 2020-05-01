@@ -1,0 +1,50 @@
+      <%if results.blank?%>
+      <tr><td colspan="10" class="center"><span class="red">No match data</span></td></tr>
+      <%else%>
+        <% results.each do |supplier| %>
+        <tr id="row_<%=supplier.id%>">
+          <td><%=supplier.code%></td>
+          <td><%=supplier.name%></td>
+          <td class="level"><%=supplier.group.level%></td>
+          <td class="center">
+            <%= supplier.service_level_total%>%
+            </td>
+            <td>
+              <%supplier.addresses.each do |address|%>
+                <%=address.name%>
+              <%end%>
+            </td>
+            <td class="last-update"><%= convert_date supplier.account_opened %></td>
+            <td class="last-update"><%= convert_date supplier.last_purchase %></td>
+            <td class="last-update"><%= convert_date supplier.last_payment %></td>
+            <td class="last-update"><%= time_ago_in_words(supplier.updated_at)%> ago</td>
+            <td class="td-actions ">
+              <%if can? :read, :supplier%>
+              <div class="btn-group">
+               <button class="btn btn-mini">Action</button> <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <%=link_to "<i class='icon-eye-open'></i> Detail Supplier".html_safe, supplier_path(supplier), :class=>"", :title => "View detail"%>
+                  </li>
+                  <%if false #can? :change_level, :supplier%>
+                    <li>
+                      <%=link_to "<i class='icon-signal'></i> Edit Level Supplier".html_safe,  edit_level_supplier_path(supplier), :class =>"", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-edit-level', id: "change-level", :title=>"Change level supplier"%>
+                    </li>
+                  <%end%>
+                  <% if can? :change_service_level, :supplier %>
+                    <li>
+                      <%=link_to "<i class='icon-wrench'></i> Edit Service Level".html_safe,  edit_service_level_supplier_path(supplier), :class =>"", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-edit-service-level', id: "change-service-level", :title=>"Change service level supplier"%>
+                    </li>
+                  <% end %>
+                  <%if can? :change_barcode_setting, :supplier%>
+                    <li>
+                      <%=link_to "<i class='icon-barcode'></i> Edit Barcode Setting".html_safe,  edit_barcode_setting_supplier_path(supplier), :class =>"", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-edit-barcode-setting', id: "change-barcode-setting", :title=>"Change Barcode Setting"%>
+                    </li>
+                  <%end%>
+                </ul>
+              </div>
+              <%end%>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>

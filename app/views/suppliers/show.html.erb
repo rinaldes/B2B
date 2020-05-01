@@ -1,0 +1,74 @@
+<%= javascript_include_tag "suppliers.js" %>
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="span6">
+                <div class="row-fluid">
+                  <ul class="unstyled spaced">
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Code</span>
+                      : <strong><%= @supplier.code %></strong>
+                    </li>
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Name</span>
+                      : <strong><%= @supplier.name %></strong>
+                    </li>
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Phone number</span>
+                      : <strong><%= @supplier.addresses.try(:first).try(:phone) %></strong>
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Group</span>
+                      : <strong><%= @supplier.group.name %></strong>
+                    </li>
+                  </ul>
+                </div>
+              </div><!--/span-->
+              <div class="span6">
+                <div class="row-fluid">
+                  <ul class="unstyled spaced">
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Last Purchase</span>
+                      : <strong>
+                        <%= convert_date @supplier.last_purchase %>
+                      </strong>
+                    </li>
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Last Payment</span>
+                      : <strong><%= convert_date @supplier.last_payment %></strong>
+                    </li>
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Account Opened</span>
+                      : <strong><%= convert_date @supplier.account_opened %></strong>
+                    </li>
+                  </ul>
+                </div>
+              </div><!--/span-->
+            </div><!--row-->
+            <%if can? :synch_supplier_based_on_accountcode, Supplier%>
+            <div class='pull-right'>
+              <%= link_to "<i class='icon-download-alt'> </i> Synch Now".html_safe,synch_supplier_based_on_accountcode_path(params[:id]), :class => 'btn btn-small btn-info', :remote =>true, :id=>"synch-supplier",  :onclick => "update_supplier_from_api(this)" %>
+            </div>
+            <%end%>
+            <div class="space"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->

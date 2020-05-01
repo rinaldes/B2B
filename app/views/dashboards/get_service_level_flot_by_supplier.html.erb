@@ -1,0 +1,57 @@
+<script>
+$(function() {
+    var sl = <%=@sl_stats.to_json%>;
+    var d1 =[];
+    var y =0;
+    var current_year = <%=@year%>;
+    if ($("#select_supplier option:selected").text() == "no-supplier"){
+      var supplier_name = "No-Supplier";
+    }else{
+      var supplier_name = $("#select_supplier option:selected").text();
+    }
+
+    d1 = sl;
+
+    var graph = $('#graph').css({'width':'100%' , 'height':'420px'});
+    var somePlot = $.plot("#graph", [
+      { label: "Service Level", data: d1 }
+    ], {
+      hoverable: true,
+      shadowSize: 0,
+      series: {
+        lines: { show: true },
+        points: {
+          show: true
+         }
+      },
+      xaxis: {
+        min: (new Date(current_year, 0, 1)).getTime(),
+        max: (new Date(current_year, 11, 31)).getTime(),
+        mode:"time",
+        TickSize: [1, "month"]
+      },
+      yaxis: {
+        ticks: 10,
+        min: 0,
+        max: 100,
+        tickDecimals: 0
+      },
+      grid: {
+        backgroundColor: { colors: [ "#fff", "#fff" ] },
+        borderWidth: 1,
+        borderColor:'#555',
+        hoverable: true
+      },
+      legend: {
+        hideable: true
+      },
+      tooltip: true,
+      tooltipOpts: {
+        content: "%s supplier "+supplier_name+" on %x is %y%",
+        shifts: {
+          x: -60,
+          y: 25
+        }
+      }
+    })
+</script>

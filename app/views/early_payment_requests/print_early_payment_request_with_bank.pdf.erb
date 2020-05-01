@@ -1,0 +1,97 @@
+<content>
+    <div id="content-head">
+      <div id="content-left">
+        <div>
+          <%= wicked_pdf_image_tag_for_logo(@company,"mini") %>
+          <span class="medium-text"><%= @company.name %></span><br />
+          <p class="small-text">
+            <%= @company.addresses.present?? @company.addresses.first.office_address : "-No Address-" %><br/>
+            Phone. <%= @company.addresses.present?? @company.addresses.first.phone : "(No Phone)" %><br />
+            Fax: <%= @company.addresses.present?? @company.addresses.first.fax_no : "(No Fax)" %><br />
+          </p>
+        </div>
+        <br />
+        <div class="small-text">
+          To: <%= @epr.purchase_order.supplier.name %><br/>
+          <%= @epr.purchase_order.supplier.addresses.present?? @epr.purchase_order.supplier.addresses.first.name.blank?? "(No Address)" : @epr.purchase_order.supplier.addresses.first.name : "(No Address)" %><br/>
+          Phone <%= @epr.purchase_order.supplier.addresses.present?? @epr.purchase_order.supplier.addresses.first.phone.blank?? "(No Phone)" : @epr.purchase_order.supplier.addresses.first.phone : "(No Phone)" %><br/>
+          Fax <%= @epr.purchase_order.supplier.addresses.present?? @epr.purchase_order.supplier.addresses.first.fax_no.blank?? "(No Fax)" : @epr.purchase_order.supplier.addresses.first.fax_no : "(No Fax)" %>
+        </div>
+      </div>
+
+      <div id="content-center">
+        <h3>EARLY PAYMENT REQUEST</h3>
+        NPWP. <%= @company.npwp %><br/>
+      </div>
+
+    <div id="content-body">
+      <p class="medium-text text-head">
+      </p>
+      <table class="table table-bordered">
+        <tr>
+          <th class="center">
+            Receipt Bank
+          </th>
+          <th class="center">
+            Receipt Account
+          </th>
+          <th class="center">
+            From Bank
+          </th>
+          <th class="center">
+            Account Bank
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <%= @epr.deliver_banks.first.receive_bank_name %>
+          </td>
+          <td>
+            <%= @epr.deliver_banks.first.receive_bank_rek %>
+          </td>
+          <td>
+            <%= @epr.deliver_banks.first.from_bank_name %>
+          </td>
+          <td>
+            <%= @epr.deliver_banks.first.receive_bank_rek %>
+          </td>
+        </tr>
+      </table>
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            Supplier Code
+          </th>
+          <th>
+            Order Date
+          </th>
+          <th>
+            Received Date
+          </th>
+          <th>
+            Invoice Number
+          </th>
+          <th>
+            Grand Total
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <%= @epr.purchase_order.supplier.code %>
+          </td>
+          <td>
+            <%= @epr.purchase_order.po_date %>
+          </td>
+          <td>
+            <%= @epr.purchase_order.received_date %>
+          </td>
+          <td>
+            <%= @epr.purchase_order.invoice_number %>
+          </td>
+          <td>
+            <%= @epr.purchase_order.charges_total %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </content>

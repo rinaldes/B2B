@@ -1,0 +1,7 @@
+<%- if @logo_company.errors.any? %>
+  $('#modal-logo').html('<%= escape_javascript(render("form_logo_company", :logo_company => @logo_company)) %>');
+<%else%>
+	console.log("berhasil");
+  $('#modal-logo').modal('hide');
+  $("#flash-message").html(create_alert_notice_for_js("Logo has been changed"));
+<%-end%>

@@ -1,0 +1,46 @@
+<div class="row-fluid">
+  <div class="span4">
+    <div>
+      <h1></h1>
+      <span class="medium-text"><%= @company.name %></span><br />
+      <p class="small-text">
+        <%= @company.addresses.present?? @company.addresses.first.office_address : "-No Address-" %><br/>
+        Phone. <%= @company.addresses.present?? @company.addresses.first.phone : "(No Phone)" %><br />
+        Fax: <%= @company.addresses.present?? @company.addresses.first.fax_no : "(No Fax)" %><br />
+      </p>
+    </div>
+    <br />
+    <div class="small-text">
+      To: <%= @payment.supplier.name %><br/>
+      <%= @payment.supplier.addresses.present?? @payment.supplier.addresses.first.name.blank?? "(No Address)" : @payment.supplier.addresses.first.name : "(No Address)" %><br/>
+      Phone <%= @payment.supplier.addresses.present?? @payment.supplier.addresses.first.phone.blank?? "(No Phone)" : @payment.supplier.addresses.first.phone : "(No Phone)" %><br/>
+      Fax <%= @payment.supplier.addresses.present?? @payment.supplier.addresses.first.fax_no.blank?? "(No Fax)" : @payment.supplier.addresses.first.fax_no : "(No Fax)" %>
+    </div>
+  </div>
+  <div class="span4">
+  <center>
+    <h5>PAYMENT</h5>
+        NPWP. <%= @company.npwp %><br/>
+        No. : <%= @payment.no.present?? @payment.no : "Payment Number is not present" %>
+  </div>
+  </center>
+</div>
+<hr>
+<div class="row-fluid">
+  <div class="span12">
+    <%= display_details_per_type(@payment.payment_details.where(:payment_element_type=>"PaymentVoucher"), "Voucher(s)") %>
+    <%= display_details_per_type(@payment.payment_details.where(:payment_element_type=>"DebitNote"), "Debit Note(s)") %>
+    <%= display_details_per_type(@payment.payment_details.where(:payment_element_type=>"RetunedProcess"), "Return(s)") %>
+  </div>
+</div>
+<hr>
+<div class="row-fluid">
+    <div class="span4 pull-right" style="text-align:right;">
+      <div class="last-total">
+        <div class="dataTables_info" id="table_serv_req_info">
+          <span><strong>Total Payment Amount</strong></span>
+          <span class="total-nominee text-right"><strong><%=total_format(@payment.total, "Rp.") %></strong></span>
+        </div>
+      </div>
+    </div>
+</div>

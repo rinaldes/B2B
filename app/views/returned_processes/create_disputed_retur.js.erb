@@ -1,0 +1,14 @@
+var messages = "<%=@message%>"
+<%if @flag == false%>
+  $("#error-message").removeClass().addClass("row-fluid").html("<div class='alert alert-error'><button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button><h4><i class='icon-warning-sign red'></i> Warning!</h4><strong>"+messages+"</strong></div>");
+  $('html, body').animate({ scrollBottom: $("#error-message").offset().top - 40 }, 200);
+<%else%>
+  $("#flash-message").html("<div class='alert alert-info'><button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button><i class='icon-ok green'></i> <strong>"+messages+"</strong></div>");
+  $("html, body").animate({ scrollTop: 0 }, "slow");
+  $("#retur-details").html("<%=escape_javascript(render 'details', :details => @details)%>");
+  <%unless @retur_dispute.present?%>
+    $("#accept-or-dispute").html("<%=escape_javascript(render 'accept_or_raise_dispute', :retur => @retur)%>");
+    $("#accept-or-dispute").show("slow");
+  <%end%>
+  window.location = '/returned_processes'
+<%end%>

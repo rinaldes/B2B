@@ -1,0 +1,6 @@
+ <%- if @email_level_limit.errors.any? %>
+  $('#modal-form-email-level-limit').html('<%= escape_javascript(render("form_email_level_limit", :email_level_limit => @email_level_limit)) %>');
+<%else%>
+  $('#modal-form-email-level-limit').modal('hide');
+  $("#flash-message").html(create_alert_notice_for_js("Email level limit setting has been changed"));
+<%-end%>

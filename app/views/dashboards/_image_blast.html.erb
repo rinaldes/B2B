@@ -1,0 +1,47 @@
+<% if session[:already_showed_up] == false %>
+<div id="modal-image-blast" class="modal hide fade modal-800 in" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;"><div class="modal-800">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Image Blasts</h3>
+  </div>
+    <div class="modal-body">
+      <fieldset>
+        <div class="bs-docs-example">
+        <div id="myCarousel" class="carousel slide">
+    <ol class="carousel-indicators">
+      <% image_blast.each_with_index do |ib, i| %>
+        <li data-target="#myCarousel" data-slide-to="<%= i %>" class=""></li>
+      <% end %>
+    </ol>
+  <div class="carousel-inner">
+    <% image_blast.each_with_index do |ib, i| %>
+      <div class="item">
+        <img src="<%= ib.front_img %>" alt="">
+        <div class="carousel-caption">
+          <h4><%= ib.title %></h4>
+          <p><%= ib.description %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+  </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="modal-footer">
+      <!-- Button -->
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+</div>
+<% session[:already_showed_up] = true %>
+<script>
+  $('.carousel').carousel({
+    interval: 2000
+  });
+  
+	$('#modal-image-blast').modal('show');
+</script>
+<% end %>

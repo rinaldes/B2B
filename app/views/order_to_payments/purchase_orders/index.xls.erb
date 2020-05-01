@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Ship To</Data></Cell>
+        <Cell><Data ss:Type="String">PO Number</Data></Cell>
+        <Cell><Data ss:Type="String">Ordered</Data></Cell>
+        <Cell><Data ss:Type="String">Arrival</Data></Cell>
+        <Cell><Data ss:Type="String">Order Type</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+      </Row>
+        <% @results_all.each do |po| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=po.warehouse.warehouse_name rescue '' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%=po.po_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(po.po_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(po.due_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=po.order_type%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=change_state_when_action_of_time(po)%></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

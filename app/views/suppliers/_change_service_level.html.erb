@@ -1,0 +1,33 @@
+ <div class="modal-800">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Change Service Level</h3>
+   </div>
+  <div class="modal-body">
+    <div class="row-fluid">
+      <div class="span12">
+      <%= render 'filter_and_search_table', :supplier => supplier %>
+      <%= form_for supplier, url: update_service_level_supplier_path(supplier), :html => {:class => 'form-horizontal', :remote=> true} do |f| %> <br>
+      <fieldset>
+      <div id="result_select_level">
+        <%= render "results_select_level", :results => results %>
+      </div>
+      <hr>
+      <div class="control-group pull-right">
+      <div class="control">
+        <span id="error-message"></span>
+        <%= f.button raw('Save changes'), :class => "btn btn-primary" %> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+      </div>
+      </fieldset>
+       <%end%>
+      </div>
+     </div>
+  </div>
+</div>
+<%=javascript_tag "var accesses = #{codes};"%>
+<script>
+$("#supplier_service_level_code_<%=supplier.service_level.try(:sl_code)%>").prop("checked", true);
+  features_auto_complete(accesses)
+</script>
+

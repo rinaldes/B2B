@@ -1,0 +1,5 @@
+<%unless @rejected_payment.blank?%>
+	<%if @rejected_payment.errors.any?%>
+	   $("#error-message").removeClass("alert alert-error").addClass("alert alert-error").html("<%=@rejected_payment.errors[:error_temp].join(" ")%>");
+	<%end%>
+<%end%>

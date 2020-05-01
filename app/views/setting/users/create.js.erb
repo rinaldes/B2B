@@ -1,0 +1,3 @@
+<%if @register.errors.any?%>
+  $('#form-create-user').html('<%= escape_javascript(render("form_user", :register => @register, :group => @group, :roles => @roles)) %>');
+<%-end%>

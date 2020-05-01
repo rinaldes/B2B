@@ -1,0 +1,22 @@
+<table class="table table-striped table-bordered">
+<thead>
+  <tr>
+    <th class="center">Seq</th>
+    <th class="center" width="50%">Remark</th>
+    <th class="center">Date</th>
+    <th class="center">Time</th>
+    <th class="center">User</th>
+  </tr>
+</thead>
+<tbody>
+  <% PurchaseOrder.where("grpc_number = ? AND order_type = ? AND po_remark IS NOT NULL AND po_remark!=''", @grpc.grpc_number, GRPC).order("created_at ASC").each_with_index do |po, i| %>
+    <tr>
+      <td><%= i+1 %></td>
+      <td><%= po.po_remark %></td>
+      <td><%= convert_date po.created_at %></td>
+      <td><%= po.created_at.localtime.strftime("%I:%M%p") %></td>
+      <td><%= po.user.first_name + " " + po.user.last_name %></td>
+    </tr>
+  <% end %>
+</tbody>
+</table>

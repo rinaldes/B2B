@@ -1,0 +1,50 @@
+    <% if results.blank? %>
+      <tr>
+        <td colspan="5" class="center"><span class="red">No match data</span></td>
+      </tr><!-- id="results" -->
+    <%else%>
+      <% results.each do |feature| %>
+        <tr id="row_<%= feature.id %>">
+          <td><%=feature.name%></td>
+          <td><%=feature.regulator%></td>
+          <td><%=feature.description%></td>
+          <td><%= time_ago_in_words(feature.updated_at)%> ago </td>
+          <td class="td-actions ">
+            <%if can?(:read, feature)%>
+              <div class="hidden-phone visible-desktop btn-group">
+              <%if can? :update, feature%>
+                <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_feature_path(feature), :class =>"btn btn-mini btn-info"%>
+              <%end%>
+              <%if can? :destroy, feature%>
+                <%=link_to "<i class='icon-trash'></i>".html_safe, "javascript:void(0)", :class => 'btn btn-mini btn-info delete_item', :id=>"item_#{feature.id}", :onclick=>"delete_feature('#{setting_feature_path(feature.id)}', #{feature.id})"%>
+              <%end%>
+              </div>
+            <%end%>
+            <div class="hidden-desktop visible-phone">
+              <div class="inline position-relative">
+                <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+                  <i class="icon-caret-down icon-only bigger-120"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
+                  <li>
+                    <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-placement="left" data-original-title="Edit Feature">
+                      <span class="green">
+                        <i class="icon-edit"></i>
+                      </span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-placement="left" data-original-title="Delete">
+                      <span class="red">
+                        <i class="icon-trash"></i>
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+      <%end%>

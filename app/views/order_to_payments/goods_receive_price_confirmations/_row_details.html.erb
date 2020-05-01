@@ -1,0 +1,28 @@
+<script>
+  fill_field(<%=p.id%>);
+  fill_field_dispute_price(<%=p.id%>);
+</script>
+<tr>
+  <td><%=p.product.code%></td>
+  <td><%=p.product.apn_number %></td>
+  <td><%=p.product.name.html_safe%></td>
+  <td><%=p.product.unit_qty %></td>
+  <td><span id="qty_<%= p.id %>"><%=p.dispute_qty.to_i %></span></td>
+  <td>
+    Rp. <%=total_format p.item_price%>
+    <%= hidden_field_tag "item_price", p.item_price, :id => "item_price_for_#{p.id}" %>
+  </td>
+  <td>
+    <% if @grpc.grpc_dispute? %>
+      <%= (p.dispute_price.to_i == 0 ? p.item_price : p.dispute_price ) %>
+      <%=hidden_field_tag "dispute_price", (p.dispute_price.to_i == 0 ? p.item_price : p.dispute_price ), :class=>"span12 input_only_numeric", :id=>"dispute_price_for_#{p.id}"%></td>
+    <% else %>
+      <%=text_field_tag "dispute_price", (p.dispute_price.to_i == 0 ? p.item_price : p.dispute_price ), :class=>"span12 input_only_numeric", :onkeyup => "fill_field_dispute_price(#{p.id})", :id=>"dispute_price_for_#{p.id}"%>
+    <% end %>
+  <td>Rp. <span id="total_<%= p.id %>"><%=total_format p.total_amount_before_tax%></span></td>
+  <td>
+    <span id="span_remark_<%=p.id%>" class="control-group">
+      <%=select "everything","", options_for_select([['ok', ''], 'dispute'], p.remark.blank?? 'ok' : (p.remark == 'dispute'? 'dispute' : 'ok')), { }, { :class=>"span12",:value=>"#{p.remark}", :onchange => "fill_field(#{p.id})", :id=>"remark_for_#{p.id}" }%>
+    </span>
+  </td>
+</tr>

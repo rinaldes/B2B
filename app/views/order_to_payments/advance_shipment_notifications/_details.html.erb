@@ -1,0 +1,85 @@
+<div class="row-fluid">
+  <div class="widget-header">
+    <h5>Line Details</h5>
+  </div>
+  <table class="table table-striped table-bordered" id="details">
+  <thead>
+    <tr>
+      <th class="center">Seq</th>
+      <th class="center">Item Code</th>
+      <th class="center">Barcode</th>
+      <th class="center">Item Description</th>
+      <th class="center">Requested Qty</th>
+      <th class="center">Commited Qty</th>
+      <th class="center">UoM</th>
+      <th style="display:none;"></th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th class="center">Seq</th>
+      <th class="center">Item Code</th>
+      <th class="center">Barcode</th>
+      <th class="center">Item Description</th>
+      <th class="center">Requested Qty</th>
+      <th class="center">Commited Qty</th>
+      <th class="center">UoM</th>
+      <td style="display:none;"></td>
+
+    </tr>
+  </tfoot>
+  <tbody>
+    <%if details%>
+      <% details.each do |p|%>
+        <tr>
+          <td><%=p.seq %></td>
+          <td><%=p.product.code%></td>
+          <td><%=p.product.apn_number %></td>
+          <td><%=p.product.name.html_safe %></td>
+          <td class="text-right"><%=p.order_qty.to_i %></td>
+          <td class="text-right"><%=p.commited_qty.to_i %></td>
+          <td><%=p.product.unit_qty %></td>
+          <td style="display:none;"></td>
+        </tr>
+      <%end%>
+    <%end%>
+  </tbody>
+</table>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#details tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+
+    // DataTable
+    var table = $('#details').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 7 ] }
+      ],
+      "aaSorting": [] });
+    $('#details tfoot th').each(function (i) 
+    {
+      var title = $('#details thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

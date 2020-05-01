@@ -1,0 +1,49 @@
+    <% if results.blank? %>
+    <tr>
+      <td colspan="3" class="center"><span class="red">No match data</span></td>
+    </tr>
+    <%else%>
+      <% results.each do |role| %>
+        <tr id="row_<%= role.id %>">
+          <td><%=role.name.match("_") ? role.name.gsub("_", " ").capitalize : role.name.capitalize%></td>
+          <td><%= find_group_for_role(role.parent).capitalize  %></td>
+          <td class="td-actions ">
+            <div class="hidden-phone visible-desktop btn-group">
+              <% if selected_role_is_available_detail(role.name) %>
+                <%=link_to "<i class='icon-eye-open'> </i>".html_safe, setting_role_path(role), :class=>"btn btn-mini btn-info", :title => "view role"%>
+              <% end %>
+              <% if hide_action_button_for_default_role(role.name) %>
+                <%if can?(:edit, role)%>
+                  <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_role_path(role), :class =>"btn btn-mini btn-info", :title => "Edit" %>
+                <%end%>
+              <% end %>
+            </div>
+
+            <div class="hidden-desktop visible-phone">
+              <div class="inline position-relative">
+                <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+                  <i class="icon-caret-down icon-only bigger-120"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
+                  <li>
+                    <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit" data-placement="left" data-original-title="Edit Role">
+                      <span class="green">
+                        <i class="icon-edit"></i>
+                      </span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#" class="tooltip-error" data-rel="tooltip" title="Remove" data-placement="left" data-original-title="Delete">
+                      <span class="red">
+                        <i class="icon-trash"></i>
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+      <%end%>

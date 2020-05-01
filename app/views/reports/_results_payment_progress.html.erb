@@ -1,0 +1,113 @@
+<div id="table">
+  <div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+    <div class="clear"></div>
+    <table class="table table-striped table-bordered table-hover display" id="results">
+      <thead>
+        <tr>
+          <th class="center">Invoice</th>
+          <th class="center">Supplier Code</th>
+          <th class="center">Warehouse Code</th>
+          <th class="center">Payment Voucher</th>
+          <th class="center">Debit Note</th>
+          <th class="center">Retur</th>
+          <th class="center">Order Date</th>
+          <th class="center">Due Date</th>
+          <th class="center">Status</th>
+          <th class="center">Action</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th class="center">Invoice</th>
+          <th class="center">Supplier Code</th>
+          <th class="center">Warehouse Code</th>
+          <th class="center">Payment Voucher</th>
+          <th class="center">Debit Note</th>
+          <th class="center">Retur</th>
+          <th class="center">Order Date</th>
+          <th class="center">Due Date</th>
+          <th class="center">Status</th>
+          <th></th>
+        </tr>
+      </tfoot>
+      <tbody>
+        <% if results.blank? %>
+          <tr>
+            <td colspan="14" class="red center">No Match Data</td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+            <td class=" hide"></td>
+          </tr>
+        <% else %>
+          <% results.each do |dn| %>
+            <tr>
+              <td><%= dn.invoice_number rescue '' %></td>
+              <td><%= dn.supplier_code rescue '' %></td>
+              <td><%= dn.warehouse_code rescue '' %></td>
+              <td><%= PaymentDetail.where("payment_element_type='PaymentVoucher' AND payment_id=#{dn.payment_id}").sum(:total) rescue '' %></td>
+              <td><%= PaymentDetail.where("payment_element_type='DebitNote' AND payment_id=#{dn.payment_id}").sum(:total) rescue '' %></td>
+              <td><%= PaymentDetail.where("payment_element_type='ReturnProcess' AND payment_id=#{dn.payment_id}").sum(:total) rescue '' %></td>
+              <td><%= dn.invoice_date rescue '' %></td>
+              <td><%= dn.invoice_due_date rescue '' %></td>
+              <td><%= state_label_for(Payment.find(dn.payment_id)) %></td>
+              <td>
+                <div class="btn-group">
+                  <%=link_to "<i class='icon-eye-open'></i>VIEW".html_safe, payment_path(dn.payment_id), :class=>'btn btn-mini btn-info'%>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_payment_url(dn.payment_id, :xls) %>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, print_payment_url(dn.payment_id), :target => "blank" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <%#=render "shared/paginate", :results => results %>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#results tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+
+    // DataTable
+    var table = $('#results').DataTable({
+
+      "aaSorting": [] });
+    $('#results tfoot th').each(function (i)
+    {
+      var title = $('#results thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

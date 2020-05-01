@@ -1,0 +1,18 @@
+<% if results.blank? %>
+  <tr>
+    <td colspan="4" class="center"><span class="red">No match data</span></td>
+  </tr>
+<%else%>
+  <% results.each do |ib| %>
+    <tr id="row_<%=ib.id%>">
+      <td><%= ib.title %></td>
+      <td><%= ib.description %></td>
+      <td><%= ib.valid_until %></td>
+      <td class="td-actions ">
+        <%=link_to "<i class='icon-eye-open'> </i>".html_safe, setting_image_blast_path(ib.id), :class=>"btn btn-mini btn-primary", :title => "view image"%>
+        <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_image_blast_path(ib.id), :class =>"btn btn-mini btn-info", :title => "Edit" %>
+        <%=link_to "<i class='icon-trash'></i>".html_safe, "javascript:void(0)", :class => 'btn btn-mini btn-danger delete_item', :id=>"item_#{ib.id}", :onclick=>"delete_image('#{setting_image_blast_path(ib.id)}', #{ib.id})"%>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

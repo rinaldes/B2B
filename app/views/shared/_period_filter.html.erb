@@ -1,0 +1,58 @@
+<div id="modal-popup-advance" class="modal hide fade modal-800" role="dialog" aria-labelledby="myModalLabel" aria-
+  hidden="true">
+    <div class="modal-800">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Advance Period</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="table-header period">
+              <div class="site">
+              <% if from == "debit_notes" %>
+                <label style="width: 150px">Period Transaction Date</label>
+              <% else %>
+                <label style="width: 35px">Period</label>
+              <% end %>
+              </div>
+              <div class="default">
+                <div>
+                  <%= text_field_tag "popup[period_1]", "", :class => "start_date pull-left span3", :placeholder => "Start Date" %>
+                  <%= text_field_tag "popup[period_2]", "", :class => "end_date pull-left span3", :placeholder => "End Date" %>
+                </div>
+
+                <% if from == "debit_notes" %>
+                  <div class="site">
+                    <label style="width: 150px">Period Invoice Date</label>
+                  </div>
+                  <div>
+                    <%= text_field_tag "popup[period_1_inv_date]", "", :class => "start_date_inv pull-left span3", :placeholder => "Start Date" %>
+                    <%= text_field_tag "popup[period_2_inv_date]", "", :class => "end_date_inv pull-left span3", :placeholder => "End Date" %>
+                  </div>
+                  <div class="site">
+                    <label style="width: 150px">Period Due Date</label>
+                  </div>
+                  <div>
+                    <%= text_field_tag "popup[period_1_due_date]", "", :class => "start_date_due pull-left span3", :placeholder => "Start Date" %>
+                    <%= text_field_tag "popup[period_2_due_date]", "", :class => "end_date_due pull-left span3", :placeholder => "End Date" %>
+                  </div>
+                <% end %>
+              </div>
+              <button class="btn btn-small btn-info pull-right" type="button" id="set_period" onclick='getDateSelectedPeriod("<%= from == 'debit_notes' ? 'dn' : '' %>")'>Set Period</button>
+              <div class="clear"></div>
+            </div>
+            <fieldset>
+              <div id="result_select_level">
+              </div>
+              <div class="control-group pull-right">
+                <div class="control">
+                  <span id="error-message"></span>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

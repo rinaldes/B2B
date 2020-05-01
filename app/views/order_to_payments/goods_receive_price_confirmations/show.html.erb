@@ -1,0 +1,155 @@
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <%=display_history_btn_grpc(@grpc)%>
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="row-fluid">
+                <div class="span6">
+
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>GRPC Number</span>
+                        : <%= @grpc.grpc_number %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>GRN Number</span>
+                        : <%= @grpc.grn_number %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>PO Number</span>
+                        : <%= @grpc.po_number %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Warehouse</span>
+                        : <%= @grpc.warehouse.warehouse_name rescue '' %>
+                      </li>
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Ship to</span>
+                        <%= get_addresses(@grpc.warehouse) rescue '' %>
+                      </li>
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Order Type</span>
+                        : <%= @grpc.order_type %>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Code</span>
+                        : <%= @grpc.supplier.code rescue '' %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Name</span>
+                        : <%= @grpc.supplier.name rescue '' %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Phone Number</span>
+                        : <%= @grpc.supplier.addresses.try(:first).try(:phone) rescue '' %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Ordered</span>
+                        : <%=convert_date(@grpc.po_date)%>
+                      </li>
+
+                       <li>
+                          <i class="icon-caret-right blue"></i>
+                          <span>Arrival</span>
+                          : <%=convert_date(@grpc.due_date)%>
+                        </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Received Date</span>
+                        : <%=convert_date(@grpc.received_date)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Last Update By</span>
+                        : <%="#{@grpc.user.first_name} #{@grpc.user.last_name}" rescue ""%>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+              </div><!--row-->
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, order_to_payments_generate_xls_details_grpc_url(@grpc.id, :xls) %>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, order_to_payments_generate_pdf_details_grpc_url(@grpc.id), :target => "blank" %>
+                </div>
+              <div id="grpc-details">
+                <%=render 'details'%>
+              </div>
+              <div class="hr hr8 hr-double hr-dotted"></div>
+              <div class="row-fluid">
+                <div class="row-fluid" id="grn-details-for">
+              		<div class="widget-header">
+              			<h5>Remark Details</h5>
+              		</div>
+              		<%= render 'show_remark' %>
+              	</div>
+              </div>
+              <div class="hr hr8 hr-double hr-dotted"></div>
+              <div class="space"></div>
+              <div id="button-for-grpc">
+                <%if (@grpc.grpc_read? || @grpc.grpc_rev?) && no_max_round %>
+                  <%= render 'accept_or_raise_price_dispute' %>
+                <%end%>
+                <% if (@grpc.grpc_dispute? || @grpc.grpc_read?) && @grpc.grpc_can_be_revised?(current_user) %>
+                  <%= render 'rev_grpc' %>
+                <%end%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->
+
+<!-- Modal -->
+<div class="modal fade" id="dialog-confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body" id="message">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

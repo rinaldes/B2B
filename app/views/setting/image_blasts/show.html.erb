@@ -1,0 +1,28 @@
+<div class="row-fluid">
+  <div class="span12 well">
+    <ul class="unstyled spaced">
+    <li>
+      <% if @image_blast.front_img.present? %>
+        <%= image_tag @image_blast.front_img %>
+      <% else %>
+        <p>Image not found.</p>
+      <% end %>
+    </li>
+    <li>
+      <i class="icon-caret-right blue"></i>
+      <span>Title</span>
+      <%= @image_blast.title %>
+    </li>
+    <li>
+      <i class="icon-caret-right blue"></i>
+      <span>Description</span>
+      <%= @image_blast.description %>
+    </li>
+    <li>
+      <i class="icon-caret-right blue"></i>
+      <span>Valid Until</span>
+      <%= @image_blast.valid_until %>
+    </li>
+  </ul>
+  </div>
+</div>

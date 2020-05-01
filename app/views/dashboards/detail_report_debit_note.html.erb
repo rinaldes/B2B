@@ -1,0 +1,112 @@
+<%= javascript_include_tag "order_to_payments/purchase_orders.js" %>
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="row-fluid">
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Order Number</span>
+                        : <%= @dn.order_number %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Warehouse Name</span>
+                        : <%= @dn.warehouse.warehouse_name %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Name</span>
+                        : <%= @dn.supplier.name %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Transaction Date</span>
+                        : <%= convert_date(@dn.transaction_date) %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Invoice Date</span>
+                        : <%= convert_date(@dn.invoice_date) %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Due Date</span>
+                        : <%= convert_date(@dn.due_date) %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Status</span>
+                        : <strong><%= show_status_dn(@dn.state_name, @count_rev) %></strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Suffix</span>
+                        : <%= @dn.suffix %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Tracking Type</span>
+                        : <%= @dn.tracking_type %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Tracking Number</span>
+                        : <%= @dn.tracking_no %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Reference</span>
+                        : <%= @dn.reference %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Batch</span>
+                        : <%= @dn.batch %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Amount</span>
+                        : <strong><%= total_format(@dn.amount, "Rp.") %></strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+              </div><!--row-->
+              <div class="space"></div>
+              <%= render "detail_debit_note", :details => @details %>
+              <div class="space"></div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->

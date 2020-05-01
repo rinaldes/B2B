@@ -1,0 +1,6 @@
+<%- if @user.errors.any? %>
+  $('#modal-change-email-notif #error-message').removeClass().addClass("alert alert-error span8 ").html("<strong>An error has ocurred when saving email notification setting, please try again later!</strong>");
+<%else%>
+  $('#modal-change-email-notif').modal('hide');
+  $("#flash-message").html(create_alert_notice_for_js("Email notification setting has been changed"));
+<%-end%>

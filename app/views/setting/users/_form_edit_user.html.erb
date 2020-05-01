@@ -1,0 +1,130 @@
+<div class="modal-800">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Edit User</h3>
+  </div>
+  <div id="message_error"></div>
+  <div class="modal-body">
+    <div id="form-edit-user">
+    <%= form_for(user, :url => setting_user_path, :html=> {:class=>"form-horizontal"}) do |f| %>
+  <fieldset>
+     <div class="control-group">
+      <div class="controls">
+       <label for="Account"><strong>Edit User Account</strong></label>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= group_user(group, user.type_of_user.id) %>
+          (Group User)
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= text_field_tag "user[desc]", '', :readonly => true, :class => "input-xlarge form-control span10 input-lg", :placeholder => "Warehouse", :id=>"warehouse_or_supplier" %>
+          <span class="help-block red"><%= user.errors[:desc].join() %></span>
+          <div id="empo_group" class="hide">
+            <%=link_to "<i class='icon-home'></i> Select Warehouse".html_safe, setting_select_supplier_or_warehouse_path(:key=>"customer"), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-select-warehouse-or-warehouse', id: "change-level", :title => "Select user warehouse" %>
+          </div>
+          <div id="supplier_group" class="hide">
+            <%=link_to "<i class='icon-wrench'></i> Select Supplier".html_safe, setting_select_supplier_or_warehouse_path(:key=>"supplier"), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-select-warehouse-or-warehouse', id: "change-level", :title => "Change level supplier" %>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div id="input-for-supplier-or-warehouse">
+      <%unless user.warehouse_id == nil%>
+        <%= hidden_field_tag 'warehouse[warehouse_id]', user.warehouse_id%>
+      <%end%>
+      <%unless user.supplier_id == nil %>
+        <%= hidden_field_tag 'supplier[supplier_id]', user.supplier_id%>
+      <%end%>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+         <%= select_tag "role_name", options_for_select(roles.collect{|role| [role.name.camelize, role.name]}, user.roles.first.name), :required => "required" %>
+          (Roles)
+        </span>
+      </div>
+    </div>
+    <%= f.hidden_field :user_type, :value => "b2b" %>
+    <% if current_user.warehouse.present? %>
+      <div class="control-group"><div class="controls"><hr class="border-custom-hr"></div></div>
+      <div class="control-group">
+        <div class="controls">
+          <label for="Account"><strong>Receive Email Notification</strong></label>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_po %><span class="lbl"> Receive Email <%=PO%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_grn %><span class="lbl"> Receive Email <%=GRN%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_grpc %><span class="lbl"> Receive Email <%=GRPC%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_invoice %><span class="lbl"> Receive Email <%=INV%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_grtn %><span class="lbl"> Receive Email <%=GRTN%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_early_payment_request %><span class="lbl"> Receive Email Early Payment Request </span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_debit_note %><span class="lbl"> Receive Email <%=DN%> </span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_payment_voucher %><span class="lbl"> Receive Email Payment Voucher </span>
+          </span>
+        </div>
+      <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_payment_process %><span class="lbl"> Receive Payment Process </span>
+          </span>
+        </div>
+      </div>
+      <div class="control-group"><div class="controls"><hr class="border-custom-hr"></div></div>
+    <% end %>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Update<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_users_path, :class => "btn btn-small btn-pink" %>
+      </div>
+    </div>
+  </fieldset>
+</div>
+<% end %>
+
+<div id="modal-select-warehouse-or-warehouse" class="modal hide fade modal-800" role="dialog" aria-labelledby="Choose Warehouse" aria-hidden="true"></div>
+</div>
+
+<script>
+function IsSupplier(value){checkingSupplier(value);}
+IsSupplier(document.getElementById('group_user').value);
+</script>
+
+<%= javascript_include_tag 'setting/users' %>

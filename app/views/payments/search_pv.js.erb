@@ -1,0 +1,58 @@
+<%if @pv_results.blank?%>
+   $('#table-pv-results > tbody').html('<%= escape_javascript(render("result_payment_vouchers", :pv_results => @pv_results)) %>');
+<%else%>	//kondisiken jika data nu datang eta data dari halaman hiji
+	<%if @pv_results.first_page? %>
+	  $('#table-pv-results > tbody').html('<%= escape_javascript(render("result_payment_vouchers", :pv_results => @pv_results)) %>');
+	  $("#pv-rek-di-bayar > table > tbody").html("<tr><td colspan='2' class='center'><span class='red'>please select one or more vouchers</span></td></tr>");
+		$("#dn-nu-rek-di-pake > table > tbody").html("<tr><td colspan='2' class='center'><span class='green'>You may select one or more debit note</span></td></tr>");
+		// reset all previous debit notes
+		//$("#debit").attr("data-toggle", "");
+		$("#total-all").html("");
+		$("#total-pv").html("");
+		//disable create payment button
+		$("#create-payment").prop("disabled",true);
+	<%else%>
+	  $('#table-pv-results > tbody').append('<%= escape_javascript(render("result_payment_vouchers", :pv_results => @pv_results)) %>');
+	<%end%>
+    //kondisiken button next pagena , mun eta last page, disable ken
+    <%if @pv_results.last_page?%>
+      $('#link-to-load').html("<%= escape_javascript(button_tag('No More', :disabled=>'disabled',:class=> 'btn btn-mini btn-default pull-left' ))%>");
+    <%else%>
+      $('#link-to-load').html("<%= escape_javascript(link_to_next_page(@pv_results, 'Load More>>', :params=>@params, :remote => true, :id=>'load-more', :class=> 'btn btn-mini btn-pink pull-left '))%>");
+    <%end%>
+    $("#btn-add").html("<%= escape_javascript(button_tag "<i class='icon-plus'></i> Add".html_safe, :id=> 'add-pv-btn',:class=>'btn btn-info btn-mini pull-right', :onclick=>'add_checked_pv_to_total_results(this,"table-pv-results")', :type=>'button', :disabled=>'disabled')%>");
+    $(function () {
+	  $(".select-pv-second").bind("click", function(){
+	    var ninini = false;
+	    $('#table-pv-results thead input:checkbox').each(function () {
+	    if ($(this).is(':checked')) {
+	      ninini = true
+	     }
+	    });
+	    if (ninini == true){
+	    	$("#add-pv-btn").prop("disabled", false);
+	    }else {
+	    	$("#add-pv-btn").prop("disabled", true);
+	    }
+	   });
+	  $(".select-pv").bind("click", function(){
+	    var nanana = false;
+	    $('#table-pv-results tbody input:checkbox').each(function () {
+	    if ($(this).is(':checked')) {
+	      nanana = true
+	     }
+	    });
+	    if (nanana == true){
+	    	$("#add-pv-btn").prop("disabled", false);
+	    }else {
+	    	$("#add-pv-btn").prop("disabled", true);
+	    }
+	   });
+	});
+     //add hidden input for suppliers code/name
+    $("#supplier-name").html("<%=escape_javascript(hidden_field_tag :supplier_input_name, :value=>@params[:supplier_name_autocomplete])%>");
+<%end%>
+// reset all previous inputs if first page
+
+// enable debit and retur tab, and generate button
+$("#create-payment").prop("disabled",false);

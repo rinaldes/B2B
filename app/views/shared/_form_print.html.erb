@@ -1,0 +1,36 @@
+<div class="modal-print" id="print-list-po">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Print</h3>
+  </div>
+  <%= form_tag print_list_po_path(order_type), :target => "_blank", :method => 'get', :id => "print-form" do %>
+  <div class="modal-body">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="site">
+          <label style="width: 35px">Filter</label>
+          <%= show_filter_for_print(order_type) %>
+        </div>
+        <div class="default">
+          <%= text_field_tag "search[detail]", params[:search_all], id:"search-detail",:class=>'auto-complete', :autocomplete=>:off, :tabindex => '1' %>
+        </div>
+        <% if params[:id] == "invoices" %>
+          <label class="control-label text-left">Date</label>
+        <% end %>
+        <div class="default">
+          <%= text_field_tag "search[period_1]", "", :class => "start_date pull-left span6", :placeholder => "Start Date", :id=>"date_1", :tabindex => '2' %>
+          <%= text_field_tag "search[period_2]", "", :class => "end_date pull-left span6", :placeholder => "End Date",:id=>"date_2", :tabindex => '3' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <%=button_tag "<i class='icon-print'></i> Print".html_safe, :type=> "submit", :class=>'btn btn-info', :data => { :confirm => "Confirm Print?" }, :tabindex => '4' %>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  </div>
+  <%end%>
+</div>
+<script>
+  $('.start_date').datepicker({format: "dd/mm/yyyy", autoclose: true});
+  $('.end_date').datepicker({format: "dd/mm/yyyy", autoclose: true});
+</script>

@@ -1,0 +1,29 @@
+<%= form_for(settings, :url => setting_general_settings_path, :method=> "PUT") do |f| %>
+<fieldset>
+     <div class="control-group">
+      <div class="controls">
+       <label for="Account"><strong>General Settings</strong></label>
+      </div>
+    </div>
+    <% settings.each do |setting| %>
+      <div class="control-group">
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+            <label for=""><%= label_tag(setting.desc, setting.desc) %></label>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="pull-right">
+            <label for=""><%= label_tag(setting.value, setting.value) %></label>
+          </span>
+        </div>
+      </div>
+    <% end %>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+
+      </div>
+    </div>
+</fieldset>
+<% end %>

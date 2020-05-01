@@ -1,0 +1,19 @@
+<% unless params[:cancel] %>
+  <% if @grn_revise && params[:purchase_order][:po_remark].present? %>
+      $("#grn-details").hide("slow");
+      $("#grn-details").html("<%=escape_javascript(render 'details', :@grn=>@grn_revise)%>");
+      $("#grn-details").show("slow");
+      $(".accept-grn").html('');
+      $("#label-grn").html("<%=display_grn_state(@grn_revise.grn_state_name.to_s)%>");
+      $("#flash-message").html(create_alert_notice_for_js("<%=@message%>"));
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+      window.location = "/order_to_payments/goods_receive_notes"
+  <%else%>
+    <%= @_arr_valid_remark.join(";").html_safe %>
+    <% if params[:purchase_order][:po_remark].blank? %>
+      $("#error-message").html("<span class='alert alert-error'><%= @message %></span>")
+    <% else %>
+      $("#error-message").html("<span class='alert alert-error'>Please Check remark detail and it must be fill. </span>")
+    <% end %>
+  <%-end %>
+<% end %>

@@ -1,0 +1,114 @@
+<div class="row-fluid">
+  <div class="widget-header">
+    <h5>Line Details</h5>
+  </div>
+  <table class="table table-striped table-bordered" id="details">
+    <thead>
+      <tr>
+        <th class="center">Item Code</th>
+        <th class="center">Barcode</th>
+        <th class="center">Item Description</th>
+        <th class="center">Total Qty</th>
+        <th class="center">UoM</th>
+        <th class="center">Item Price</th>
+        <th class="center">Total</th>
+        <th class="center">Discount Rate</th>
+        <th class="center">Tax</th>
+        <th class="center">Total After Tax</th>
+        <th style="display:none;"></th>
+      </tr>
+    </thead>
+<% if ( !details.blank?)%>
+    <tfoot>
+      <tr>
+        <th class="center">Item Code</th>
+        <th class="center">Barcode</th>
+        <th class="center">Item Description</th>
+        <th class="center">Total Qty</th>
+        <th class="center">UoM</th>
+        <th class="center">Item Price</th>
+        <th class="center">Total</th>
+        <th class="center">Discount Rate</th>
+        <th class="center">Tax</th>
+        <th class="center">Total After Tax</th>
+        <td style="display:none;"></td>
+      </tr>
+    </tfoot>
+<% end %>
+    <tbody>
+    <% if details %>
+      <%tot=0%>
+<% grand_total = 0 %>
+      <% details.each do |p|%>
+        <% po = PurchaseOrder.find_by_order_type_and_po_number('Purchase Order', @inv.po_number) %>
+<% disc_rate = (DetailsPurchaseOrder.find_by_purchase_order_id_and_product_id(po.id, p.product_id).disc_rate rescue 0) %>
+<% total_amount_after_tax = disc_rate > 0 ? (p.total_amount_before_tax*(100-disc_rate)/100*(100+p.line_tax)/100) : p.total_amount_after_tax %>
+        <tr>
+          <td><%=p.product.code rescue '' %></td>
+          <td><%=p.product.apn_number rescue '' %></td>
+          <td><%=p.product.name.html_safe rescue '' %></td>
+          <td class="text-right"><%=p.dispute_qty.to_i rescue '' %></td>
+          <td><%=p.product.unit_qty rescue '' %></td>
+          <td class="text-right"><%=total_format(p.dispute_price, "Rp.") %></td>
+          <td class="text-right"><%=total_format(p.total_amount_before_tax, "Rp.") %></td>
+          <td class="text-right"><%= total_format(DetailsPurchaseOrder.find_by_purchase_order_id_and_product_id(po.id, p.product_id).disc_rate.to_f) rescue 0 %>%</td>
+          <td class="text-right"><%="#{p.line_tax}%" if !p.line_tax.nil?%></td>
+          <td class="text-right"><%=total_format(total_amount_after_tax, "Rp.") %></td>
+          <td style="display:none;"></td>
+        </tr>
+<% grand_total += total_amount_after_tax.to_f %>
+      <%end%>
+      <tr>
+        <td colspan='9' class="text-right"><strong>Total</strong></td>
+        <td class="text-right"><strong><%=total_format(grand_total, "Rp.") %></strong></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+          <td style="display:none;"></td>
+      </tr>
+    <%end%>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#details tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#details').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 9 ] }
+      ],
+      "aaSorting": [] });
+    $('#details tfoot th').each(function (i) 
+    {
+      var title = $('#details thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

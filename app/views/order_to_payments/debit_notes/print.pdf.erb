@@ -1,0 +1,87 @@
+<content>
+  <div id="content-head">
+    <div id="content-left">
+      <div>
+        <%= wicked_pdf_image_tag_for_logo(@company,"mini") %>
+        <span class="medium-text"><%= @company.name %></span><br />
+      </div>
+      <br />
+    </div>
+    <div id="content-center">
+      <h3>Debit Notes</h3>
+    </div>
+    <div id="content-body">
+      <p class="medium-text text-head">
+      </p>
+      <table class="table table-bordered">
+        <tr>
+          <th class="center">
+            Warehouse
+          </th>
+          <th class="center">
+            Supplier Code
+          </th>
+          <th class="center">
+            Transaction Date
+          </th>
+          <th class="center">
+            PO Number
+          </th>
+          <th class="center">
+            Invoice Date
+          </th>
+          <th class="center">
+            Amount
+          </th>
+          <th class="center">
+            Due Date
+          </th>
+          <th class="center">
+            Status
+          </th>
+        </tr>
+        <% @gt = [] %>
+        <% @results.each do |dn| %>
+          <tr>
+            <td>
+              <%= dn.warehouse.warehouse_name %>
+            </td>
+            <td>
+              <%= dn.supplier.code %>
+            </td>
+            <td>
+              <%= convert_date(dn.transaction_date) %>
+            </td>
+            <td>
+              <%= dn.order_number %>
+            </td>
+            <td>
+              <%= convert_date(dn.invoice_date) %>
+            </td>
+            <td class="right">
+              <%= total_format(dn.amount,"Rp.") %>
+            </td>
+            <td>
+              <%= convert_date(dn.due_date) %>
+            </td>
+            <td>
+              <%= dn.state_name.to_s %>
+            </td>
+            <% @gt << dn.amount %>
+          </tr>
+        <% end %>
+        <tr>
+          <th colspan="5">
+            Total :
+          </th>
+          <th class="right">
+            <%= total_format(grand_total(@gt), "Rp.") %>
+          </th>
+          <th>
+          </th>
+          <th>
+          </th>
+        </tr>
+      </table>
+    </div>
+  </content>

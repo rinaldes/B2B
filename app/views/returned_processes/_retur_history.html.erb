@@ -1,0 +1,91 @@
+<div class="row-fluid">
+  <div class="span12 well">
+    <%past_retur.each do |retur|%>
+    <div class="row-fluid" id="retur_<%= retur.id %>">
+      <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>PO Number</span>
+            : <%=retur.purchase_order.po_number%>
+          </li>
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Return Number</span>
+            : <%=retur.rp_number%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Sender Code</span>
+            : <%=retur.purchase_order.supplier.code%>
+          </li>
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Returned Date</span>
+            : <%=retur.rp_date%>
+          </li>
+        </ul>
+      </div>
+      <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>PO Remark</span>
+            : <%=retur.remark%>
+          </li>
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Created at</span>
+            : <%=convert_date(retur.created_at)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+
+            <span>Status</span>
+            : <%=nil_to_unread(retur)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Last Update By</span>
+            : <%="#{retur.user.first_name} #{retur.user.last_name}" rescue ""%>
+          </li>
+        </ul>
+      </div>
+    </div><!--/span-->
+    <table  class="table table-striped table-bordered detail-table">
+    <thead>
+      <tr>
+        <th class="center">Item Code</th>
+        <th class="center">Barcode</th>
+        <th class="center">Item Description</th>
+        <th class="center">Returned Qty</th>
+        <th class="center">Received Qty</th>
+        <th class="center">Received as Retur</th>
+        <th class="center">UoM</th>
+        <th class="center">Remark</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if retur.returned_process_details%>
+    <%retur.returned_process_details.each do |p|%>
+      <tr>
+        <td><%=p.product.code%></td>
+        <td><%=p.product.apn_number %></td>
+        <td><%=p.product.name.html_safe %></td>
+        <td class="text-right"><%=p.return_qty.to_i%></td>
+        <td class="text-right"><%=p.received_qty.to_i%></td>
+        <td class="text-right"><%=p.received_as_retur_qty.to_i%></td>
+        <td><%=p.product.unit_qty%></td>
+        <td><label><%=p.remark%></label></td>
+      </tr>
+    <%end%>
+    <%end%>
+      </tbody>
+    </table>
+    <hr>
+    <%end%>
+  </div>
+</div>

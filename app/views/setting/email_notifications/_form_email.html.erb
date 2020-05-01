@@ -1,0 +1,39 @@
+	<div id="update_email_notification" name="uen">
+		<span class="message" id="flash-message"></span>
+		<%= form_for email_notification, url: setting_email_notification_path(email_notification), :method=>"put", :id=> "form-email",remote:true do |f| %>
+		<div class="well">
+			<span id="error-message" padding-left="10px"></span>
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label" for="Title">Subject</label>
+					<div class="controls">
+						<%= f.text_field :subject, :class => "input-xlarge form-control input-lg span5"  %>
+						<span class="help-block red alert_notice"><%= email_notification.errors[:subject].join() %></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="Title">Description</label>
+					<div class="controls">
+						<%= f.text_area :description, :class => "content_body input-xlarge form-control input-lg span7", :input_html => { :height => 400 }%>
+						<span class="help-block red alert_notice"><%= email_notification.errors[:description].join() %></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<!-- Button -->
+					<%= hidden_field_tag 'id_form', params[:id_form]%>
+					<div class="row-fluid as">
+						<%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+						'), :class => "btn btn-success btn-small pull-left" %>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<%end%>
+	</div>
+
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$(".content_body").cleditor_plgn();
+	});
+	</script>

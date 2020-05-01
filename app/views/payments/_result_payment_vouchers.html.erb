@@ -1,0 +1,19 @@
+<%if pv_results.blank?%>
+  <tr><td colspan="6" class="center"><span class="red">No match data</span></td></tr>
+<%else%>
+  <% pv_results.each do |pv| %>
+    <tr id="row_<%=pv.id%>">
+      <td class="level"><%= pv.voucher %></td>
+      <td class="level"><%= pv.supplier.code %></td>
+      <td class="level"><%= convert_date(pv.created_at) %></td>
+      <td class="level text-right"><%= total_format(pv.grand_total,"Rp. ") %></td>
+      <td class="level"><%= pv.is_approved_name.to_s.capitalize %></td>
+      <td class="level">
+        <center>
+          <%= check_box_tag "select_pv_#{pv.id}", "",false, :class=>"select-pv" %><span class="lbl"></span>
+        </center>
+      </td>
+    </tr>
+  <%end%>
+<%end%>
+

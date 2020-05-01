@@ -1,0 +1,89 @@
+<%= form_for payment_voucher, :url => get_approval_invoice_path(params[:id]) do |f| %>
+<div class="control-group">
+  Voucher : <strong><%= result.voucher %></strong><br />
+  Last Update By : <%= "#{result.user.first_name} #{result.user.last_name}" %>
+  <div class='pull-right'>
+    <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_voucher_url(params[:id], :xls) %>
+    <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, generate_pdf_details_voucher_url(params[:id]), :target => "blank" %>
+  </div>
+</div>
+<div class="control-group">
+  <div id="table_report_wrapper" class="dataTables_wrapper" role="grid">
+    <table class="table table-striped table-bordered table-hover" id="results">
+      <thead>
+        <tr>
+          <th class="center">Supplier Code</th>
+          <th class="center">Order Date</th>
+          <th class="center">Received Date</th>
+          <th class="center">Payment Invoice Due Date</th>
+          <th class="center">Invoice Number</th>
+          <th class="center">Grand Total</th>
+          <th class="left">Action<span class="lbl"></span></th>
+          <th style="display:none;"></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th class="center">Supplier Code</th>
+          <th class="center">Order Date</th>
+          <th class="center">Received Date</th>
+          <th class="center">Payment Invoice Due Date</th>
+          <th class="center">Invoice Number</th>
+          <th class="center">Grand Total</th>
+          <th class="left">Action<span class="lbl"></span></th>
+          <td style="display:none;"></td>
+        </tr>
+      </tfoot>
+      <tbody class="get_invoice">
+        <%= render "get_payment_voucher_details", :results => results %>
+      </tbody>
+    </table>
+    <% if current_user.type_of_user.parent.customer? %>
+      <%= show_button_approved_invoice_by_empo(result, f) %>
+    <% else %>
+      <%= show_button_approved_invoice_by_supplier(result, f) %>
+    <% end %>
+    <%= show_button_print_invoice(result) %>
+    <div class="controls">
+      <%#=render "shared/paginate", :results => results %>
+    </div>
+  </div>
+</div>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#results tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#results').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 7 ] }
+      ],
+      "aaSorting": [] });
+    $('#results tfoot th').each(function (i) 
+    {
+      var title = $('#results thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

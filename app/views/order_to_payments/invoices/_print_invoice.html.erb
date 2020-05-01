@@ -1,0 +1,27 @@
+<div class="row-fluid" id='print-inv-btn'>
+  <div class="span7 pull-left">
+    <%if can?(:print_inv, :invoice)  %>
+      <br />
+      <%= f.submit "Print", :class=> 'btn btn-large btn-info', :onclick => "return confirm_print(this);" %>
+    <%end%>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="dialog-confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body" id="message">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

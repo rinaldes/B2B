@@ -1,0 +1,47 @@
+<%= form_tag get_report_dashboards_path, :method => 'get', :remote => true, :id => "form_search" do %>
+  <div class="table-header">
+    <div class="site">
+      <label style="width: 35px">Filter</label>
+      <%= show_filter_by_controller %>
+    </div>
+    <div class="default" id="search-anything">
+      <%= hidden_field_tag "search[period_1]" %>
+      <%= hidden_field_tag "search[period_2]" %>
+
+      <%= hidden_field_tag "search[period_1_inv_date]" %>
+      <%= hidden_field_tag "search[period_2_inv_date]" %>
+
+      <%= hidden_field_tag "search[period_1_due_date]" %>
+      <%= hidden_field_tag "search[period_2_due_date]" %>
+      <%= hidden_field_tag "default_dn", "dn" %>
+      <%= text_field_tag "search[detail]", params[:search][:detail], id:"search_detail",:class=>'auto-complete', :autocomplete=>:off %>
+      <%= hidden_field_tag "search[order_type]", params[:search][:order_type] %>
+      <% if params[:controller].split("/")[0].downcase == "order_to_payments" || params[:controller].downcase == 'returned_processes'%>
+        <button class="btn btn-small btn-info pull-left" type="button" id="advance_period">Advance</button>
+      <% end %>
+
+      <button class="btn btn-small btn-info pull-left" type="submit" id="finding">Find</button>
+      <button class="btn btn-small btn-info pull-left" type="button" id="reset_finding">Reset</button>
+      <%= show_print_button(params[:controller])%>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="control-group hide" id="show_period">
+    <div class="controls">
+      <label class="label label-warning" id="show_label_period">
+      </label>
+    </div>
+  </div>
+<%end%>
+<div id="loading-ajax" class="" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="clear"></div>
+
+<% if params[:controller].split("/")[0].downcase == "order_to_payments" || params[:controller].downcase == 'returned_processes'%>
+  <%= render "shared/period_filter", {:from => (params[:controller].match("/") ? params[:controller].split("/")[1].downcase : params[:controller].downcase)} %>
+<% end %>
+
+<div id="new-print" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<script>
+  $("#search_field").val("<%= params[:search][:field] %>");
+</script>

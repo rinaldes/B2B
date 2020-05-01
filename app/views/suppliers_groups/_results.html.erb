@@ -1,0 +1,29 @@
+          <% results.each do |group| %>
+            <tr id="row_<%=group.id%>">
+              <td><%=group.code%></td>
+              <td><%=group.name%></td>
+              <td class="level"><%=group.level%></td>
+              <td><%=convert_date group.created_at%></td>
+              <td class="td-actions ">
+                <% if can? :read, Group %>
+                  <%=link_to "<i class='icon-eye-open'></i>".html_safe, suppliers_group_path(group.id), :class=>"", :title => "View detail"%>
+                  <% if can? :change_level, :suppliers_group %>
+                  <%= link_to "<i class='icon-signal'></i>".html_safe, edit_level_supplier_group_path(group), remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-edit-level', id: "change-level",
+                    title: "Change level supplier"%>
+                  <% end %>
+                </ul>
+              </div>
+            <%end%>
+            <div class="btn-group">
+              <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_suppliers_group_url(group.id, :xls) %>
+            </div>
+            <div class="btn-group">
+              <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, generate_pdf_details_suppliers_group_url(group.id), :target => "blank" %>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+  </tbody>
+</table>
+</div>
+<div id="modal-edit-level" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

@@ -1,0 +1,49 @@
+<%= form_for payment_vouchers, :url => payment_vouchers_path, :method => :post do |f| %>
+  <%= hidden_field_tag "total_count", 0 %>
+  <div class="control-group ui-widget">
+    <label class="span1">Supplier</label>
+    <%= text_field_tag "supplier_name_autocomplete", "", :class => "typeahead", :autocomplete => "off", :placeholder => "Select Supplier", :onkeypress => "get_ajax_list_supplier(this)" %>
+  </div>
+  <div class="control-group">
+    <label class="span1">Filter</label>
+    <%= select("search", "field", ["Supplier Code", "PO Number", "GRN Number", "Invoice Number","Payment Invoice Due Date"].collect{|arr| [arr] }) %>
+    <span class="due_date hide">
+      <div class="input-append date" id="dp4" data-date="<%= Date.today.strftime('%d-%m-%Y') %>" data-date-format="dd-mm-yyyy">
+        <%= text_field_tag "search_detail_due_date", params[:search_detail_due_date].blank?? Date.today.strftime('%d-%m-%Y') : params[:search_detail_due_date]  , :readonly => "", :class => "payment_invoice_due_date_text" %>
+        <span class="add-on payment_invoice_due_date"><i class="icon-th"></i></span>
+      </div>
+    </span>
+    <span class="another_detail hide"><%= text_field_tag "search[detail]", params[:search_detail], id:"search_detail" %></span>
+      <a href="javascript:void(0);" class="btn btn-small btn-info pull-right" id="finding_invoice" onclick = "get_data_invoice();">Find</a>
+  </div>
+<div class="control-group">
+    <div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+      <table class="table table-striped table-bordered table-hover" id='results'>
+        <thead>
+          <tr>
+            <th class="center">Supplier Code</th>
+            <th class="center">Order Date</th>
+            <th class="center">Received Date</th>
+            <th class="center">Payment Invoice Due Date</th>
+            <th class="center">Invoice Number</th>
+            <th class="center">Grand Total</th>
+            <th class="left">
+              <%= check_box_tag "select_all" %>
+              <span class="lbl"></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="get_invoice">
+          <%= render "get_invoice_based_on_supplier", :results => results %>
+        </tbody>
+      </table>
+      <div class="animation_image" style="display:none" align="center"><%= image_tag("ajax-loader.gif") %></div>
+      <% if can?(:create, PaymentVoucher) %>
+        <div class="span3 pull-right">
+          <%= f.submit raw('Generate Payment Voucher'), :name => "generate_voucher", :class => "btn btn-info", :onclick => "return confirm_generate(this)" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<%= javascript_include_tag "payment_vouchers.js" %>

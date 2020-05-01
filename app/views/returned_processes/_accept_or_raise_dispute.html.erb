@@ -1,0 +1,19 @@
+<div id="accept-or-dispute">
+  <div class="hr hr8 hr-double hr-dotted"></div>
+  <div class="row-fluid">
+    <div class="span12">
+	  <h4 class="lighter">
+		Received
+	  </h4>
+	  <p>Return Goods received quantities are confirmed and signed off for</p>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span7 pull-left">
+    <%if retur.can_raise_dispute? && can?(:make_dispute_retur, retur) %>
+	    <%=link_to "Raise Quantity Dispute", new_dispute_retur_returned_processes_path(retur.id), :class=> "btn btn-info", :remote=>true%>
+    <%end%>
+	  </div>
+  </div>
+</div>
+<div id="message-accept-error" style="margin-top:10px"></div>

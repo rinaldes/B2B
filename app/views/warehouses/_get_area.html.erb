@@ -1,0 +1,12 @@
+<%if results.blank?%>
+  <tr><td colspan="3" class="center"><span class="red">No match data</span></td></tr>
+<%else%>
+  <% results.each do |area| %>
+    <tr id="row_<%=area.id%>">
+      <td><%=area.area_code%></td>
+      <td><%=area.area_name%></td>
+      <td class="level"><%= radio_button_tag "area[id]", area.id, "", :class => "radioB", :onclick => "getSelectedArea(this.value)" %><span class="lbl"></span></td>
+    </tr>
+  <%end%>
+<%end%>
+<%= javascript_include_tag "warehouses.js" %>

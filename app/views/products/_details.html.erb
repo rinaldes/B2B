@@ -1,0 +1,56 @@
+<div class="row-fluid">
+  <div class="widget-header">
+    <h5>Supplier</h5>
+  </div>
+  <table class="table table-striped table-bordered table-hover" id="results">
+  <thead>
+    <tr>
+      <th class="center">Supplier Code</th>
+      <th class="center">Supplier Name</th>
+      <th class="center">Level</th>
+      <th class="center">Service Level</th>
+      <th class="center">Address</th>
+      <th class="center">Last Update</th>
+      <th class="center">Item Last Buy Price</th>
+      <th class="center">Action</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th class="center">Supplier Code</th>
+      <th class="center">Supplier Name</th>
+      <th class="center">Level</th>
+      <th class="center">Service Level</th>
+      <th class="center">Address</th>
+      <th class="center">Last Update</th>
+      <th class="center">Item Last Buy Price</th>
+      <td></td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <% if suppliers %>
+      <% suppliers.each do |s| %>
+        <tr>
+          <td><%= s.supplier.code rescue '' %></td>
+          <td><%= s.supplier.name rescue '' %></td>
+          <td><%= s.supplier.level rescue '' %></td>
+          <td><%= s.supplier.service_level rescue '' %></td>
+          <td><%= s.supplier.addresses.pluck(:name).join(",") rescue '' %></td>
+          <td><%= time_ago_in_words(s.supplier.updated_at) rescue '' %></td>
+          <td class="text-right"><%= total_format(s.last_buy_price,"Rp.") %></td>
+          <td>
+            <div class="btn-group">
+               <button class="btn btn-mini">Action</button> <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle"><span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li>
+                  <%=link_to "<i class='icon-eye-open'></i> Detail Supplier".html_safe, supplier_path(s.supplier), :class=>"", :title => "View detail"%>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+</div>

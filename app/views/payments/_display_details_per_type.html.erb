@@ -1,0 +1,44 @@
+<div class="row-fluid">
+  <div class="span12">
+  	<div class="table-header">
+	    <div class="site">
+	      <label><strong><%=title%></strong></label>
+	    </div>
+    </div>
+    <table class="table table-bordered">
+    	<thead>
+    	<tr>
+    		<th class="level center" style="width:50px;">No</th>
+    		<th class="level center">Detail Reference No</th>
+    		<th class="level center text-right"><strong>Total</strong></th>
+    	</tr>
+    	</thead>
+    	<tbody>
+    	  <% if !details.blank? %>
+			    <% details.each_with_index do |pd,i|%>
+						<tr>
+							<td class="level"><%= i+1 %></td>
+							<td class="level"><%= display_element_payment_no(pd) %></td>
+							<td class="level text-right"><%= total_format(pd.total,"Rp.") %></td>
+						</tr>
+				  <%end%>
+		    <%else%>
+		      <tr>
+		        <td colspan="3" class="center">No <%=title%> was/were used</td>
+		      </tr>
+    		<%end%>
+    	</tbody>
+    </table>
+  </div>
+</div>
+<div class="row-fluid">
+	<div class="span4 pull-right">
+	  <div class="last-total">
+	    <div class="dataTables_info" id="table_serv_req_info">
+	      <span><strong>Total</strong></span>
+	      <span class="total-nominee text-right"><strong><%=total_format(total_payment_detail(details),"Rp.") %></strong></span>
+	    </div>
+	  </div>
+	</div>
+</div>
+<div class="space"></div>

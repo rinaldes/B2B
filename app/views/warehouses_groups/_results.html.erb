@@ -1,0 +1,18 @@
+<% results.each do |group| %>
+  <tr id="row_<%=group.id%>">
+    <td><%=group.code%></td>
+    <td><%=group.name%></td>
+    <td><%=convert_date group.created_at%></td>
+    <td class="td-actions ">
+      <% if can? :read, Group %>
+        <%=link_to "<i class='icon-eye-open'></i>".html_safe, warehouses_group_path(group.id), :class=>"", :title => "View detail"%>
+        <div class="btn-group">
+          <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_warehouses_group_url(group.id, :xls) %>
+        </div>
+        <div class="btn-group">
+          <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, generate_pdf_details_warehouses_group_url(group.id), :target => "blank" %>
+        </div>
+      <%end%>
+    </td>
+  </tr>
+<%end%>

@@ -1,0 +1,270 @@
+### README
+
+This README would normally document whatever steps are necessary to get the application up and running.
+
+Things you may want to cover:
+
+#### Ruby version
+
+#### Ruby installation
+### a. Ubuntu
+    This is step by step in Ruby on Rails installation on Ubuntu 10.04 : 
+    Run all these commands in your terminal)
+
+### RVM Installation
+ RVM is stands for Ruby Version Manager, RVM is an application that very helpful in manage our used Ruby. With RVM, we can make a gems grouping that will be used. One gem packet called Gemset. This is how to install RVM :
+
+ 1. Make sure that Apache 2 and postgresql has been installed, if not check in this  here.
+
+ 2. Run these commands :
+
+        bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+   Note :  Jika gagal gunakan script berikut  
+
+        \curl -L https://get.rvm.io | bash -s stable --ruby
+        source ~/.bash_profile
+
+   Note : This command is for reload opened terminal.
+
+        rvm requirements
+
+   Note : This command is for searching all libs that still needed, and then install the lib.
+
+ 3. Install Ruby according to the version we need:      
+
+        rvm install 1.26.8
+
+    Note : This command will install Ruby version 2.0.0-p598
+
+ 4. If we want to have many ruby version,  we can repeat from step number 2 , change with ruby version that will be installed.
+
+ 5. To see all versions of ruby, we can use this command :
+         
+            rvm list
+
+ 6. To use a specific version of ruby, we can use this command :
+  
+        rvm use 2.0.0-p598  
+    Note : Ruby is going to use is version 2.0.0-p598
+ 
+ 7.  If there is an error when running rvm use 2.0.0 like this : "rvm use is not a 
+function" , open file ~/.bashrc and ~/.bash_profile and then add this script :
+        
+        [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session    *as a function*
+
+     Close your terminal and open again.
+
+ 8.  After ruby has installed, we create a gemset and list all gems that will be used in that gemset. Before this gemset created,  we have to decide which ruby version that will be used.
+   
+         rvm gemset create pratesis-b2b
+     Note : This will create a gemset named rails3.2,  the name of gemset is not specified. And it will use  Ruby version 2.0.0-p598
+
+ 9.  If we plan to have many ruby versions please repeat step No. 3 , and if we plan to have many gemset you can repeat step No. 8.
+ 
+ 10. To use a gemset, we can use the following command:
+
+       rvm use 2.0.0-p598
+       rvm gemset use pratesis-b2b
+
+       or
+
+       rvm use 2.0.0-p598@pratesis-b2b
+
+   Note : It will be use ruby version 2.0.0-p598 and gemset pratesis-b2b.
+
+ 11. Install gems that will be set for that gemset :
+    gem rails -v=3.2.19 --no-ri --no-rdoc
+    gem 'json', '1.8.1'
+    gem 'jquery-rails', '3.0.4'
+    gem "kaminari", '0.14.1'
+
+    #Authentication user
+    gem 'devise', '3.0.2'
+    gem 'cancan'
+    gem 'rolify'
+    gem "devise_ldap_authenticatable" #, :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
+    gem 'devise_security_extension'
+
+    #generate barcode
+    gem 'barby'
+    gem 'chunky_png'
+    #state machine
+    gem 'state_machine'
+    #logger
+    gem 'public_activity'
+
+    gem 'wkhtmltopdf-binary'
+    gem 'wicked_pdf'
+
+    gem 'carrierwave', '0.9.0'
+    gem 'rmagick', '2.13.2', :require => 'RMagick'
+
+    gem "seedbank", '0.3.0.pre'
+
+    gem "crummy", "~> 1.8.0"
+    gem "remotipart", "~> 1.2.1"
+    gem 'exception_notification', '4.0.0', :group => [:production, :staging]
+    gem 'spreadsheet', '0.9.5'
+    gem 'verbs'
+
+    gem "rails_config"
+    gem 'thin', '1.5.1'
+
+    gem 'pg'
+    gem 'breadcrumbs_on_rails', '~>2.2.0'
+
+    #Cronjob
+    gem 'delayed_job_active_record'
+    gem 'whenever', :require => false
+
+    group :assets do
+      gem 'sass-rails',   '~> 3.2.3'
+      gem 'coffee-rails', '~> 3.2.1'
+      gem 'therubyracer'
+      gem 'uglifier', '>= 1.0.3'
+    end
+
+    group :development do
+      gem 'capistrano','2.13.5'
+      gem 'capistrano-ext','1.2.1'
+      gem 'rvm-capistrano','1.2.7'
+      gem "brakeman"
+      gem "rails_best_practices"
+      gem "debugger"
+      gem "mailcatcher"
+      gem 'rspec-rails', '~> 2.14.1'
+      gem 'factory_girl_rails'
+    end
+
+    group :test do 
+      gem 'faker' 
+      gem 'capybara' 
+      gem 'guard-rspec'
+      gem 'launchy' 
+    end
+
+    gem 'newrelic_rpm'
+
+     Note : - That gems will be grouped into gemset named pratesis-b2b
+            - If we use RVM, don't use sudo gem when install the gem. 
+
+ 12. To change the version of ruby and gemset to be used , repeat from step no 10.
+ 
+ 13. When we open a new terminal, the terminal is not using any ruby gemset, if we want to set the default ruby and gemset, use the command:
+
+     rvm use 2.0.0-p598@pratesis-b2b --default
+     Note : To create a ruby and gemset as default, and this command will override ruby that owned by system (which is not installed in the rvm).                   
+     So, if we open a new tab, that ruby version and gemset will be used.
+
+ 14. These are some commands that can help us in using RVM:
+        rvm gemset list
+ 
+ Note :  To see a gemset list in one ruby version
+
+     rvm gemset use <gemset name>
+ Note : To use a gemset. 
+  
+      rvm gemset delete <gemset name>
+ Note : To  delete a gemset.
+
+        rvm gemset empty <gemset name>
+ Note : To delete all gems in a gemset.   
+
+#### System dependencies
+#### Configuration
+
+#### Database creation
+
+Database Using PostgreSQL
+
+Tutorial Instaliation PostgreSQL
+
+https://help.ubuntu.com/community/PostgreSQL
+
+Configuration on config/database.yml
+
+    development:
+      adapter: postgresql
+      encoding: utf8
+      database: development_b2b
+      #database: warehouse_development
+      username: postgres
+      password: 12345678
+      host: localhost
+
+#### Database initialization
+
+1. First Start Database Oracle
+   
+        sudo /etc/init.d/postgresql restart
+
+2. create database
+   
+        rake db:create
+
+3. crate table
+   
+        rake db:migrate
+
+4. Seed database
+   
+        rake db:seed
+
+#### How to run the test suite
+
+#### Services (job queues, cache servers, search engines, etc.)
+
+####Cronjob using Whenever
+
+For more details about Whenever [https://github.com/javan/whenever](https://github.com/javan/whenever)
+
+Example schedule.rb file
+    
+every 1.days do
+  runner "Warehouse.delay(priority: 1, run_at: 1.minutes.from_now).synch_warehouses_now"
+  runner "Supplier.delay(priority: 2, run_at: 1.minutes.from_now).synch_supplier_now"
+  runner "Product.delay(priority: 3, run_at: 1.minutes.from_now).synch_products_periodically"
+end
+
+      
+Update whenever
+
+    whenever --update-crontab
+
+###Memcached
+
+For more details about memcached
+
+[https://github.com/memcached/memcached](https://github.com/memcached/memcached)
+
+start memcached
+
+    memcached
+
+#### Deployment instructions
+
+Before deploy we must stop all running process
+
+Stop rails service
+
+    cap staging rails:stop
+
+after all process stop, run deploy command
+
+Deploy
+
+    cap staging:deploy
+
+Reset database
+   
+    cap staging deploy:reset
+
+After all process deploy finished start again rails service 
+
+Start rails process
+
+    cap staging rails:start
+
+Restart web process
+
+    cap staging rails:restart

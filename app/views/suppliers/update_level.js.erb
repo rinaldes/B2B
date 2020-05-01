@@ -1,0 +1,9 @@
+<%- if @supplier.errors.any? %>
+  $('#modal-edit-level').html("<%= escape_javascript(render('edit')) %>");
+<%else%>
+$('#modal-edit-level').modal('hide');
+  var row = '<%=@supplier.id%>';
+  $('#table_report_wrapper #row_'+row+' .level').html('<%=@supplier.level%>');
+  $('#table_report_wrapper #row_'+row+' .last-update').html('<%= time_ago_in_words(@supplier.updated_at)%> ago ');
+  $("#flash-message").html(create_alert_notice_for_js("Supplier's level was successfully changed"));
+<%-end%>

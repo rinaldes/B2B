@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Ship To</Data></Cell>
+        <Cell><Data ss:Type="String">PO Number</Data></Cell>
+        <Cell><Data ss:Type="String">Ordered</Data></Cell>
+        <Cell><Data ss:Type="String">Arrival</Data></Cell>
+        <Cell><Data ss:Type="String">Order Type</Data></Cell>
+      </Row>
+        <% @results_all.each do |arc| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=arc.warehouse.warehouse_name rescue '' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%=arc.po_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(arc.po_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(arc.due_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=arc.order_type%></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Ship To</Data></Cell>
+        <Cell><Data ss:Type="String">Supplier Code</Data></Cell>
+        <Cell><Data ss:Type="String">Transaction Date</Data></Cell>
+        <Cell><Data ss:Type="String">Order Number</Data></Cell>
+        <Cell><Data ss:Type="String">Amount</Data></Cell>
+        <Cell><Data ss:Type="String">Due Date</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+      </Row>
+        <% @results_all.each do |dn| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=dn.warehouse.warehouse_name rescue '' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%=dn.supplier.code%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(dn.transaction_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=dn.order_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=total_format(dn.amount,"Rp.")%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(dn.due_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=dn.state_name.capitalize%></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -1,0 +1,4 @@
+$('div#email_form'+'<%=@id_form%>').html('<%= escape_javascript(render("form_email", :email_notification => @email_notification)) %>');
+<%- unless @email_notification.errors.any? %>
+  $(".message#flash-message").html(create_alert_notice_for_js("Email notification setting has been changed"));
+<%-end%>

@@ -1,0 +1,51 @@
+<table class="table table-bordered table-striped status">
+    <thead>
+      <tr>
+        <th class="hidden-phone" width="20%">
+          <i class="icon-caret-right blue"></i>
+        </th>
+        <th>
+          <i class="icon-caret-right blue"></i>
+          Description
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-yellow arrowed arrowed-in">pending</span>
+        </td>
+        <td><%=count[:pending]%> Pending</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-warning arrowed arrowed-in ">disputed</span>
+        </td>
+        <td><%=count[:disputed]%> Disputed</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-pink arrowed arrowed-in">revisioned</span>
+        </td>
+        <td><%=count[:revisioned]%> Revisioned </td>
+      </tr>
+      <!--tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-important arrowed arrowed-in">rejected</span>
+        </td>
+        <td><%#=@count[:rejected]%> Rejected </td>
+      </tr>
+            <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-important arrowed arrowed-in">expired</span>
+        </td>
+        <td><%#=@count[:expired]%> Expired </td>
+      </tr-->
+       <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-success arrowed arrowed-in">accepted</span>
+        </td>
+        <td><%=count[:accepted]%> Accepted </td>
+      </tr>
+    </tbody>
+</table>

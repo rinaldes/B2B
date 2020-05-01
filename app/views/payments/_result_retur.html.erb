@@ -1,0 +1,17 @@
+<%if retur_results.blank?%>
+  <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+<%else%>
+  <% retur_results.each do |retur| %>
+    <tr id="rew_<%=retur.id%>">
+      <td class="level"><%= retur.rp_number %></td>
+      <td class="level"><%= retur.purchase_order.supplier.code %></td>
+      <td class="level"><%= retur.purchase_order.warehouse.warehouse_code %></td>
+      <td class="level text-right"><%= total_format(retur.purchase_order.received_total.abs,"Rp. ") %></td>
+      <td class="level">
+        <center>
+        <%= check_box_tag "select_retur_#{retur.id}", "",false, :class=>"add_retur_second" %><span class="lbl"></span>
+        </center>
+      </td>
+    </tr>
+  <%end%>
+<%end%>

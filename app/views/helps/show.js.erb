@@ -1,0 +1,6 @@
+<% if @help %>
+  $("#modal-show-help").html("<%= escape_javascript(render 'form_show_help', :help => @help) %>");
+<% else %>
+  alert("Help for this Menu isn't available");
+  $(".modal").modal("hide");
+<% end %>

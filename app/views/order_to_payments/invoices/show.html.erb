@@ -1,0 +1,254 @@
+<%= javascript_include_tag "jquery.mask.min.js","order_to_payments/invoices.js" %>
+<%=javascript_include_tag "autoNumeric-min.js"%>
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+    <%=form_for @inv, :url => order_to_payments_respond_to_inv_url(@inv), :method=>"post", :remote=>true, :html => {:class => 'form_submit_invoice'} do |f|%>
+      <div class="widget-box transparent invoice-box">
+      <%#=display_history_btn_inv(@inv)%>
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+           <div class="row-fluid" id="inv-history">
+            <div id="paginate-"></div>
+            </div>
+            <div class="row-fluid">
+              <div class="row-fluid">
+                <div class="span6">
+
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Order Number</span>
+                        : <%=@inv.po_number%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Store Name</span>
+                        : <%=@inv.warehouse.try(:warehouse_name)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Delivery To</span>
+                        : <%= get_addresses(@inv.warehouse) rescue '' %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Order Type</span>
+                        : <%=@inv.order_type%>
+                      </li>
+                      <% if @inv.payment_invoice_due_date.present? %>
+                        <li>
+                          <i class="icon-caret-right blue"></i>
+                          <span>Payment Invoice Due Date</span>
+                          : <%=convert_date(@inv.payment_invoice_due_date)%>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Code</span>
+                        : <%=@inv.supplier.try(:code)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Name</span>
+                        : <%=@inv.supplier.try(:name)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Phone Number</span>
+                        : <%=@inv.supplier.addresses.try(:first).try(:phone) rescue '' %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Order Date</span>
+                        : <%=convert_date(@inv.po_date)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Planned Arrival</span>
+                        : <%=convert_date(@inv.due_date)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Received Date</span>
+                        : <%=convert_date(@inv.received_date)%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Last Update By</span>
+                        : <%="#{@inv.user.first_name} #{@inv.user.last_name}" rescue ""%>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+              </div><!--row-->
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, order_to_payments_generate_xls_details_inv_url(@inv.id, :xls) %>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, order_to_payments_generate_pdf_details_inv_url(@inv.id), :target => "blank" %>
+                </div>
+              <div class="space"></div>
+              <div class="hr-double"></div>
+              <div class="space"></div>
+              <% if @inv.inv_new? || @inv.inv_incomplete?%>
+                <div class="row-fluid" id= 'input-invoice'>
+                  <div class="span12">
+                    <div class="control-group">
+                      <label class="control-label text-left" for="form-field-1">Invoice Number</label>
+                      <div class="controls">
+                        <%=f.text_field :invoice_number, :value => "#{@inv.invoice_number.to_i == 0 ? "" : @inv.invoice_number }", :placeholder=> "#{@inv.invoice_number}" %>
+                        <span id='invoice_number'></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label text-left" for="form-field-1">Tax Invoice Number</label>
+                      <div class="controls">
+                        <%=f.text_field :tax_invoice_number, :value => "#{@inv.tax_invoice_number}", :placeholder=>"#{@inv.tax_invoice_number}" %>
+                        <span id='tax_invoice_number'></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label text-left" for="form-field-1">Tax Invoice Date</label>
+                      <div class="controls">
+                        <div class="input-append date" id="dp3" data-date="<%= Date.today.strftime('%d-%m-%Y') %>" data-date-format="dd-mm-yyyy">
+                          <%=f.text_field :tax_invoice_date, value: (@invoice.tax_invoice_date.strftime('%d-%m-%Y') rescue "#{Date.today.strftime('%d-%m-%Y')}"), readonly: "",
+                            class: "date_tax_invoice_text" %>
+                          <span class="add-on date_tax_invoice"><i class="icon-th"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label text-left" for="form-field-1">Payment Invoice Due Date</label>
+                      <div class="controls">
+                        <div class="input-append date" id="dp4" data-date="<%= Date.today.strftime('%d-%m-%Y') %>" data-date-format="dd-mm-yyyy">
+                          <%= f.text_field :payment_invoice_due_date, value: (@invoice.payment_invoice_due_date.strftime('%d-%m-%Y') rescue "#{Date.today.strftime('%d-%m-%Y')}"), readonly: "",
+                            class: "payment_invoice_due_date_text" %>
+                          <span class="add-on payment_invoice_due_date"><i class="icon-th"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label text-left">Tax Gap</label>
+                      <div class="controls">
+                        <%= text_field_tag :selisih_tax, @invoice.tax_gap %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label text-left">DPP Gap</label>
+                      <div class="controls">
+                        <%= text_field_tag :selisih_dpp, @invoice.dpp_gap %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label text-left">Total Gap</label>
+                      <div class="controls">
+                        <%= text_field_tag :selisih_total, @invoice.dpp_gap.to_f+@invoice.tax_gap.to_f, disabled: true %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <%end%>
+              <%=render 'details', :details => @details, :inv => @inv %>
+              <% if current_user.type_of_user.parent.description == "Supplier" && @inv.po_remark.present? %>
+                <div class="hr hr8 hr-double hr-dotted"></div>
+                <div class="row-fluid">
+                  <div class="span12">
+                    <h4 class="lighter">
+                      Remark
+                    </h4>
+                    <%= @inv.po_remark %>
+                  </div>
+                </div>
+                <div class="hr hr8 hr-double hr-dotted"></div>
+              <% end %>
+              <%if @inv.inv_printed?%>
+                <%= render 'receive_or_reject_invoice', :f => f, :inv => @inv %>
+              <%elsif (@inv.inv_new? || @inv.inv_incomplete?)  %>
+                <%= render 'print_invoice', :f=>f, :@inv=>@inv%>
+              <%end%>
+            </div>
+          </div>
+        </div>
+      </div>
+     <%end%>
+    </div>
+  </div>
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->
+<!-- Modal -->
+<div class="modal fade" id="dialog-confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body" id="message">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    $('form input').on('keypress', function(e) {
+      if(e.keyCode == 13)
+      {
+        var inputs = $(this).parents("form").eq(0).find(":input");
+        var idx = inputs.index(this);
+        if (idx == inputs.length - 1) {
+          inputs[0].select()
+        } else {
+          inputs[idx + 1].focus(); //  handles submit buttons
+          inputs[idx + 1].select();
+        }
+
+        e.preventDefault();
+        return false;
+      }
+    });
+    $("#purchase_order_tax_invoice_number").mask('000-000-00-00000000');
+    $("#selisih_tax, #selisih_dpp, #selisih_total").autoNumeric("init", {
+      aSep: '.',
+      aDec: ',',
+      mDec: 0,
+      aSign: 'Rp '
+    });
+    $("#selisih_tax, #selisih_dpp").on("keyup", function () {
+      var totalgap = 0;
+      var taxgap = parseFloat($("#selisih_tax").autoNumeric("get"));
+      var dppgap = parseFloat($("#selisih_dpp").autoNumeric("get"));
+      if (!isNaN(taxgap))
+        totalgap += taxgap;
+      if (!isNaN(dppgap))
+        totalgap += dppgap;
+      $("#selisih_total").autoNumeric("set", totalgap);
+    });
+  });
+</script>

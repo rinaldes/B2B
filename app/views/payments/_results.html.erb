@@ -1,0 +1,89 @@
+<div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+  <table class="table table-striped table-bordered table-hover" id='results'>
+    <thead>
+      <tr>
+        <th class="center">Payment No</th>
+        <th class="center">Supplier Code</th>
+        <th class="center">Warehouse Code</th>
+        <th class="center">Total</th>
+        <!--<th class="center">Date</th>-->
+        <th class="center">Status</class>
+        <th class="center">Action</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th class="center">Payment No</th>
+        <th class="center">Supplier Code</th>
+        <th class="center">Warehouse Code</th>
+        <th class="center">Total</th>
+        <!--<th class="center">Date</th>-->
+        <th class="center">Status</class>
+        <td></td>
+      </tr>
+    </tfoot>
+    <tbody>
+        <% results.each do |py| %>
+          <tr id="row_<%=py.id%>">
+            <td class="level"><%= py.no %></td>
+            <td class="level"><%= py.supplier.code rescue '' %></td>
+            <td class="level"><%= py.warehouse.warehouse_code rescue '' %></td>
+            <td class="level" style="text-align:right;"><%= total_format(py.total, "Rp. ") %></td>
+            <!--<td class="level"><% py.payment_date %></td>-->
+            <td class="level center"><%= state_label_for py %></td>
+            <td class="td-actions ">
+              <%if can?(:show, py)%>
+                <div class="btn-group">
+                  <%=link_to "<i class='icon-eye-open'></i>VIEW".html_safe, payment_path(py.id), :class=>'btn btn-mini btn-info'%>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_payment_url(py.id, :xls) %>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, print_payment_url(py.id), :target => "blank" %>
+                </div>
+              <%end%>
+            </td>
+          </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#results tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#results').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 5 ] }
+      ],
+      "aaSorting": [] });
+    $('#results tfoot th').each(function (i) 
+    {
+      var title = $('#results thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
+</div>

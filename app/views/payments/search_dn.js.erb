@@ -1,0 +1,46 @@
+<%if @dn_results.blank?%>
+   $('#table-dn-results > tbody').html('<%= escape_javascript(render("result_debit_notes", :dn_results => @dn_results)) %>');
+<%else%>
+  <%if @dn_results.first_page? %>
+	  $('#table-dn-results > tbody').html('<%= escape_javascript(render("result_debit_notes", :dn_results => @dn_results)) %>');
+	<%else%>
+	  $('#table-dn-results > tbody').append('<%= escape_javascript(render("result_debit_notes", :dn_results => @dn_results)) %>');
+	<%end%>
+	<%if @dn_results.last_page?%>
+      $('#link-to-load-dn').html("<%= escape_javascript(button_tag('No More', :disabled=>'disabled',:class=> 'btn btn-mini btn-default pull-left' ))%>");
+    <%else%>
+      $('#link-to-load-dn').html("<%= escape_javascript(link_to_next_page(@dn_results, 'Load More>>', :params=>@params, :remote => true, :id=>'load-more', :class=> 'btn btn-mini btn-pink pull-left '))%>");
+    <%end%>
+    $("#btn-add-dn").html("<%= escape_javascript(button_tag "<i class='icon-plus'></i> Add".html_safe, :id=> 'add-dn-btn',:class=>'btn btn-info btn-mini pull-right', :onclick=>'add_checked_pv_to_total_results(this,"table-dn-results")', :type=>'button', :disabled=>'disabled')%>");
+   $(function () {
+	  $(".add_dn").bind("click", function(){
+	    var dn_state = false;
+	    $('#table-dn-results thead input:checkbox').each(function () {
+	    if ($(this).is(':checked')) {
+	      dn_state = true
+	     }
+	    });
+	    if (dn_state == true){
+	    	$("#add-dn-btn").prop("disabled", false);
+	    }else {
+	    	$("#add-dn-btn").prop("disabled", true);
+	    }
+	   });
+	  $(".add_dn_second").bind("click", function(){
+	    var dn_state_second = false;
+	    $('#table-dn-results tbody input:checkbox').each(function () {
+	    if ($(this).is(':checked')) {
+	      dn_state_second = true
+	     }
+	    });
+	    if (dn_state_second == true){
+	    	$("#add-dn-btn").prop("disabled", false);
+	    }else {
+	    	$("#add-dn-btn").prop("disabled", true);
+	    }
+	   });
+	});
+<%end%>
+
+//remove class can-aya-data-na on tabs
+$("#panel-debit").removeClass("can-aya-data-na");

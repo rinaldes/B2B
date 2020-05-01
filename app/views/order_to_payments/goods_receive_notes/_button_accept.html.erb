@@ -1,0 +1,3 @@
+<%if @grn.can_accept_grn? && can?(:accept_grn, @grn)%>
+  <%=form.submit "Accept", :name=>"accept_grn", class: "btn btn-success"%>
+<%end%>

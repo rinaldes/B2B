@@ -1,0 +1,18 @@
+<%if results.blank?%>
+  <tr><td colspan="7" class="center"><span class="red">No match data</span></td></tr>
+<%else%>
+  <% results.each do |inv| %>
+    <tr id="row_<%=inv.id%>">
+      <td class="level"><%= inv.supplier.code %></td>
+      <td class="level"><%= convert_date(inv.po_date) %></td>
+      <td class="level"><%= convert_date(inv.received_date) %></td>
+      <td class="level"><%= convert_date(inv.payment_invoice_due_date) %></td>
+      <td class="level right"><%= inv.invoice_number %></td>
+      <td class="level text-right"><%= total_format(inv.charges_total, "Rp.") %></td>
+      <td class="level"><%= check_box_tag "select[#{inv.id}]" %><span class="lbl"></span></td>
+    </tr>
+  <%end%>
+<%end%>
+<script>
+  $("#total_count").val(<%= total_count(results) %>);
+</script>

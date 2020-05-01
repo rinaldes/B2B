@@ -1,0 +1,193 @@
+<div id="sidebar" class='sidebar responsive display'>
+  <ul class="nav nav-list">
+    <% if can? :index, :dashboard %>
+    <li class="<%= is_active?(dashboards_path || root_path) %>">
+      <%= link_to raw('<i class="icon-dashboard"></i><span>Dashboard</span>'), dashboards_path %>
+    </li>
+    <%end%>
+    <%if can? :read, :suppliers_group %>
+    <li class="<%= is_active?(suppliers_groups_path) %>">
+      <%= link_to raw('<i class=" icon-hdd"></i><span>Supplier Master Data</span>'), suppliers_groups_path %>
+    </li>
+    <%end%>
+    <% if can? :read, :warehouses_group %>
+      <% if current_user.has_role?("superadmin") || current_user.type_of_user.parent.description == "Customer" %>
+        <li class="<%= is_active?(warehouses_groups_path) %>">
+          <%= link_to raw('<i class=" icon-hdd"></i><span>Warehouses Master Data</span>'), warehouses_groups_path %>
+        </li>
+      <% end %>
+    <%end%>
+    <%if can? :read, Product%>
+    <li class="<%= is_active?(products_path) %>">
+      <%= link_to raw('<i class="icon-inbox"></i><span>Product Master Data</span>'), products_path %>
+    </li>
+    <%end%>
+    <% if (can? :read, :purchase_order) || (can? :read, :advance_shipment_notification) || (can? :read, :goods_receive_note) || (can? :read, :goods_receive_price_confirmation) || (can? :read, :invoice) || (can? :read, :debit_note) %>
+    <li>
+      <a href="#" data-toggle="pill" class="dropdown-toggle sidebar_menus order">
+        <i class="icon-shopping-cart"></i>
+        <span>Order To Payment</span>
+
+        <b class="arrow icon-angle-down"></b>
+      </a>
+      <ul class="submenu">
+        <%if can? :read, :purchase_order%>
+          <li class="<%= is_active?(order_to_payments_purchase_orders_path) %>">
+            <%= link_to raw('<i class="icon-double-angle-right"></i>Purchase Order'), order_to_payments_purchase_orders_path %>
+          </li>
+        <%end%>
+        <%if can? :read, :advance_shipment_notification%>
+        <li class="<%= is_active?(order_to_payments_advance_shipment_notifications_path) %>">
+          <%= link_to raw('<i class="icon-double-angle-right"></i>Advance Shipment Notification'), order_to_payments_advance_shipment_notifications_path %>
+        </li>
+        <%end%>
+        <%if can? :read, :goods_receive_note%>
+        <li class="<%= is_active?(order_to_payments_goods_receive_notes_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Goods Receive Notes".html_safe, order_to_payments_goods_receive_notes_path%>
+        </li>
+        <%end%>
+        <%if can? :read, :goods_receive_price_confirmation%>
+        <li class="<%= is_active?(order_to_payments_goods_receive_price_confirmations_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Goods Receive Price Confirmations".html_safe, order_to_payments_goods_receive_price_confirmations_path%>
+        </li>
+        <%end%>
+        <%if can? :read, :invoice%>
+        <li class="<%= is_active?(order_to_payments_invoices_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Invoice".html_safe, order_to_payments_invoices_path%>
+        </li>
+        <%end%>
+        <!--li class="<%= is_active?(order_to_payments_invoice_receipt_and_responses_path) %>">
+          <%#= link_to "<i class='icon-double-angle-right'></i>Invoice Receipt & Response".html_safe, order_to_payments_invoice_receipt_and_responses_path%>
+        </li-->
+        <%if can? :read, :debit_note %>
+        <li class="<%= is_active?(order_to_payments_debit_notes_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Debit Notes".html_safe, order_to_payments_debit_notes_path%>
+        </li>
+        <%end%>
+      </ul>
+    </li>
+    <% end %>
+    <% if (can? :read, :purchase_order) || (can? :read, :advance_shipment_notification) || (can? :read, :goods_receive_note) || (can? :read, :goods_receive_price_confirmation) || (can? :read, :invoice) || (can? :read, :debit_note) %>
+    <li>
+      <a href="#" data-toggle="pill" class="dropdown-toggle sidebar_menus archive">
+        <i class="icon-file-alt"></i>
+        <span>Archive OTP</span>
+
+        <b class="arrow icon-angle-down"></b>
+      </a>
+
+      <ul class="submenu">
+        <%if can? :read, :purchase_order%>
+          <li class="<%= is_active?(archives_purchase_orders_path) %>">
+            <%= link_to raw('<i class="icon-double-angle-right"></i>Purchase Order'), archives_purchase_orders_path %>
+          </li>
+        <%end%>
+        <%if can? :read, :advance_shipment_notification%>
+        <li class="<%= is_active?(archives_advance_shipment_notifications_path) %>">
+          <%= link_to raw('<i class="icon-double-angle-right"></i>Advance Shipment Notification'), archives_advance_shipment_notifications_path %>
+        </li>
+        <%end%>
+        <%if can? :read, :goods_receive_note%>
+        <li class="<%= is_active?(archives_goods_receive_notes_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Goods Receive Notes".html_safe, archives_goods_receive_notes_path%>
+        </li>
+        <%end%>
+        <%if can? :read, :goods_receive_price_confirmation%>
+        <li class="<%= is_active?(archives_goods_receive_price_confirmations_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Goods Receive Price Confirmations".html_safe, archives_goods_receive_price_confirmations_path%>
+        </li>
+        <%end%>
+        <%if can? :read, :invoice%>
+        <li class="<%= is_active?(archives_invoices_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Invoice".html_safe, archives_invoices_path%>
+        </li>
+        <%end%>
+        <%if can? :read, :debit_note %>
+        <li class="<%= is_active?(archives_debit_notes_path) %>">
+          <%= link_to "<i class='icon-double-angle-right'></i>Debit Notes".html_safe, archives_debit_notes_path%>
+        </li>
+        <%end%>
+      </ul>
+    </li>
+    <% end %>
+    <%if can? :read, ReturnedProcess%>
+      <li class="<%= is_active?(returned_processes_path) %>">
+        <%= link_to "<i class='icon-exchange'></i>Return Process".html_safe, returned_processes_path %>
+      </li>
+    <%end%>
+    <%if can? :read, EarlyPaymentRequest%>
+      <li class="<%= is_active?(early_payment_requests_path) %>">
+        <%= link_to "<i class='icon-money'></i>Early Payment Request".html_safe, early_payment_requests_path %>
+      </li>
+    <%end%>
+    <%if can? :read, PaymentVoucher%>
+      <li class="<%= is_active?(payment_vouchers_path) %>">
+        <%= link_to "<i class='icon-list-alt'></i>List Payment Vouchers".html_safe, payment_vouchers_path %>
+      </li>
+    <%end%>
+    <% if can? :read , Payment%>
+      <li class="<%= is_active?(payments_path) %>">
+          <%= link_to  "<i class='icon-money'></i>Payment Process".html_safe, payments_path %>
+      </li>
+    <%end%>
+    <% if can? :index, :notification %>
+      <li class="<%= is_active?(notifications_path) %>">
+        <%= link_to raw('<i class="icon-info-sign"></i><span>Notifications</span>'), notifications_path %>
+      </li> 
+    <%end%>
+    <% if can? :view, :report %>
+      <li>
+        <a href="#" data-toggle="pill" class="dropdown-toggle sidebar_menus reports">
+          <i class="icon-book"></i>
+          <span>Reporting</span>
+          <b class="arrow icon-angle-down"></b>
+        </a>
+        <ul class="submenu submenu2">
+          <%if can? :service_level_suppliers, :report %>
+            <li class="<%= is_active?(service_level_suppliers_reports_path) %>">
+              <%= link_to raw('<i class="icon-double-angle-right"></i>Service Level Supplier'), service_level_suppliers_reports_path %>
+            </li>
+          <% end %>
+          <%if can? :on_going_disputes, :report %>
+            <li class="<%= is_active?(on_going_disputes_reports_path('GRN')) %>">
+              <%= link_to raw("<i class='icon-double-angle-right'></i>On Going Dispute GRN"), on_going_disputes_reports_path("GRN") %>
+            </li>
+            <li class="<%= is_active?(on_going_disputes_reports_path('GRPC')) %>">
+              <%= link_to raw("<i class='icon-double-angle-right'></i>On Going Dispute GRPC"), on_going_disputes_reports_path("GRPC") %>
+            </li>
+          <% end %>
+          <%if can? :pending_deliveries, :report %>
+            <li class="<%= is_active?(pending_deliveries_reports_path) %>">
+              <%= link_to raw('<i class="icon-double-angle-right"></i>Pending Deliveries'), pending_deliveries_reports_path %>
+            </li>
+          <% end %>
+          <%if can? :returned_histories, :report %>
+            <li class="<%= is_active?(returned_histories_reports_path) %>">
+              <%= link_to raw('<i class="icon-double-angle-right"></i>Return Histories'), returned_histories_reports_path %>
+            </li>
+          <% end %>
+          <%if can? :account_payable, :report %>
+            <li class="<%= is_active?(account_payable_reports_path) %>">
+              <%= link_to raw('<i class="icon-double-angle-right"></i>Account Payable'), account_payable_reports_path %>
+            </li>
+          <% end %>
+          <%if can? :account_receivable, :report %>
+            <li class="<%= is_active?(account_receivable_reports_path) %>">
+              <%= link_to raw('<i class="icon-double-angle-right"></i>Account Receivable'), account_receivable_reports_path %>
+            </li>
+          <% end %>
+          <%if can? :payment_progress, :report %>
+            <li class="<%= is_active?(payment_progress_reports_path) %>">
+              <%= link_to raw('<i class="icon-double-angle-right"></i>Payment Progress'), payment_progress_reports_path %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <%end%>
+  </ul><!--/.nav-list-->
+
+  <div id="sidebar-collapse">
+    <i class="icon-double-angle-left"></i>
+  </div>
+</div>
+<%= check_tree_menus(params[:controller]) %>

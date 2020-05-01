@@ -1,0 +1,122 @@
+<div id="table">
+	<div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+	  <table class="table table-striped table-bordered table-hover display" id="results">
+	    <thead>
+	      <tr>
+	        <th class="center">Supplier Code</th>
+	        <th class="center">Supplier Name</th>
+	        <th class="center">Month</th>
+	        <th class="center">Year</th>
+	        <th class="center">Order No</th>
+	        <% if params[:type] == "GRN" %>
+	        	<th class="center">GRN No</th>
+	        <% else %>
+	        	<th class="center">GRPC No</th>
+	        <% end %>
+	        <th class="center">Order Type</th>
+	        <th class="center">Status</th>
+	        <th class="center">Action</th>
+	        <!--th class="center">Export To</th-->
+	      </tr>
+	    </thead>
+	    <tfoot>
+	      <tr>
+	        <th class="center">Supplier Code</th>
+	        <th class="center">Supplier Name</th>
+	        <th class="center">Month</th>
+	        <th class="center">Year</th>
+	        <th class="center">Order No</th>
+	        <% if params[:type] == "GRN" %>
+	        	<th class="center">GRN No</th>
+	        <% else %>
+	        	<th class="center">GRPC No</th>
+	        <% end %>
+	        <th class="center">Order Type</th>
+	        <th class="center">Status</th>
+	        <td></td>
+	      </tr>
+	    </tfoot>
+	    <tbody>
+	    <% if results.blank?%>
+        <tr>
+          <td colspan="9" class="center">
+            <span class="red">No match data</span>
+          </td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+        </tr>
+      <%else%>
+	      <% results.each do |po| %>
+	        <tr>
+	        	<td><%= po.supplier.code %></td>
+	        	<td><%= po.supplier.name %></td>
+	        	<td><%= po.po_date.to_date.strftime("%B").capitalize %></td>
+	        	<td><%= po.po_date.to_date.year %></td>
+	        	<td><%= po.po_number %></td>
+	        	<% if params[:type] == "GRN" %>
+	        		<td><%= po.grn_number %></td>
+	        	<% elsif params[:type] == "GRPC" %>
+	        		<td><%= po.grpc_number %></td>
+	        	<% end %>
+	        	<td><%= po.order_type %></td>
+	        	<td><%= po.po_change_status %></td>
+	        	<td><%= link_to "Detail", on_going_dispute_details_report_path(po,params[:type]) %></td>
+	        	<!--td>
+	        		<div class="btn-group">
+                <%#=link_to "#{image_tag 'Excel-icon.png'}".html_safe, print_path(params[:type], po, "xls") %>
+              </div>
+              <div class="btn-group">
+                <%#=link_to "#{image_tag 'PDF-icon.png'}".html_safe, print_path(params[:type], po, "pdf"), :target => "blank" %>
+              </div>
+	        	</td-->
+	        </tr>
+	      <% end %>
+	     <% end %>
+	    </tbody>
+	  </table>
+		<%#=render "shared/paginate", :results => results %>
+	</div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#results tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#results').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 8 ] }
+      ],
+      "aaSorting": [] });
+    $('#results tfoot th').each(function (i) 
+    {
+      var title = $('#results thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

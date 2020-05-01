@@ -1,0 +1,17 @@
+<%= form_tag edit_service_level_supplier_path(supplier), :method => 'get', :remote => true, :id => "form_search" do %>
+<div class="table-header">
+  <div class="site">
+    <label>Filter</label>
+    <% filter_arr = ["Code"] %>
+    <%= select("search", "field", filter_arr.collect{|arr| [arr] }) %>
+  </div>
+  <div class="default">
+    <%= text_field_tag "search[detail]", params[:search_all], id:"search_detail" %>
+    <input type="submit" class="btn btn-small btn-info pull-left" id="find_service_level" value="Find">
+    <a href="#"><i class="icon-refresh"></i></a>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+<%end%>
+

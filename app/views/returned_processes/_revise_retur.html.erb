@@ -1,0 +1,17 @@
+<div id="revise-retur">
+  <div class="hr hr8 hr-double hr-dotted"></div>
+  <div class="row-fluid">
+    <div class="span12">
+	  <h4 class="lighter">Disputed
+	  </h4>
+	  <p>Return Goods proposal are disputed by customer confirmed. Please revise!</p>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span7 pull-left">
+    <%if retur.can_revise? && can?(:make_revise_retur, retur) %>
+  	    <%=link_to "Reject", new_revise_retur_returned_processes_path(retur.id), class: "btn btn-success", remote:true %>
+    <%end%>
+	</div>
+  </div>
+</div>

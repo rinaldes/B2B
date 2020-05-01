@@ -1,0 +1,28 @@
+<% if params[:cancel] %>
+  $("#grn-details").html("<%=escape_javascript(render 'details', :@grn => @grn, :@details => @details)%>");
+  $(".accept-grn").html("<%=escape_javascript(render 'button_accept')%>");
+  $("#button-for-grn").html("<%=escape_javascript(render 'accept_or_raise_goods', :@grn => @grn)%>")
+  window.location = '/order_to_payments/goods_receive_notes'
+<%else%>
+  <%if @grn_dispute && params[:purchase_order][:po_remark].present? %>
+    $("#grn-details").hide("slow");
+    <%#unless @grn_dispute.is_history%>
+      //$("#button-for-grn").html("<%#=escape_javascript(render :partial=>'accept_or_raise_goods', :locals=>{:@grn=>@grn_dispute})%>");
+    <%#end%>
+    $("#grn-details").html("<%=escape_javascript(render 'details', :@grn=>@grn_dispute )%>");
+    $("#grn-details").show("slow");
+    $(".accept-grn").html('');
+    $("#label-grn").html("<%=display_grn_state(@grn_dispute.grn_state_name.to_s)%>")
+    $("#flash-message").html(create_alert_notice_for_js("<%=@message%>"));
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+    window.location = '/order_to_payments/goods_receive_notes'
+  <%else%>
+    //validation for an item
+    <%= @_arr_valid_remark.join(";").html_safe %>
+    <% if params[:purchase_order][:po_remark].blank? %>
+      $("#error-message").html("<span class='alert alert-error'><%= @message %></span>")
+    <% else %>
+      $("#error-message").html("<span class='alert alert-error'>Please Check remark detail and it must filled by 'dispute'.</span>")
+    <% end %>
+  <%-end %>
+<%end%>

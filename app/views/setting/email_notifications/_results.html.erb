@@ -1,0 +1,17 @@
+<div class="accordion" id="accordion2">
+	<% 24.times do |i| %>
+	<% code = i + 1%>
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" id="accordion1" data-toggle="collapse" data-parent="#accordion2" href="#collapse<%=i%>" value="grn" onclick="loadEmailForm(<%=code%>,<%=i%>)">
+				Notification <%= email_process(i)%>
+			</a>
+		</div>
+		<div id="collapse<%=i%>" class="accordion-body collapse">
+			<div class="accordion-inner" id="email_form<%=i%>">
+			</div>
+		</div>
+	</div>
+	<% end %>
+</div>
+

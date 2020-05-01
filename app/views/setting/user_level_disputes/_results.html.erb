@@ -1,0 +1,18 @@
+      <% if results.blank? %>
+        <tr>
+          <td colspan="4" class="center"><span class="red">No match data</span></td>
+        </tr>
+      <%else%>
+        <% results.each do |uld| %>
+          <tr id="row_<%=uld.id%>">
+            <td><%= find_group_for_user(uld.user.type_of_user.try(:parent).try(:description)) %></td>
+            <td><%= uld.user.username %></td>
+            <td><%= uld.level %></td>
+            <td><%= uld.dispute_setting.transaction_type %> <%= uld.dispute_setting.max_count %> <%= uld.dispute_setting.time_type %></td>
+            <td class="td-actions ">
+              <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_user_level_dispute_path(uld.id), :class =>"btn btn-mini btn-info", :title => "Edit" %>
+              <%=link_to "<i class='icon-trash'></i>".html_safe, "javascript:void(0)", :class => 'btn btn-mini btn-danger delete_item', :id=>"item_#{uld.id}", :onclick=>"delete_uld('#{setting_user_level_dispute_path(uld.id)}', #{uld.id})"%>
+            </td>
+          </tr>
+        <% end %>
+      <%end%>

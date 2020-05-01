@@ -1,0 +1,78 @@
+  <script>
+    $(function() {
+        var sl = <%=sl_stats.to_json%>;
+        var d1 =[];
+        var y =0;
+        var current_year = <%=year%>;
+        //var next_year = <%#=@year+1%>;
+        d1 = sl;
+        var po_stats = "<%=po_stats.to_json%>";
+        var dn_stats = "<%=dn_stats.to_json%>";
+        var after_change_json = JSON.parse(po_stats.replace(/&quot;/g,'"'));
+        var new_po = after_change_json['new'];
+        var open = after_change_json['open'];
+        var on_time = after_change_json['on_time'];
+        var on_time_but_less = after_change_json['on_time_but_less_than_100'];
+        var late = after_change_json['late'];
+        var late_but_less = after_change_json['late_but_less_than_100']
+        var expired = after_change_json['expired'];
+        var cancelled = after_change_json['cancelled'];
+        var graph = $('#graph-purchase-orders').css({'width':'100%' , 'height':'420px'});
+        $.plot("#graph-purchase-orders", [
+          { label: "new", data: new_po },
+          { label: "open", data : open },
+          { label: "on Time", data : on_time},
+          { label: "on Time but Less", data: on_time_but_less},
+          { label: "late", data : late },
+          { label: "late but less", data : late_but_less},
+          { label: "expired", data : expired},
+          { label: "cancelled", data : expired}
+        ], {
+          hoverable: true,
+          shadowSize: 0,
+          series: {
+            lines: { show: true },
+            points: { show: true }
+          },
+          xaxis: {
+            min: (new Date(current_year, 0, 1)).getTime(),
+            max: (new Date(current_year, 11, 31)).getTime(),
+            mode:"time",
+            TickSize: [1, "month"]
+          },
+          yaxis: {
+            ticks: 10,
+            min: 0,
+            tickDecimals: 0
+          },
+          grid: {
+            backgroundColor: { colors: [ "#fff", "#fff" ] },
+            borderWidth: 1,
+            borderColor:'#555',
+            hoverable: true,
+            clickable:true
+          },
+          legend: {
+            hideable: true
+          },
+          tooltip: true,
+          tooltipOpts: {
+            content: "Total Purchase Orders with status <br> '%s'<br> on %x are %y ",
+            shifts: {
+              x: -60,
+              y: 25
+            }
+          }
+        });
+      })
+    $("#graph-purchase-orders").bind("plotclick", function (event, pos, item) {
+         if (item) {
+            var state = item.series.label;
+            var month = new Date(item.datapoint[0]).getMonth();
+            var order_type = $("#order-type-po-stats").val();
+            //window.location = "suppliers";
+        }
+     });
+
+  </script>
+  <%=text_field_tag "order_type","", :type=>'hidden', :value=>"#{PO}", :id=>"order-type-po-stats"%>

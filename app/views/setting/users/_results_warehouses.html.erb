@@ -1,0 +1,107 @@
+<%= javascript_include_tag 'setting/users' %>
+<div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+  <% if current_user.has_role?("superadmin") %>
+    <% unless flag == "mutation_to_another_warehouse" %>
+      <table class="table table-striped table-bordered table-hover" id="warehouse-table">
+        <thead>
+          <tr>
+            <th class="center">Group Code</th>
+            <th class="center">Group Name</th>
+            <th class="center">Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%if results.blank?%>
+            <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+          <%else%>
+            <% results.each do |group| %>
+              <tr id="row_<%=group.warehouses.try(:first).try(:id) %>">
+                <td><span id="group_code_<%= group.warehouses.try(:first).try(:id) %>"><%= group.try(:code) %></span></td>
+                <td><span id="group_name_<%= group.warehouses.try(:first).try(:id) %>"><%= group.try(:name) %></span></td>
+                <td>
+                  <%= radio_button_tag 'warehouse_id', group.warehouses.try(:first).try(:id) %><span class="lbl"></span>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+        </tbody>
+      </table>
+    <% else %>
+      <table class="table table-striped table-bordered table-hover" id="warehouse-table">
+        <thead>
+          <tr>
+            <th class="center">Code</th>
+            <th class="center">Warehouse Name</th>
+            <th class="center">Warehouse Group</th>
+            <th class="center">Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%if results.blank?%>
+            <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+          <%else%>
+            <% results.each do |warehouse| %>
+              <tr id="row_<%=warehouse.id%>">
+                <td>
+                  <span id="warehouse_code_<%= warehouse.id %>"><%=warehouse.warehouse_code%></span>
+                </td>
+                <td>
+                  <span id="warehouse_name_<%= warehouse.id %>"><%=warehouse.warehouse_name%></span>
+                </td>
+                <td class="level"><%= warehouse.group.try(:name) %></td>
+                <td>
+                  <%= hidden_field_tag "selected_user_id", params[:id] %>
+                  <%= radio_button_tag 'warehouse_id', warehouse.id %><span class="lbl"></span>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+        </tbody>
+      </table>
+    <% end %>
+  <% else %>
+  <%# elsif current_user.has_role?("customer_admin_group") %>
+    <table class="table table-striped table-bordered table-hover" id="warehouse-table">
+    <thead>
+      <tr>
+        <th class="center">Code</th>
+        <th class="center">Warehouse Name</th>
+        <th class="center">Warehouse Group</th>
+        <th class="center">Select</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if results.blank?%>
+        <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+      <%else%>
+        <% results.each do |warehouse| %>
+          <tr id="row_<%=warehouse.id%>">
+            <td>
+              <span id="warehouse_code_<%= warehouse.id %>"><%=warehouse.warehouse_code%></span>
+            </td>
+            <td>
+              <span id="warehouse_name_<%= warehouse.id %>"><%=warehouse.warehouse_name%></span>
+            </td>
+            <td class="level"><%= warehouse.group.try(:name) %></td>
+            <td>
+              <%= radio_button_tag 'warehouse_id', warehouse.id %><span class="lbl"></span>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+  <% end %>
+  <%=render "paginate_supplier", :results => results %>
+  <% if flag == "mutation_to_another_warehouse" %>
+    <div class="row-fluid as">
+      <%= button_tag "Cancel", :class => "btn btn-small pull-right", "data-dismiss" => "modal" %>
+      <%= link_to "Change Warehouse", "javascript:void(0)", :id => "submit_change_warehouse_btn", :remote => true, :class => "btn btn-info btn-small pull-right"%>
+    </div>
+  <% else %>
+    <div class="row-fluid as">
+      <%= button_tag "CANCEL", :class => "btn btn-small pull-right", "data-dismiss" => "modal" %>
+      <%= button_tag "SELECT", :id => "submit_btn", :class => "btn btn-info btn-small pull-right","data-dismiss" => "modal" %>
+    </div>
+  <% end %>
+</div>

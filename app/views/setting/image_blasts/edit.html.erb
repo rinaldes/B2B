@@ -1,0 +1,39 @@
+<%= form_for @image_blast, url: setting_image_blast_path(@image_blast), :method => :put , :html => {:class => 'form-horizontal'} do |f| %>
+<div class="well">
+  <fieldset>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.label :front_img %>  
+        <%= f.file_field :front_img %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+          <%= f.label :title %>
+        <%= f.text_field :title, :class => "input-xlarge form-control input-lg span6 txt-type-of-user-company" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+          <%= f.label :description %>
+        <%= f.text_field :description, :class => "input-xlarge form-control input-lg span6 txt-type-of-user-company" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+          <%= f.label :valid_until %>
+        <%= f.text_field :valid_until, :class => "input-xlarge form-control input-lg span6 txt-type-of-user-company" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_image_blasts_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>

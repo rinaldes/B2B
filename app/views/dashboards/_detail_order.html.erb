@@ -1,0 +1,41 @@
+<div class="row-fluid">
+  <div class="widget-header">
+    <h5>Line Details</h5>
+  </div>
+  <table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th class="center">Seq</th>
+      <th class="center">Item Code</th>
+      <th class="center">Barcode</th>
+      <th class="center">Item Description</th>
+      <th class="center">Ordered Qty</th>
+      <th class="center">UoM</th>
+      <th class="center">Item Price</th>
+      <th class="center">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if details %>
+      <% details.each do |p|%>
+        <tr>
+          <td><%=p.seq%></td>
+          <td><%=p.product.code%></td>
+          <td><%=p.product.barcode%></td>
+          <td><%=p.product.name.html_safe %></td>
+          <td class="text-right"><%=p.order_qty.to_i %></td>
+          <td><%=p.product.unit_qty %></td>
+          <td class="text-right"><%=total_format(p.item_price, "Rp.") %></td>
+          <td class="text-right"><%=total_format(p.total_amount_before_tax,"Rp.") %></td>
+        </tr>
+      <%end%>
+        <tr>
+          <td colspan="7"  class="text-right"> <strong>Total</strong> </td>
+          <td class="text-right"><strong><%=total_format(total_po(details.collect(&:total_amount_before_tax)),  "Rp.") %></strong></td>
+        </tr>
+    <%end%>
+  </tbody>
+</table>
+</div>
+
+<%= render "paginate_details", :details => details %>

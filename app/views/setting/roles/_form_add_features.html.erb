@@ -1,0 +1,26 @@
+<div class="well">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label"> Features</label>
+      <div class="controls ">
+      <table border="0">
+        <%# for feature in all_features %>
+        <tr>
+          <td>
+            <%#= check_box_tag "role[feature_ids][]", feature.id, role.features.include?(feature), :class => "" %>
+            <span class="lbl"> <%#= feature.name %></span>
+            <%# end %>
+        </td>
+      </tr>
+      </table>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%#= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">PO Number</Data></Cell>
+        <Cell><Data ss:Type="String">Invoice Number</Data></Cell>
+        <Cell><Data ss:Type="String">Payment Invoice Due Date</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+        <Cell><Data ss:Type="String">Remark</Data></Cell>
+      </Row>
+        <% @results_all.each do |inv| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=inv.po_number rescue '' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%=inv.invoice_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=convert_date(inv.payment_invoice_due_date)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=unlock_inv?(inv)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=inv.po_remark%></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

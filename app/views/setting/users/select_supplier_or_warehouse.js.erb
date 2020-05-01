@@ -1,0 +1,7 @@
+<%if @flag == "supplier"%>
+  $('#modal-select-warehouse-or-warehouse').html('<%= escape_javascript(render("suppliers", :flag => @flag, :results => @results)) %>');
+  $("#input-for-supplier-or-warehouse").html("<%= escape_javascript(hidden_field_tag 'supplier[supplier_id]') %>");
+<% elsif @flag == "customer"%>
+  $('#modal-select-warehouse-or-warehouse').html('<%= escape_javascript(render("warehouses", :flag => @flag, :results => @results)) %>');
+  $("#input-for-supplier-or-warehouse").html("<%= escape_javascript(hidden_field_tag 'warehouse[warehouse_id]') %>")
+<%end%>

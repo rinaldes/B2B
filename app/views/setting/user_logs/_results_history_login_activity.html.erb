@@ -1,0 +1,33 @@
+<div id="table_report_wrapper" class="dataTables_wrapper" role="grid">
+  <table class="table table-striped table-bordered table-hover" id="results">
+    <thead>
+      <tr>
+        <th class="center">User Name</th>
+        <th class="center">Role</th>
+        <th class="center">Login Date</th>
+        <th class="center">Login Time</th>
+        <th class="center">Logout Date</th>
+        <th class="center">Logout Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if results.blank? %>
+        <tr>
+          <td colspan="6" class="center"><span class="red">No match data</span></td>
+        </tr>
+      <% else %>
+        <% results.each do |act| %>
+          <tr id="row_<%= act.id %>">
+            <td><%= act.try(:user).try(:login) %></td>
+            <td><%= act.try(:user).try(:roles).try(:first).try(:name) %></td>
+            <td><%= time_ago_in_words(act.login_date) rescue "-" %></td>
+            <th><%= act.login_date.to_time.localtime.strftime("%H:%M:%S") rescue "-" %></th>
+            <td><%= time_ago_in_words(act.logout_date) rescue "-" %></td>
+            <td><%= act.logout_date.to_time.localtime.strftime("%H:%M:%S") rescue "-" %> </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+  <%= render "setting/shared/paginate_ajax_setting", :results => results %>
+</div>

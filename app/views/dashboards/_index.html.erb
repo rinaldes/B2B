@@ -1,0 +1,87 @@
+<%= stylesheet_link_tag "dashboards.css" %>
+
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+  <% if @image_blast.present? %>
+  <%= render "image_blast", :image_blast => @image_blast %>
+  <% end %>
+  <div class="space-6"></div>
+  <%= render "info_box", :new_po => new_po, :new_asn => new_asn, :new_grn => new_grn, :new_inv => new_inv, :new_dn => new_dn, :unread_asn => unread_asn, :unread_grn => unread_grn %>
+  <br/>
+  <%= render "info_transaction_status", new_po_today: new_po_today, new_asn_today: new_asn_today, new_grn_today: new_grn_today, new_inv_today: new_inv_today, new_dn_today: new_dn_today,
+    unread_asn_today: unread_asn_today, :unread_grn_today => unread_grn_today %>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent">
+        <%if can? :for_sl_statistic, :dashboard %>
+        <div class="widget-header widget-header-flat noBorder">
+          <h4 class="lighter">
+            <i class="icon-signal green"></i>
+            Suppliers Service Level Statistic
+          </h4>
+          <%=display_service_supplier%>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main padding-4">
+            <div id="graph-legend"></div>
+            <div id="graph"></div>
+          </div>
+          <!--/widget-main-->
+        </div>
+        <!--/widget-body-->
+        <hr/>
+        <%end%>
+        <%if can? :get_all_po_status_statistic, :dashboard%>
+        <div class="widget-header widget-header-flat noBorder">
+          <h4 class="lighter" id="title-statistic">
+            <i class="icon-signal green"></i>
+            Transaction Status Statistic
+          </h4>
+          <% if get_permision_show_graph %>
+          <%= display_select_stats_2 %>
+          <% end %>
+        </div>
+        <script src="assets/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+        <div class="widget-body">
+          <div class="widget-main padding-4 row-fluid" style="position:relative">
+            <div class="span4">
+              <div id="graph-purchase-orders1"></div>
+            </div>
+            <div class="span4">
+              <div id="graph-purchase-orders2"></div>
+            </div>
+            <div class="span4">
+              <div id="graph-purchase-orders3"></div>
+            </div>
+          </div>
+          <div class="widget-main padding-4 row-fluid" style="position:relative">
+            <div class="span4">
+              <div id="graph-purchase-orders4"></div>
+            </div>
+            <div class="span4">
+              <div id="graph-purchase-orders6"></div>
+            </div>
+          </div>
+          <!--/widget-main-->
+        </div>
+        <% if get_permision_show_graph %>
+        <script>
+          get_po_stats_by(document.getElementById("select-order-type"));
+        </script>
+        <% end %>
+        <%end%>
+      </div>
+    </div>
+  </div>
+  <script>
+    <% if get_permision_show_graph %>
+    <% if is_warehouse_and_admin? %>
+    get_service_level_by_supplier($("#select_warehouse").val(), 'wh', '/dashboards/get_suppliers')
+    <% end %>
+    get_service_level_by_supplier($("#select_supplier").val(), 'supp', '/dashboards/get_service_level_flot_by_supplier/')
+    <% end %>
+  </script>

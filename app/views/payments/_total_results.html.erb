@@ -1,0 +1,73 @@
+<div id="pv-rek-di-bayar">
+  <h5>Payment Voucher (will be paid)</h5>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <th>Voucher</th>
+      <th>Total</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2" class="center"><span class="red">please select one or more vouchers</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div>
+  Total Payment Voucher : <span class="pull-right" id="total-pv"></span>
+</div>
+
+<div id="dn-nu-rek-di-pake">
+  <h5>Debit Note (will be used)</h5>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <th>Debit Note</th>
+      <th>Total</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2" class="center"><span class="green">You may select one or more debit note</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div>
+  Total Debit Note : <span class="pull-right" id="total-dn"></span>
+</div>
+
+<div id="retur-nu-rek-di-pake">
+  <h5>Returned Process (will be used)</h5>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <th>Return Process</th>
+      <th>Total</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2" class="center"><span class="green">You may select one or more Return Process</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div>
+  Total Retur : <span class="pull-right" id="total-retur"></span>
+</div>
+
+<%=form_for payment, :url=>payments_path, :method=>"post", :remote => true, :id=>"new-payment-form" do |f|%>
+  <%= hidden_field_tag :invoice_number %>
+  <%=f.fields_for "payment[payment_details_attributes][]" do |pd| %>
+    <div id="inputs-for-details">
+    </div>
+  <%end%>
+  <div class="hr hr8 hr-double hr-dotted"></div>
+  <div>
+    <strong>Grand Total : <span id="total-all" class="pull-right"></span></strong>
+  </div>
+  <div class="space"></div>
+  <div id="button-generate">
+    <%if can?(:create, Payment)%>
+      <%=f.button "<i class='icon-plus'></i> Generate".html_safe, :class=>"btn btn-info", :id =>"create-payment", :disabled=>"disabled", :data => { :confirm => "Confirm to create this Payment?" }%>
+    <%end%>
+  </div>
+  <div class="space"></div>
+  <span id="error-message"></span>
+<%end%>

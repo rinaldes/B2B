@@ -1,0 +1,10 @@
+<% if @email.try(:description).blank? %>
+This message contains notice for GRPC number: <%= @grpc.po_number %> that has not resolved for dispute since <%= @grpc.created_at %>.<br />
+<% else %>
+<%= @email.description %><br /><br />
+<% end %>
+
+You can fix the dispute for the Good Receive Price Confirmation document by accessing the following link <%= "#{BASE_URI}order_to_payments/goods_receive_price_confirmations/#{@grpc.id}" %>.
+
+<br />
+Thanks.

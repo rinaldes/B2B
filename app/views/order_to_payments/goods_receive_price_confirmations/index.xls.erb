@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Ship To</Data></Cell>
+        <Cell><Data ss:Type="String">PO Number</Data></Cell>
+        <Cell><Data ss:Type="String">GRN Number</Data></Cell>
+        <Cell><Data ss:Type="String">GRPC Number</Data></Cell>
+        <Cell><Data ss:Type="String">Order Type</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+      </Row>
+        <% @results_all.each do |grpc| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=grpc.warehouse.warehouse_name rescue '' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%=grpc.po_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=grpc.grn_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=grpc.grpc_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=grpc.order_type%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=grpc_nil_to_unread(grpc)%></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

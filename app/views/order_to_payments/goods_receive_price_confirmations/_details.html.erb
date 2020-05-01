@@ -1,0 +1,141 @@
+<%= form_for @grpc_accept, url: order_to_payments_accept_grpc_path, :method => "post", :id=> "form-accept-grpc" do |form| %>
+<div class="row-fluid">
+  <div class="widget-header">
+    <h5>Line Details</h5>
+  </div>
+  <table class="table table-striped table-bordered" id="tdetails">
+    <thead>
+      <tr>
+        <th class="center">Seq</th>
+        <th class="center">Item Code</th>
+        <th class="center">Barcode</th>
+        <th class="center">Item Description</th>
+        <th class="center">Qty<br/>(After Dispute)</th>
+        <th class="center">UoM</th>
+        <th class="center">Item Price (before dispute)</th>
+        <th class="center">Total (before dispute)</th>
+        <th class="center" style="width: 120px;">Item Price (after dispute)</th>
+        <th class="center">Total (after dispute)</th>
+        <th class="center">Remark</th>
+        <th style="display:none;"></th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th class="center">Seq</th>
+        <th class="center">Item Code</th>
+        <th class="center">Barcode</th>
+        <th class="center">Item Description</th>
+        <th class="center">Qty<br/>(After Dispute)</th>
+        <th class="center">UoM</th>
+        <th class="center">Item Price (before dispute)</th>
+        <th class="center">Total (before dispute)</th>
+        <th class="center" style="width: 120px;">Item Price (after dispute)</th>
+        <th class="center">Total (after dispute)</th>
+        <th class="center">Remark</th>
+        <td style="display:none;"></td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <% if @details %>
+        <% tot = 0 %>
+        <% total_before_dispute = 0 %>
+      <%@details.each_with_index do |p,i|%>
+        <tr>
+          <td>
+            <%= p.seq %>
+            <%= hidden_field_tag "purchase_order[details_purchase_orders_attributes][#{i}][seq]", p.seq %>
+          </td>
+          <td><%=p.product.code%></td>
+          <td><%=p.product.apn_number %></td>
+          <td><%=p.product.name.html_safe %></td>
+          <td class="text-right"><%=p.dispute_qty.to_i%></td>
+          <td><%=p.product.unit_qty %></td>
+          <td class="text-right">
+            <%= total_format(p.item_price.to_s.to_d, "Rp.") %>
+            <%= hidden_field_tag "purchase_order[details_purchase_orders_attributes][#{i}][item_price]", p.item_price.to_f %>
+            <%= hidden_field_tag "purchase_order[details_purchase_orders_attributes][#{i}][product_id]", p.product_id %>
+          </td>
+          <td class="text-right">
+            <%= total_format((p.dispute_qty.to_i * p.item_price.to_s.to_d),"Rp.") %>
+          </td>
+          <td class="text-right">
+            <%= p.remark.blank?? total_format(p.item_price.to_s.to_d, "Rp.") : total_format(p.dispute_price.to_s.to_d, "Rp.") %>
+            <%= hidden_field_tag "purchase_order[details_purchase_orders_attributes][#{i}][dispute_price]", p.dispute_price.to_f %>
+          </td>
+          <td class="text-right"><%=total_format((p.dispute_qty.to_s.to_i * p.dispute_price.to_s.to_d),"Rp.") %></td>
+          <td class="center">
+            <%= p.remark.blank?? "-OK-" : p.remark %>
+            <%= hidden_field_tag "purchase_order[details_purchase_orders_attributes][#{i}][remark]", p.remark %>
+          </td>
+          <td style="display:none;"></td>
+        </tr>
+        <% tot += p.dispute_qty.to_s.to_i * p.dispute_price.to_s.to_d %>
+        <% total_before_dispute += p.dispute_qty.to_s.to_i * p.item_price.to_s.to_d %>
+      <%end%>
+      <tr>
+        <td colspan="7" class="text-right">
+          <strong>Total</strong>
+        </td>
+        <td class="text-right">
+          <strong><%= total_format(total_before_dispute, "Rp.") %></strong>
+        </td>
+        <td></td>
+        <td class="text-right">
+          <strong><%=total_format(tot,"Rp.")%></strong>
+        </td>
+        <td></td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+        <td style="display:none;"></td>
+      </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<div class="accept-grpc">
+  <%= form.submit "Accept", name: "accept_grpc", class: "btn btn-success", onclick: "return confirm_accept(this);" if @grpc.can_accept_grpc? && can?(:accept_grpc, @grpc) && !grpc_escalated && role_has_access %>
+  <%=link_to "Cancel", order_to_payments_goods_receive_price_confirmations_path, :class=> "btn btn-info"%>
+</div>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#details tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+
+    // DataTable
+    var table = $('#details').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 11 ] }
+      ],
+      "aaSorting": [] });
+    $('#details tfoot th').each(function (i)
+    {
+      var title = $('#details thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+</style>

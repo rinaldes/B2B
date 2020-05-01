@@ -1,0 +1,12 @@
+$("#receive-retur").hide("slow");
+$("#retur-details").html("<%=escape_javascript(render 'form_new_receive', :details => @details, :retur => @retur, :retur_receive => @retur_receive)%>");
+<%if @retur_receive.errors.any?%>
+  $("#accept-dispute").append("<span class='red'>There is one or more errors, please try again</span>");
+<%end%>
+
+$('#details-retur-table').dataTable({
+    "bPaginate": true,
+    "bLengthChange": true,
+    "bFilter": true,
+    "bInfo": false,
+    "iDisplayLength": 10});

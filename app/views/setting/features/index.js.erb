@@ -1,0 +1,2 @@
+$('#feature-list').html('<%= escape_javascript(render "results", :results => @results) %>');
+$('#pagination').html('<%= escape_javascript(paginate(@results, :remote => true).to_s) %>');

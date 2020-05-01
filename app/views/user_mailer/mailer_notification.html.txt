@@ -1,0 +1,34 @@
+	<p>Process : <%= @mail.try(:type_po) %></p>
+
+	<p>Transaksi No : <%= @po_number %></p>
+
+	<p>Status : <%= @mail.state %></p>
+
+	<p>From : noreplay.b2bsystem</p>
+
+	<p><%=raw @mail.description %></p>
+<br />
+<br />
+	<table style="width: 500px;
+		border: 1px solid black;
+		line-height:200%;">
+		<thead>
+			<tr style="border: 1px solid black">
+				<th scope="col" >No</th>
+				<th scope="col" >Date</th>
+				<th scope="col" >Acknowledge</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @users.each do |user| %>
+			<tr style="border: 1px solid black">
+				<td style="text-align: center;"><%= @i %></td>
+				<td style="text-align: center;"><%= Date.today.strftime("%Y-%m-%d") %></td>
+				<td style="text-align: center;"><%= user.email%></td>
+			</tr>
+			<% @i = @i + 1%>
+			<% end %>
+		</tbody>
+	</table>
+
+	<p>&nbsp;</p>

@@ -1,0 +1,42 @@
+<%= form_for feature, url: check_path_feature(feature), :html => {:class => 'form-horizontal'} do |f| %>
+<div class="well">
+ <fieldset>
+    <div class="control-group">
+      <label class="control-label"  for="Title">New Feature name</label>
+      <div class="controls">
+       <%= f.text_field :name, :class => "input-xlarge form-control input-lg span6", id: "feature-name"  %>
+        <span class="help-block red"><%= feature.errors[:name].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"  for="Title">New Feature Access</label>
+      <div class="controls">
+       <%= f.text_field :key, :class => "input-xlarge form-control input-lg span6 auto-complete", id: "feature-access",onchange:"premeptivestrike()", autocomplete: :off %>
+        <span class="help-block red"><%= feature.errors[:key].join(" and ")%></span>
+      </div>
+    </div>
+    <%= f.hidden_field :regulator, :id=>"model-name", :value=>"da" %>
+    <div class="control-group">
+      <label class="control-label"  for="Title">New Feature Description</label>
+      <div class="controls">
+       <%= f.text_area :description, :class => " form-control span6", id: "feature-description", :rows=>"6" %>
+        <span class="help-block red"><%= feature.errors[:description].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_features_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>
+
+<%=javascript_tag "var accesses = #{filter_feature_for_super_admin(names).to_json};"%>
+<script>
+  features_auto_complete(accesses)
+</script>

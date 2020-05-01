@@ -1,0 +1,48 @@
+ <div class="modal">
+ <fieldset>
+ <%= form_for supplier, url: update_level_supplier_path(supplier), :html => {:class => 'form-horizontal', :remote=> true} do |f| %>
+ <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Change Level</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row-fluid">
+      <div class="span5">
+      <div class="control-group">
+      <label> Choose a level :</label>
+        <%= f.select :level, options_for_select([1,2,3].collect{|v| [v]},:selected=>supplier.level.to_i)  %>
+        <span class="help-block red"><%= supplier.errors[:level].join(" and ") %></span>
+      </div>
+      </div>
+    </div>
+    <div class="row-fluid">
+       <div class="alert alert-info span12">
+       <button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button>
+        <h5><i class="icon-asterisk"></i> Notice: level supplier determine information access for them</h5>
+        <p>
+        <ul style="margin-left:0px;text-align:justify;">
+          <li style="list-style-type: none">Level 1: service level (to store and DC),   pending delivery (to store and DC), payment
+        progress, on-going dispute, return history.
+          </li>
+          <li style="list-style-type: none">
+           Level 2: what is included in level 1 plus AR balance, AP balance, and promotion
+performance (catalogue only).
+          </li>
+          <li style="list-style-type: none">
+            Level 3: what is included in level 2 plus service level contribution vs category, sales
+contribution vs category, and market share vs category
+
+          </li>
+        </ul>
+        </p>
+       </div>
+     </div>
+  </div>
+    <div class="modal-footer">
+      <%= f.button raw('Save changes'), :class => "btn btn-primary" %> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+  <%end%>
+  </fieldset>
+</div>
+
+

@@ -1,0 +1,6 @@
+<% if @order_type == "debit_notes" %>
+	$('#table').html('<%= escape_javascript(render "results_debitnote", :ot => params[:search][:order_type]) %>');
+<% else %>
+	console.log('test b');
+	$('#table').html('<%= escape_javascript(render "results_report", :ot => params[:search][:order_type]) %>');
+<% end %>

@@ -1,0 +1,39 @@
+development:
+  host:  localhost
+  port: 389
+  attribute: cn
+  base: dc=ldap,dc=lokal
+  admin_user: cn=admin,dc=ldap,dc=lokal
+  admin_password: 12345678
+  ssl: false
+  # <<: *AUTHORIZATIONS
+
+test:
+  host: localhost
+  port: 3389
+  attribute: cn
+  base: ou=people,dc=test,dc=com
+  admin_user: cn=admin,dc=test,dc=com
+  admin_password: admin_password
+  ssl: simple_tls
+  # <<: *AUTHORIZATIONS
+
+production:
+  host: localhost
+  port: 636
+  attribute: cn
+  base: ou=people,dc=test,dc=com
+  admin_user: cn=admin,dc=test,dc=com
+  admin_password: admin_password
+  ssl: start_tls
+  # <<: *AUTHORIZATIONS
+
+vmware:
+  host: localhost
+  port: 636
+  attribute: cn
+  base: ou=people,dc=test,dc=com
+  admin_user: cn=admin,dc=test,dc=com
+  admin_password: admin_password
+  ssl: start_tls
+  # <<: *AUTHORIZATIONS

@@ -1,0 +1,38 @@
+<div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th class="center">Code</th>
+        <th class="center">Qty</th>
+        <th class="center">Line</th>
+        <th class="center">Time</th>
+        <th class="center">Select</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if results.blank?%>
+        <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+      <%else%>
+        <% results.each do |service_level| %>
+          <tr id="row_<%=service_level.id%>">
+            <td>
+              <%=service_level.sl_code%>
+            </td>
+            <td>
+              <%=service_level.sl_qty%>
+            </td>
+            <td class="level"><%=service_level.sl_line%></td>
+            <td>
+              <%= service_level.sl_time%>
+            </td>
+            <td>
+              <%= radio_button_tag 'supplier[service_level_code]', service_level.sl_code %><span class="lbl"></span>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+
+  <%= render "paginate_service_level", :results => results %>
+</div>

@@ -1,0 +1,30 @@
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <%= render 'shared/filter_and_search_table'%>
+      <div id="table"><%=render "show_results", :results => @results, :result => @result, :payment_voucher => @payment_voucher %></div>
+    </div>
+  </div>
+</div><!--/row-->
+
+<!-- Modal -->
+<div class="modal fade" id="dialog-confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body" id="message">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

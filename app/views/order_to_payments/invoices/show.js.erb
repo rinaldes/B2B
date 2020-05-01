@@ -1,0 +1,2 @@
+$('#inv-details').html('<%= escape_javascript(render("details")) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@details, :remote => true)) %>');

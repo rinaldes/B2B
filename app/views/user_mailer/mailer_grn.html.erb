@@ -1,0 +1,9 @@
+<% if @email.try(:description).blank? %>
+This message contains notice for GRN number: <%= @grn.po_number %> that has not resolved for dispute since <%= convert_date(@grn.created_at) %>.<br /><br />
+<% else %>
+<%= @email.description %><br /><br />
+<% end %>
+
+You can fix the dispute for the Good Receive Notifications document by accessing the following link <%= "#{BASE_URI}order_to_payments/goods_receive_notes/#{@grn.id}" %>
+<br />
+Thanks.

@@ -1,0 +1,81 @@
+<div class="row-fluid">
+  <div class="span12 well">
+    <%@past_grn.each do |grn|%>
+    <div class="row-fluid" id="grn_<%= grn.id %>">
+    <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>PO Number</span>
+            : <%=grn.po_number%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>GRN Number</span>
+            : <%=grn.grn_number%>
+          </li>
+        </ul>
+      </div>
+      <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>PO Remark</span>
+            : <%=grn.po_remark%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Created</span>
+            : <%=convert_date(grn.created_at)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Status</span>
+            : <%=grn_nil_to_unread(grn)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Last Update By</span>
+            : <%="#{grn.user.first_name} #{grn.user.last_name}" rescue ""%>
+          </li>
+        </ul>
+      </div>
+    </div><!--/span-->
+    <table  class="table table-striped table-bordered detail-table">
+    <thead>
+      <tr>
+        <th>Item Code</th>
+        <th>Barcode</th>
+        <th>Item Description</th>
+        <!--th>Commited Qty</th-->
+        <th>Customer Qty</th>
+        <th>Disputed Qty</th>
+        <th>UoM</th>
+        <th>Remark</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if grn.details_purchase_orders %>
+    <%grn.details_purchase_orders.where("COALESCE(remark, '') != ''").order("seq ASC").each do |p|%>
+      <tr>
+        <td><%=p.product.code rescue '' %></td>
+        <td><%=p.product.apn_number rescue '' %></td>
+        <td><%=p.product.name.html_safe rescue '' %></td>
+        <!--td><%#=p.commited_qty.to_i%></td-->
+        <td><%=p.received_qty.to_i rescue '' %></td>
+        <td><%=p.dispute_qty.to_i rescue '' %></td>
+        <td><%=p.product.unit_qty rescue '' %></td>
+        <td><label><%=p.remark rescue '' %></label></td>
+      </tr>
+      <%end%>
+      <%end%>
+      </tbody>
+    </table>
+    <hr>
+    <%end%>
+  </div>
+</div>

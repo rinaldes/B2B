@@ -1,0 +1,103 @@
+<div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <% if current_user.has_role?(:superadmin) %>
+        <% unless logo.nil? %>
+          <a data-toggle="modal" href="#" data-target="#modal-logo" onclick="loadLogoFormEdit()" class="brand">
+        <% else %>
+          <a data-toggle="modal" href="#" data-target="#modal-logo" onclick="loadLogoFormNew()" class="brand">
+        <% end %>
+        <span id="span_change_logo">
+          <i class="<% if logo.nil? %>icon-briefcase<% end %>">
+              <%= image_tag(logo.logo.small.url) unless logo.nil?  %>
+          </i>
+        </span>
+        </a>
+        <a data-toggle="modal" href="#" data-target="#modal-brand" onclick="loadBrandFormEdit()" class="brand">
+            <span id="span_change_brand">
+                <small><%= my_company.brand_tmp %></small>
+            </span>
+            <span dataId='<%= my_company.id %>' id='brand_id'></span>
+        </a>
+        <input type="hidden" value="<%= logo.id unless logo.nil? %>" id="logo_id" />
+      <% else %>
+         <a data-toggle="modal" href="#" data-target="" class="brand"><i class="<% if logo.nil? %>icon-briefcase<% end %>"><%= image_tag(logo.logo.small.url) unless logo.nil? %></i> <small><%= my_company.brand_tmp %></small></a>
+      <% end %>
+      <ul class="nav ace-nav pull-right">
+        <li class="green"></li>
+      </ul>
+      <ul class="nav ace-nav pull-right">
+        <li class="green">
+        <% if current_user.has_role?("superadmin") || (can? :read, :notification) %>
+          <%=show_notifications%>
+        <%end%>
+        <% if current_user.is_supplier_admin_group %>
+          <%=show_notifications%>
+        <%end%>
+        <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-closer" id="notif-topbar">
+        </ul>
+        </li>
+        <li class="light-blue user-profile">
+          <a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle">
+            <span id="user_info">
+              <small>Welcome,</small>
+              <%= current_user.username.capitalize %>
+            </span>
+
+            <i class="icon-caret-down"></i>
+          </a>
+          <ul class="pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer" id="user_menu">
+              <li>
+                <%= show_link_setting_or_dashboards %>
+              </li>
+            <% if can? :edit_password, User %>
+              <li>
+                <%= show_link_edit_password %>
+              </li>
+            <%end%>
+            <% if can? :change_email_notif, User%>
+            <li>
+              <%= show_link_edit_email_notif %>
+            </li>
+            <%end%>
+            <li class="divider"></li>
+            <li>
+              <%= link_to raw('<i class="icon-help"></i>Help'), help_path(@control.gsub("/"," ")), :remote => true,'data-toggle' => "modal", 'data-target'=> '#modal-show-help' %>
+            </li>
+            <li>
+              <%= link_to raw('<i class="icon-off"></i>Logout'), destroy_user_session_path(:real => true) %>
+            </li>
+          </ul>
+        </li>
+      </ul><!--/.ace-nav-->
+    </div><!--/.container-fluid-->
+  </div><!--/.navbar-inner-->
+</div>
+<div id="modal-show-help" class="modal hide fade modal-800" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div id="modal-change-password" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div id="modal-change-email-notif" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+<div id="modal-logo" class="modal hide fade" role="dialog" aria-labelledby="Choose Logo">
+</div>
+<div id="modal-brand" class="modal hide fade" role="dialog"></div>
+<script type="text/javascript">
+  function loadLogoFormNew(){
+    $.ajax({
+      url: '/setting/logo_companies/new'
+    });
+  }
+
+  function loadLogoFormEdit(){
+    var logo_id = $("#logo_id").val();
+    $.ajax({
+      url: '/setting/logo_companies/'+logo_id+'/edit'
+    });
+  }
+
+  function loadBrandFormEdit(){
+    var id = $("#brand_id").attr('dataId');
+    $.ajax({
+      url: '/setting/brand_companies/'+id+'/edit'
+    });
+  }
+</script>

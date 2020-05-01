@@ -1,0 +1,35 @@
+      <%if results.blank?%>
+        <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+      <%else%>
+        <% results.each do |warehouse| %>
+          <tr id="row_<%=warehouse.id%>">
+            <td><%=warehouse.warehouse_code %></td>
+            <td><%=warehouse.warehouse_name %></td>
+            <td class="last-update"><%= time_ago_in_words(warehouse.updated_at)%> ago
+            </td>
+            <td class="td-actions ">
+              <%if can? :read, :warehouse%>
+              <div class="btn-group">
+                <button class="btn btn-mini">Action</button> <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <%=link_to "<i class='icon-eye-open'></i> Detail warehouse".html_safe, warehouse_path(warehouse), :class=>"", :title => "View detail"%>
+                  </li>
+                  <%if can? :edit_level_limit, Warehouse%>
+                    <li>
+                      <%=link_to "<i class='icon-align-left'></i> Limit".html_safe,  edit_level_limit_warehouse_path(warehouse), :class =>"", id: "change-level-limit", :title=>"Change level limit"%>
+                    </li>
+                  <%end%>
+                  <%#if can? :set_area, Warehouse%>
+                    <!-- <li>
+                      <%=link_to "<i class='icon-home'></i> Set Area".html_safe,  set_area_path(warehouse), :class =>"", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-set-area', id: "change-set-area", :title=>"Set Area"%>
+                    </li> -->
+                  <%#end%>
+                </ul>
+              </div>
+              <%end%>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+

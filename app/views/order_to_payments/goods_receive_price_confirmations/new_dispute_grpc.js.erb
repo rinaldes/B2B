@@ -1,0 +1,12 @@
+$("#accept-dispute-grpc").hide("slow");
+$("#grpc-details").html("<%=escape_javascript(render 'form_dispute')%>");
+<%if @grpc_dispute.errors.any?%>
+  $("#accept-dispute").append("<span class='red'>There is one or more errors, please try again</span>");
+<%end%>
+
+$('#grpc-table').dataTable({
+    "bPaginate": true,
+    "bLengthChange": false,
+    "bFilter": true,
+    "bInfo": false,
+    "iDisplayLength": 10});

@@ -1,0 +1,9 @@
+$("#asn-btn").hide()
+$('#table-for-asn').html('<%= escape_javascript(render("form_new_asn", :asn => @asn, :details => @details)) %>');
+$('#details-po').dataTable({
+    "bPaginate": true,
+    "bLengthChange": false,
+    "bFilter": true,
+    "bInfo": false,
+    "iDisplayLength": 10 });
+$($($('#details-po_wrapper').find(".row-fluid")[0]).find(".span6")[0]).html("<%= escape_javascript(render('delivery_date')) %>")

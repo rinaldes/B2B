@@ -1,0 +1,9 @@
+<%= javascript_include_tag "dashboards.js" %>
+<%= render "index", :new_po => @new_po, :new_asn => @new_asn, :new_grn => @new_grn, :unread_asn => @unread_asn, :unread_grn => @unread_grn, :new_inv => @new_inv, :new_dn => @new_dn, :sl_stats => @sl_stats, :po_stats => @po_stats, :dn_stats => @dn_stats, :year => @year, :count => @count, :new_po_today => @new_po_today, :new_asn_today => @new_asn_today, :new_grn_today => @new_grn_today, :new_inv_today => @new_inv_today, :new_dn_today => @new_dn_today, :unread_asn_today => @unread_asn_today, :unread_grn_today => @unread_grn_today %>
+<%= form_tag search_path(params[:controller]), :method => 'get', :id => "form_stats_dashboard" do %>
+  <%= hidden_field_tag "search[period_1]","", :id=>"search_period_1" %>
+  <%= hidden_field_tag "search[period_2]","", :id=>"search_period_2" %>
+  <%= hidden_field_tag "search[field]" , "",:id=>"search_field"%>
+  <%= hidden_field_tag "search[detail]", "",id:"search_detail" %>
+  <%= hidden_field_tag "search[order_type]", "",id:"search_order_type" %>
+<%end%>

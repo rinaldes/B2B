@@ -1,0 +1,29 @@
+<%= form_tag search_path(params[:controller]), :method => 'get', :remote => true, :id => "form_search" do %>
+  <%= get_selected_history %>
+  <div class="table-header">
+    <div class="site">
+      <label style="width: 35px">Filter</label>
+      <%= show_filter_by_controller %>
+      <span class="hide" id="user_logs_filter_act_type">
+        <%= show_filter_by_activity_type_only_user_log %>
+      <span>
+    </div>
+    <div class="default" id="search-anything">
+      <%= text_field_tag "search[detail]", params[:search_all], id:"search_detail",:class=>'auto-complete', :autocomplete=>:off %>
+      <% if params[:controller].split("/")[0].downcase == "order_to_payments" || params[:controller].downcase == 'returned_processes'%>
+        <button class="btn btn-small btn-info pull-left" type="button" id="advance_period">Advance</button>
+      <% end %>
+      <button class="btn btn-small btn-info pull-left" type="submit" id="finding">Find</button>
+      <button class="btn btn-small btn-info pull-left" type="button" id="reset_finding">Reset</button>
+      <%= show_synch_now(params[:controller])%>
+      <%= show_print_button(params[:controller])%>
+      <%= show_create_new_item(params[:controller])%>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+<%end%>
+<div id="loading-ajax" class="" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="clear"></div>
+
+<div id="new-print" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

@@ -1,0 +1,20 @@
+<div id="revise-dispute">
+  <div class="hr hr8 hr-double hr-dotted"></div>
+  <div class="row-fluid">
+    <div class="span12">
+	  <h4 class="lighter">
+		Remarked
+	  </h4>
+	  <p>Delivered quantities are confirmed and signed off for</p>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span7 pull-left">
+    <% if @grn.can_resolve_grn? && can?(:make_revise_dispute_grn, @grn) %>
+      <% if @f_details.count != 0 %>
+  	    <%=link_to "Reject", order_to_payments_new_revise_dispute_grn_path(@grn.id), class: "btn btn-success", :data => { :confirm => "Confirm Reject?" }, remote:true %>
+      <% end %>
+    <%- end%>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+ <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Change Password</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span5">
+      <%= form_for user, url: setting_update_account_user_path(user), :html => {:class => 'form-horizontal', :remote=> true} do |f| %>
+      <fieldset>
+      <label>Old Password </label>
+      <%= f.password_field :current_password, :class => "input-xlarge  input-lg span5", id: "password"  %>
+      <span class="red"><%= user.errors[:current_password].join(" and ")%></span>
+      <label>New Password</label>
+      <%= f.password_field :password, :class => "input-xlarge  input-lg span5", id: "new-password"  %>
+      <span class="red"><%= user.errors[:password].join(" and ")%></span>
+      <label>Confirm Password</label>
+      <%= f.password_field :password_confirmation, :class => "input-xlarge  input-lg span5", id: "password-confirmation" %>
+      <span class="red"><%= user.errors[:password_confirmation].join(" and ")%></span>
+      <label></label>
+      <br>
+      <%= f.button raw('Save changes'), :class => "btn btn-primary" %> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </fieldset>
+       <%end%>
+        </div>
+      </div>
+
+  </div>
+

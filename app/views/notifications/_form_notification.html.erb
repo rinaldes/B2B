@@ -1,0 +1,84 @@
+<span class="message" id="flash-message"></span>
+<%= form_for notification, :id=> "form-notif" do |f| %>
+<div class="well">
+  <span id="error-message" padding-left="10px"></span>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="Title">Title</label>
+      <div class="controls">
+        <%= f.text_field :title, :class => "input-xlarge form-control input-lg span5"  %>
+        <span class="help-block red alert_notice"><%= notification.errors[:title].join() %></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Receipant</label>
+      <%= f.select :notif_type, options_for_select(%w(Role User), selected: notification.notif_type), {prompt: 'Please Select'}, {class: 'input-lg span5', id: 'rc_chooser', onchange: 'selected_receipt()'} %>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Valid From</label>
+      <%= f.text_field :valid_from, :class => "input-xlarge form-control input-lg span5"  %>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Valid Until</label>
+      <%= f.text_field :valid_until, :class => "input-xlarge form-control input-lg span5"  %>
+    </div>
+    <div class="control-group" id="receipt_group" style="display: <%= notification.notif_type == 'User' ? 'block' : 'none' %>;">
+      <label class="control-label" for="Receipt">Receipt (Group)</label>
+      <div class="controls">
+        <%= select_tag :users, options_for_select(User.all.map{|tou|[(tou.username rescue ''), (tou.id rescue '')] }, notification.users.map{|a|a.id}), :class => "input-xlarge form-control input-lg span5", multiple: true %>
+      </div>
+    </div>
+    <div class="control-group" id="receipt_role" style="display: <%= notification.notif_type == 'Role' ? 'block' : 'none' %>;">
+      <label class="control-label" for="Receipt">Receipt (Role)</label>
+      <div class="controls">
+        <%= select_tag :roles, options_for_select(Role.all.map { |role| [role.name, role.id] }, notification.users.map{|a|a.roles.first.id}),
+          class: "input-xlarge form-control input-lg span5", multiple: true %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="Title">Content</label>
+      <div class="controls">
+        <%= f.text_area :content, :class => "content_body input-xlarge form-control input-lg span7", :input_html => { :height => 400 }, :id => "content" %>
+        <span class="help-block red alert_notice"><%= notification.errors[:content].join() %></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <%= hidden_field_tag 'id_form', params[:id_form]%>
+      <div class="row-fluid as">
+        <%= f.button raw('Send<i class="icon-arrow-right icon-on-right"></i>
+        '), :class => "btn btn-success btn-small pull-left" %>
+      </div>
+    </div>
+  </fieldset>
+</div>
+<%end%>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#notification_valid_from, #notification_valid_until').datepicker({
+      format: "dd/mm/yyyy",
+      autoclose: true
+    }).on('changeDate', function(selected) {
+      var startDate = new Date(selected.date.valueOf());
+      $('.end_date').datepicker('setStartDate', startDate);
+    }).on('clearDate', function(selected) {
+      $('.end_date').datepicker('setStartDate', null);
+    });
+  $("#content").cleditor_plgn();
+  });
+
+function selected_receipt()
+{
+	var chooser = document.getElementById('rc_chooser');
+    var a = chooser.value;
+    if(a == 'User'){
+        $("#receipt_group").show();
+        $("#receipt_role").hide();
+    } else if(a == 'Role') {
+    	$("#receipt_group").hide();
+        $("#receipt_role").show();
+    }
+}
+
+</script>

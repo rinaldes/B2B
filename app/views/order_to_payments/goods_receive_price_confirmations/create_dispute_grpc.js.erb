@@ -1,0 +1,25 @@
+<%if params[:cancel]%>
+  $("#grpc-details").html("<%=escape_javascript(render 'details', :@grpc => @grpc, :@details => @details)%>");
+  $("#button-for-grpc").html("<%=escape_javascript(render 'accept_or_raise_price_dispute', :@grpc => @grpc)%>")
+<%else%>
+  <%if @grpc_dispute && params[:purchase_order][:po_remark].present? %>
+    <%unless @grpc_dispute.is_history%>
+      $("#button-for-grpc").html("<%=escape_javascript(render 'accept_or_raise_price_dispute', :@grpc=>@grpc_dispute)%>");
+    <%end%>
+    $("#grpc-details").hide();
+    $("#grpc-details").html("<%=escape_javascript(render 'details', :@grpc=>@grpc_dispute)%>");
+    $("#grpc-details").show();
+    $(".accept-grpc").html('');
+    $("#label-grpc").html("<%=display_grpc_state(@grpc_dispute.grpc_state_name.to_s)%>")
+    $("#flash-message").html(create_alert_notice_for_js("<%=@message%>"));
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+    window.location = '/order_to_payments/goods_receive_price_confirmations'
+  <%else%>
+    <%= @_arr_valid_remark.join(";").html_safe %>
+    <% if params[:purchase_order][:po_remark].blank? %>
+      $("#error-message").html("<span class='alert alert-error'><%= @message %></span>")
+    <% else %>
+      $("#error-message").html("<span class='alert alert-error'>There are one or more errors, please try again! </span>")
+    <% end %>
+  <%-end %>
+<%end%>

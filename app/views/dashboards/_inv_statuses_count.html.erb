@@ -1,0 +1,40 @@
+<table class="table table-bordered table-striped status">
+    <thead>
+      <tr>
+        <th class="hidden-phone" width="20%">
+          <i class="icon-caret-right blue"></i>
+          Status
+        </th>
+        <th>
+          <i class="icon-caret-right blue"></i>
+          Description
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-success arrowed arrowed-in">new</span>
+        </td>
+        <td><%=count[:new]%> New </td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-warning arrowed arrowed-in ">printed</span>
+        </td>
+        <td><%=count[:printed]%> Printed</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-yellow arrowed arrowed-in">Incomplete</span>
+        </td>
+        <td><%=count[:incomplete]%> Incomplete </td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-info arrowed arrowed-in">Completed</span>
+        </td>
+        <td><%=count[:completed]%> Completed </td>
+      </tr>
+    </tbody>
+</table>

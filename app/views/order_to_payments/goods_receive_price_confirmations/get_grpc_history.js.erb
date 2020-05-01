@@ -1,0 +1,8 @@
+$("#grpc-history").append("<%=escape_javascript(render 'grpc_history')%>");
+<%if @past_grpc.last_page?%>
+  $('#history-btn').html("<%= escape_javascript(link_to('No More History','' , :disabled=>'disabled',:class=> 'btn btn-large btn-default' ))%>");
+<%else%>
+  $('#load-more-history').replaceWith("<%= escape_javascript(link_to_next_page(@past_grpc, 'Load More History >>', :remote => true, :id=>'load-more-history', :class=> 'btn btn-large btn-default', params: params))%>");
+<%end%>
+
+$(".detail-table").dataTable().fnUpdate();

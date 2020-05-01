@@ -1,0 +1,44 @@
+<%= javascript_include_tag "jquery.cleditor.min"%>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Email Level limit <%= title_level_limit(params[:type])%></h3>
+</div>
+<div class="modal-body">
+  <%= form_for email_level_limit, url: update_email_notification_warehouse_path(email_level_limit.warehouse_id), :method=>"post", :id=> "form-create-dispute-retur",remote:true do |f| %>
+  <div class="well">
+    <span id="error-message" padding-left="10px"></span>
+    <fieldset>
+      <div class="control-group">
+        <label class="control-label" for="Title">Subject</label>
+        <div class="controls">
+          <%= f.text_field :subject, :class => "input-xlarge form-control input-lg span3"  %>
+          <span class="help-block red alert_notice"><%= email_level_limit.errors[:subject].join() %></span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="Title">Description</label>
+        <div class="controls">
+          <%= f.text_area :description, :class => "content_body input-xlarge form-control input-lg span7", :as => :ckeditor, :input_html => { :height => 400 } %>
+          <span class="help-block red alert_notice"><%= email_level_limit.errors[:description].join() %></span>
+        </div>
+      </div>
+      <div class="control-group">
+        <!-- Button -->
+        <%= f.hidden_field :id %>
+        <div class="row-fluid as">
+          <%= button_tag "CLOSE", :class => "btn btn-small pull-right", "data-dismiss" => "modal" %>
+          <%= button_tag "UPDATE", :id => "submit_btn", :class => "btn btn-success btn-small pull-right" %>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <%end%>
+</div>
+<div class="modal-footer">
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".content_body").cleditor_plgn();
+});
+</script>

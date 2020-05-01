@@ -1,0 +1,52 @@
+<div class="modal-800">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Create Detail Bank</h3>
+   </div>
+  <div class="modal-body">
+    <div class="row-fluid">
+      <div class="span12">
+        <%= form_for bank, url: create_detail_bank_early_payment_request_path(epr), :html => {:class => 'form-horizontal', :remote=> true} do |f| %> <br>
+            <fieldset>
+              <div class="control-group">
+                <label> Bank Name Receive:</label>
+                <div class="control">
+                  <%= f.text_field :receive_bank_name, :placeholder => "Bank Name Receive", :require => "require" %>
+                </div>
+                <span class="help-block red"><%= bank.errors[:receive_bank_name].join() %></span>
+              </div>
+              <div class="control-group">
+                <label> Account Number Bank Receive:</label>
+                <div class="control">
+                  <%= f.text_field :receive_bank_rek, :placeholder => "Account Bank Receive", :require => "require" %>
+                </div>
+                <span class="help-block red"><%= bank.errors[:receive_bank_rek].join() %></span>
+              </div>
+              <div class="control-group">
+                <label> Bank Name Deliver:</label>
+                <div class="control">
+                  <%= f.text_field :from_bank_name, :placeholder => "Bank Name Deliver", :require => "require" %>
+                </div>
+                <span class="help-block red"><%= bank.errors[:from_bank_name].join() %></span>
+              </div>
+              <div class="control-group">
+                <label> Account Number Bank Deliver :</label>
+                <div class="control">
+                  <%= f.text_field :from_bank_rek, :placeholder => "Account Bank Deliver", :require => "require" %>
+                </div>
+                <span class="help-block red"><%= bank.errors[:from_bank_rek].join() %></span>
+              </div>
+              <div class="control-group pull-right">
+                <div class="control">
+                  <span id="error-message"></span>
+                  <%= f.button raw('Save'), :class => "btn btn-primary" %>
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+              </div>
+            </fieldset>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
+

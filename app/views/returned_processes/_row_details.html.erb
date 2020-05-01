@@ -1,0 +1,18 @@
+<tr>
+  <td><%=p.product.code%></td>
+  <td><%=p.product.apn_number%></td>
+  <td><%=p.product.name.html_safe %></td>
+  <td class="text-right"><%=p.return_qty.to_i%></td>
+  <td id="received_qty_<%=p.id%>" class="text-right"><%=text_field_tag "received_qty","",:id=>"received_for_#{p.id}", :value=>"#{p.received_qty.to_i}",:onkeyup => "fill_field(#{p.id})", :class=>'span12 input_only_numeric', :required=>"required" %></td>
+  <td class="text-right"><%=text_field_tag "received_retur","", :id=>"received_as_retur_for_#{p.id}", :value=>"#{p.received_as_retur_qty.to_i}",:onkeyup => "fill_field(#{p.id})", :class=>'span12 input_only_numeric',:required=>"required" %></td>
+  <td class="text-right">
+    <span id="reject_<%=p.id%>" class='red'>
+      <%=p.received_qty.to_i - p.received_as_retur_qty.to_i%>
+    </span>
+  </td>
+  <td><%=p.product.unit_qty%></td>
+  <td>
+    <%= select "everything", "", options_for_select([['ok', ''], 'dispute'], p.remark.blank?? 'ok' : (p.remark == 'dispute'? 'dispute' : 'ok')), {}, {class: "span12", value: p.remark,
+      onchange: "fill_field(#{p.id})", id: "remark_for_#{p.id}"} %>
+  </td>
+</tr>

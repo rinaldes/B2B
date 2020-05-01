@@ -1,0 +1,36 @@
+<% if params[:action] == "new" || params[:action] == "create"
+  path = setting_roles_path
+elsif params[:action] == "edit" || params[:action] == "update" || params[:action] == "update_features"
+  path = setting_role_path(role)
+end %>
+
+<%= form_for role, url: path, :html => {:class => 'form-horizontal'} do |f| %>
+<div class="well">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label"  for="Title">Group Role</label>
+      <div class="controls">
+       <%= f.select(:group_name, options_for_select(@roles.collect{|r| [find_group_for_role(r).capitalize, r.id]}.insert(0, "No Group"))) %>
+        <span class="help-block red"><%= role.errors[:group_name].join(" and ") %></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"  for="Title">New Role name</label>
+      <div class="controls">
+       <%= f.text_field :name, :class => "input-xlarge form-control input-lg span6", id: "role-name"  %>
+        <span class="help-block red"><%= role.errors[:name].join(" and ")%></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+              <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_roles_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>
+<script>document.getElementById("role_group_name").value = '<%= role.try(:parent).try(:id) %>' </script>

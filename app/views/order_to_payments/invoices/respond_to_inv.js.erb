@@ -1,0 +1,9 @@
+<%unless @flag%>
+   $("#flash-message").html(create_alert_error_for_js("<%=@message%>"));
+   $("html, body").animate({ scrollTop: 0 }, "slow");
+<%end%>
+
+<% if @flag == 3 %>
+  window.open("<%= order_to_payments_print_path %>",'_blank');
+  window.location = "<%= order_to_payments_invoices_path %>";
+<% end %>

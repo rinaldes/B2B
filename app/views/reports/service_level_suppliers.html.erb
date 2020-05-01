@@ -1,0 +1,18 @@
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+			<%= render "filter" %>
+		</div>
+	</div>
+	<div class="table">
+		Print to :
+		<div class="btn-group">
+      <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, "javascript:void(0)", :name => "#{print_to_xls_reports_url('service_level_suppliers')}", :class => "print_to" %>
+    </div>
+    <div class="btn-group">
+      <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, "javascript:void(0)", :name => "#{print_to_pdf_reports_url('service_level_suppliers')}", :class => "print_to_pdf" %>
+    </div>
+	</div>
+	<%= render "results_service_supplier", :results => @results %>
+</div>

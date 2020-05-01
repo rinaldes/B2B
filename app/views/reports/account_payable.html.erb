@@ -1,0 +1,98 @@
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+			<%= render "filter" %>
+		</div>
+	</div>
+	<div class="table">
+		Print to :
+		<div class="btn-group">
+      <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, "javascript:void(0)", :name => "#{print_to_xls_reports_url('service_level_suppliers')}", :class => "print_to" %>
+    </div>
+    <div class="btn-group">
+      <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, "javascript:void(0)", :name => "#{print_to_pdf_reports_url('service_level_suppliers')}", :class => "print_to_pdf" %>
+    </div>
+	</div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <div class="widget-header">
+          <h5>Ageing Details</h5>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="span6">
+                <div class="row-fluid">
+                  <ul class="unstyled spaced">
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Current</span>
+                      : Rp
+                      <span style="text-align:right;">
+                        <%= number_to_currency(@current, :unit => "", :separator => ".", :delimiter => ",") %>
+                      </span>
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>30</span>
+                      : Rp
+                      <span style="text-align:right;">
+                        <%= number_to_currency(@last_30, :unit => "", :separator => ".", :delimiter => ",") %>
+                      </span>
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>60</span>
+                      : Rp
+                      <span style="text-align:right;">
+                        <%= number_to_currency(@last_60, :unit => "", :separator => ".", :delimiter => ",") %>
+                      </span>
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>90+</span>
+                      : Rp
+                      <span style="text-align:right;">
+                        <%= number_to_currency(@last_90, :unit => "", :separator => ".", :delimiter => ",") %>
+                      </span>
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Future Aged</span>
+                      : Rp
+                      <span style="text-align:right;">
+                        <%= number_to_currency(@future, :unit => "", :separator => ".", :delimiter => ",") %>
+                      </span>
+                    </li>
+
+                    <li>
+                      <hr />
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Outstanding Balance</span>
+                      : Rp
+                      <span style="text-align:right;">
+                        <%= number_to_currency(@current + @last_30 + @last_60 + @last_90 + @future, :unit => "", :separator => ".", :delimiter => ",") %>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="results-container"%>
+    <%= render "results_account_payable", :results => @results %>
+  </div>
+</div>

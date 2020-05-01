@@ -1,0 +1,47 @@
+<div class="modal-800">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Help for <%= help.page %></h3>
+  </div>
+  <div id="message_error"></div>
+  <div class="modal-body">
+    <div id="form-edit-dispute-setting">
+  <fieldset>
+    <div class="row">
+    <div class="span9">
+      <% if help.attachment.present? %>
+        <%= image_tag help.attachment, :width => '75%', :height => '75%' %>
+      <% end %>
+    </div>
+    </div>
+    <div class="row">
+    <div class="span12">
+       <div class="control-group">
+        <div class="controls">
+         <label for="Account"><strong><%= help.page %></strong></label>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <%= help.description %>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+          </span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </fieldset>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <!-- Button -->
+    <%= link_to "Edit", edit_help_path(help.id), :class => 'btn btn-primary', :remote => true %>
+    <button class="btn" disabled="true">Save</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+  </div>
+</div>

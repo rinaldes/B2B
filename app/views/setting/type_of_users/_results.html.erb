@@ -1,0 +1,20 @@
+      <% if results.blank? %>
+        <tr>
+          <td colspan="3" class="center"><span class="red">No match data</span></td>
+        </tr>
+      <%else%>
+        <% results.each do |tou| %>
+          <tr id="row_<%=tou.id%>">
+            <td><%= find_group_for_type_of_user(tou.group) %></td>
+            <td><%= tou.description %></td>
+            <td class="td-actions ">
+              <% if tou.group != "Supplier" && can?(:modify, :type_of_user) %>
+                <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_type_of_user_path(tou.id), :class =>"btn btn-mini btn-info", :title => "Edit" %>
+                <%#=link_to "<i class='icon-trash'></i>".html_safe, "javascript:void(0)", :class => 'btn btn-mini btn-info delete_item', :id=>"item_#{tou.id}", :onclick=>"_remove_data('#{setting_type_of_user_path(tou.id)}', #{tou.id})"%>
+              <% else %>
+                No Action
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <%end%>

@@ -1,0 +1,17 @@
+<div id="inv-history">
+  <%=render 'inv_history'%>
+</div>
+<div class="row-fluid">
+	<div class="span4 offset4" id="history-btn">
+		<%= link_to_next_page @past_inv, 'Load More History >>', :remote => true, :id=>"load-more-history", :class=>"btn btn-large btn-default" %>
+	</div>
+</div>
+
+<script>
+  $('.detail-table').dataTable({
+    "bPaginate": true,
+    "bLengthChange": true,
+    "bFilter": true,
+    "bInfo": false,
+    "iDisplayLength": 10});
+</script>

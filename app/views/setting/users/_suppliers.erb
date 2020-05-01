@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <% if current_user.has_role?("superadmin") %>
+    <% if flag == "mutation_to_another_supplier" %>
+      <h3 id="myModalLabel">Choose a Supplier</h3>
+    <% else %>
+      <h3 id="myModalLabel">Choose a Group Supplier</h3>
+    <% end %>
+  <% else %>
+  <%# elsif current_user.is_supplier_admin_group %>
+    <h3 id="myModalLabel">Choose a Supplier</h3>
+  <% end %>
+</div>
+<div class="modal-body">
+  <span  id="alert-wh-supp"></span>
+  <%= render "filter_and_search_table" %>
+  <div id="result_supplier">
+    <div class='alert-selected'></div>
+    <%= render "result_suppliers", :results => results, :flag => flag %>
+  </div>
+</div>
+<div class="modal-footer">
+</div>

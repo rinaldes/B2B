@@ -1,0 +1,26 @@
+<div class="row-fluid">
+  <div class="span12 well">
+    <ul class="unstyled spaced">
+    <li>
+      <i class="icon-caret-right blue"></i>
+      <span>Role Name</span>
+      : <%=@role.name%>
+    </li>
+    <li>
+      <i class="icon-caret-right blue"></i>
+      <span>Role Group</span>
+      :
+      <%if !@role.parent.blank?%>
+      <%= find_group_for_role(@role.parent) %>
+      <%end%>
+    </li>
+  </ul>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="space"></div>
+  <div class="widget-header">
+    <h5>Role's Features</h5>
+  </div>
+     <%=render 'add_features', :role => @role %>
+</div>

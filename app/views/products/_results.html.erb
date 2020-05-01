@@ -1,0 +1,91 @@
+<div id="table_report_wrapper" class="dataTables_wrapper" role="grid">
+  <table class="table table-striped table-bordered table-hover display" id="results">
+    <thead>
+      <tr>
+        <th class="center"  width="120">Barcode</th>
+        <th class="center" width="150">Item Code</th>
+        <th class="center">Item Name</th>
+        <th class="center" width="150">Last Update</th>
+        <th class="center">Action</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th class="center">Barcode</th>
+        <th class="center">Item Code</th>
+        <th class="center">Item Name</th>
+        <th class="center">Last Update</th>
+        <td></td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <%if results.blank?%>
+        <tr>
+          <td colspan="5" class="center"><span class="red">No match data</span></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+            <td style="display:none;"></td>
+        </tr>
+      <%else%>
+        <% results.each do |product| %>
+          <tr>
+            <td><%=product.apn_number%></td>
+            <td><%=product.code%></td>
+            <td><%=product.name.html_safe %></td>
+            <td><%= time_ago_in_words(product.updated_at)%> ago </td>
+            <td class="td-actions ">
+              <% if can? :read, Product %>
+                <%=link_to "<i class='icon-eye-open'></i>".html_safe, product_path(product.id), :class=>"", :title => "View detail"%>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_product_url(product.id, :xls) %>
+                </div>
+                <div class="btn-group">
+                  <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, generate_pdf_details_product_url(product.id), :target => "blank" %>
+                </div>
+              <%end%>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+  <%#=render "shared/paginate", :results => results %>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#results tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#results').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 4 ] }
+      ],
+      "aaSorting": [] });
+    $('#results tfoot th').each(function (i) 
+    {
+      var title = $('#results thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

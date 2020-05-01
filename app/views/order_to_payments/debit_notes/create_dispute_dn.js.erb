@@ -1,0 +1,18 @@
+<% if params[:cancel] %>
+  $("#grn-details").html("<%=escape_javascript(render 'details', :@grn => @grn, :@details => @details)%>");
+  $(".accept-grn").html("<%=escape_javascript(render 'button_accept')%>");
+  $("#button-for-grn").html("<%=escape_javascript(render 'accept_or_raise_goods', :@grn => @grn)%>")
+  window.location = '/order_to_payments/debit_notes'
+<%else%>
+  <%if @dn_dispute && @dn_remark.present? %>
+    window.location = '/order_to_payments/debit_notes'
+  <%else%>
+    //validation for an item
+    <%= @_arr_valid_remark.join(";").html_safe %>
+    <% if params[:debit_note][:dn_remark].blank? %>
+      $("#error-message").html("<span class='alert alert-error'><%= @message %></span>")
+    <% else %>
+      $("#error-message").html("<span class='alert alert-error'>Please Check remark detail and it must filled by 'dispute'.</span>")
+    <% end %>
+  <%-end %>
+<%end%>

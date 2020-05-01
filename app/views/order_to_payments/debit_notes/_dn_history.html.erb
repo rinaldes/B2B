@@ -1,0 +1,75 @@
+<div class="row-fluid">
+  <div class="span12 well">
+    <%@past_dn.each do |dn|%>
+    <div class="row-fluid" id="dn_<%= dn.id %>">
+    <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Order Number</span>
+            : <%=dn.order_number%>
+          </li>
+        </ul>
+      </div>
+      <div class="span6">
+        <ul class="unstyled spaced">
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>DN Remark</span>
+            : <%=dn.dn_remark%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Created</span>
+            : <%=convert_date(dn.created_at)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Status</span>
+            : <%=nil_to_unread(dn)%>
+          </li>
+
+          <li>
+            <i class="icon-caret-right blue"></i>
+            <span>Last Update By</span>
+            : <%="#{dn.user.first_name} #{dn.user.last_name}" rescue ""%>
+          </li>
+        </ul>
+      </div>
+    </div><!--/span-->
+   <!--  <table  class="table table-striped table-bordered detail-table">
+    <thead>
+      <tr>
+        <th>Item Code</th>
+        <th>Barcode</th>
+        <th>Item Description</th>
+        th>Commited Qty</th
+        <th>Customer Qty</th>
+        <th>Disputed Qty</th>
+        <th>UoM</th>
+        <th>Remark</th>
+      </tr>
+    </thead>
+    <tbody> -->
+    <% #if dn.details_purchase_orders %>
+    <%#grn.details_purchase_orders.where("COALESCE(remark, '') != ''").order("seq ASC").each do |p|%>
+      <!-- <tr>
+        <td><%#=p.product.code%></td>
+        <td><%#=p.product.apn_number %></td>
+        <td><%#=p.product.name.html_safe %></td>
+        <td><%#=p.commited_qty.to_i%></td>
+        <td><%#=p.received_qty.to_i%></td>
+        <td><%#=p.dispute_qty.to_i%></td>
+        <td><%#=p.product.unit_qty%></td>
+        <td><label><%#=p.remark%></label></td>
+      </tr> -->
+      <%#end%>
+      <%#end%>
+     <!--  </tbody>
+    </table> -->
+    <hr>
+    <%end%>
+  </div>
+</div>

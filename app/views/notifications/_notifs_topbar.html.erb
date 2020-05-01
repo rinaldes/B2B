@@ -1,0 +1,28 @@
+<li class="nav-header" id="count-unread-message">
+  <i class="icon-envelope"></i>
+    You have <%=sum_notif%> unread message(s)
+</li>
+<%if !short_notifs.blank?%>
+<li>
+  <% short_notifs.each do |result|%>
+  <%= link_to(show_notif_notifications_path(result.id), :id=>"notif_#{result.id}", :onclick=>"change_notif_state(#{result.id})") do %>
+    <span class="msg-body">
+    <span class="msg-title">
+    <span class="blue">Title:</span>
+      <%=truncate((result.notification.title rescue ''), length:25)%>
+    </span>
+    <span class="msg-time">
+    <i class="icon-time"></i>
+    <span><%=time_ago_in_words((result.notification.created_at rescue '')) rescue '' %> ago</span>
+    </span>
+    </span>
+  <%end%>
+  <%end%>
+</li>
+<%else%>
+<%end%>
+<li>
+  <li>
+    <%=link_to 'See all messages<i class="icon-arrow-right"></i>'.html_safe, notifications_path%>
+  </li>
+</li>

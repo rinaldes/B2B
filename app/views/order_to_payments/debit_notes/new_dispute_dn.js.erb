@@ -1,0 +1,8 @@
+$("#accept-dispute").hide("slow");
+$("#dn-details").html("<%=escape_javascript(render 'form_dispute')%>");
+
+<%if @dn_dispute.errors.any?%>
+  $("#accept-dispute").append("<span class='red'>There is one or more errors, please try again</span>");
+<%end%>
+
+$("#remarks tfoot").hide();

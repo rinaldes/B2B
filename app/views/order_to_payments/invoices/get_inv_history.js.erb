@@ -1,0 +1,7 @@
+$("#inv-history").append("<%=escape_javascript(render 'inv_history')%>");
+<%if @past_inv.last_page?%>
+  $('#history-btn').html("<%= escape_javascript(link_to('No More History','' , :disabled=>'disabled',:class=> 'btn btn-large btn-default' ))%>");
+<%else%>
+  $('#load-more-history').replaceWith("<%= escape_javascript(link_to_next_page(@past_inv, 'Load More History >>', :remote => true, :id=>'load-more-history', :class=> 'btn btn-large btn-default'))%>");
+<%end%>
+$(".detail-table").dataTable().fnUpdate();

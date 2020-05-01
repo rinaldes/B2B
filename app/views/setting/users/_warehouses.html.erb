@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+   <h3 id="myModalLabel">
+    <% if current_user.has_role?("superadmin") %>
+      <% if flag == "mutation_to_another_supplier" %>
+        <h3 id="myModalLabel">Choose a Warehouse</h3>
+      <% else %>
+        <h3 id="myModalLabel">Choose a Group Warehouse</h3>
+      <% end %>
+    <% else %>
+    <%# elsif current_user.has_role?("customer_admin_group") %>
+        Choose a Warehouse
+    <% end %>
+  </h3>
+</div>
+<div class="modal-body">
+  <span  id="alert-wh-supp"></span>
+  <%= render "filter_and_search_warehouses" , :flag => flag, :results => results %>
+  <div id="result_warehouses">
+    <div class='alert-selected'></div>
+    <%= render "results_warehouses", :flag => flag, :results => results %>
+  </div>
+</div>
+<div class="modal-footer">
+</div>

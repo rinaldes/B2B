@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Return From</Data></Cell>
+        <Cell><Data ss:Type="String">Return Number</Data></Cell>
+        <Cell><Data ss:Type="String">Order Number</Data></Cell>
+        <Cell><Data ss:Type="String">Invoice Number</Data></Cell>
+        <Cell><Data ss:Type="String">Type</Data></Cell>
+        <Cell><Data ss:Type="String">Backorder Flag</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>      
+      </Row>
+        <% @results_all.each do |rp| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=rp.try(:purchase_order).try(:supplier).try(:name)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=rp.rp_number%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=rp.try(:purchase_order).try(:po_number)%></Data></Cell>
+          <Cell><Data ss:Type="String"><%= rp.try(:purchase_order).invoice_number %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= GRTN %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= rp.try(:purchase_order).try(:backorder_flag) %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= nil_to_unread(rp) %></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

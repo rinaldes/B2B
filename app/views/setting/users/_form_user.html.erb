@@ -1,0 +1,172 @@
+<%= form_for(register, :url => setting_users_path, :html=> {:class=>"form-horizontal"}) do |f| %>
+  <fieldset>
+     <div class="control-group">
+      <div class="controls">
+       <label for="Account"><strong>New User Account</strong></label>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= f.email_field :email, :class => "input-xlarge form-control span6 input-lg", :placeholder => "Email" %>
+          <i class="icon-envelope"></i>
+          <span class="help-block red"><%= register.errors[:email].join() %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= f.text_field :username, :class => "input-xlarge form-control span6 input-lg", :placeholder => "Username", :required => "required" %>
+          <i class="icon-user"></i>
+          <span class="help-block red"><%= register.errors[:username].join() %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= f.password_field :password, :class => "input-xlarge form-control span6 input-lg", :placeholder => "User password", :required => "required" %>
+          <i class="icon-lock"></i>
+          <span class="help-block red"><%= register.errors[:password].join() %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= f.password_field :password_confirmation, :class => "input-xlarge form-control span6 input-lg", :placeholder => "Confirm user password", :required => "required" %>
+          <i class="icon-key"></i>
+          <span class="help-block red"><%= register.errors[:password_confirmation].join(" and ") %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= group_user(group) %>
+          (Group User)
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= text_field_tag "user[desc]", '', :readonly => true, :class => "input-xlarge form-control span3 input-lg", :placeholder => "Warehouse", :id=>"warehouse_or_supplier" %>
+          <span class="help-block red"><%= register.errors[:desc].join() %></span>
+          <div id="empo_group" class="hide">
+            <%=link_to "<i class='icon-home'></i> Select Warehouse".html_safe, setting_select_supplier_or_warehouse_path(:key=>"customer"), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-select-warehouse-or-warehouse', id: "change-level", :title => "Select user warehouse" %>
+          </div>
+          <div id="supplier_group" class="hide">
+            <%=link_to "<i class='icon-wrench'></i> Select Supplier".html_safe, setting_select_supplier_or_warehouse_path(:key=>"supplier"), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-select-warehouse-or-warehouse', id: "change-level", :title => "Change level supplier" %>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div id="input-for-supplier-or-warehouse">
+      <%= hidden_field_tag 'warehouse[warehouse_id]' %>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+         <%= select_tag "role_name", options_for_select(roles.collect{|role| [role.name.camelize, role.name]}), :class => "span3", :required => "required" %>
+          (Roles)
+        </span>
+      </div>
+    </div>
+    <%# if current_user.warehouse.present? %>
+      <div class="control-group"><div class="controls"><hr class="border-custom-hr"></div></div>
+      <div class="control-group">
+        <div class="controls">
+          <label for="Account"><strong>Receive Email Notification</strong></label>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_po %><span class="lbl"> Receive Email <%=PO%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_grn %><span class="lbl"> Receive Email <%=GRN%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_grpc %><span class="lbl"> Receive Email <%=GRPC%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_invoice %><span class="lbl"> Receive Email <%=INV%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_grtn %><span class="lbl"> Receive Email <%=GRTN%></span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_early_payment_request %><span class="lbl"> Receive Email Early Payment Request </span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_debit_note %><span class="lbl"> Receive Email <%=DN%> </span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_payment_voucher %><span class="lbl"> Receive Email Payment Voucher </span>
+          </span>
+        </div>
+        <div class="controls">
+          <span class="input-icon input-icon-right">
+           <%= f.check_box :is_received_payment_process %><span class="lbl"> Receive Payment Process </span>
+          </span>
+        </div>
+      </div>
+      <div class="control-group"><div class="controls"><hr class="border-custom-hr"></div></div>
+    <%# end %>
+    <div class="control-group">
+      <div class="controls">
+       <label for="Account"><strong>New User Personal Info</strong></label>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= f.text_field :first_name, :class => "input-xlarge form-control span6 input-lg", :placeholder => "User first name" %>
+          <span class="help-block red"><%= register.errors[:first_name].join() %></span>
+        </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span class="input-icon input-icon-right">
+          <%= f.text_field :last_name, :class => "input-xlarge form-control span6 input-lg", :placeholder => "User last name" %>
+          <span class="help-block red"><%= register.errors[:last_name].join() %></span>
+        </span>
+      </div>
+    </div>
+    <%= f.hidden_field :user_type, :value => "b2b" %>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Register<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_users_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+<% end %>
+
+<script>
+function IsSupplier(value){checkingSupplier(value);}
+IsSupplier(document.getElementById('group_user').value);
+</script>
+
+<div id="modal-select-warehouse-or-warehouse" class="modal hide fade modal-800" role="dialog" aria-labelledby="Choose Warehouse" aria-hidden="true"></div>
+
+<%= javascript_include_tag 'setting/users' %>

@@ -1,0 +1,8 @@
+$("#revise-retur").hide("slow");
+$("#retur-details").html("<%=escape_javascript(render 'form_revise_retur', :retur_revise => @retur_revise, :details => @details, :retur => @retur)%>");
+$('#details-retur-table').dataTable({
+    "bPaginate": true,
+    "bLengthChange": true,
+    "bFilter": true,
+    "bInfo": false,
+    "iDisplayLength": 10});

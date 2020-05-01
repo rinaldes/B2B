@@ -1,0 +1,27 @@
+<tr class="row-detail">
+  <tr>
+    <td><%= dn.sol_line_seq %></td>
+    <td><%= dn.stock_code %></td>
+    <td><%= dn.sol_shipped_qty %></td>
+    <td id="dispute_qty_<%=dn.id%>">
+      <% if @debit_note.disputed? %>
+        <%= (dn.dispute_qty.to_i == 0 ? dn.sol_shipped_qty.to_i : dn.dispute_qty.to_i) %>
+        <%= hidden_field_tag "dispute_qty", (dn.dispute_qty.to_i == 0 ? dn.sol_shipped_qty.to_i : dn.dispute_qty.to_i ), :id => "dispute_qty_for_#{dn.id}" %>
+      <% else %>
+        <%= text_field_tag "dispute_qty", (dn.dispute_qty.to_i == 0 ? dn.sol_shipped_qty.to_i : dn.dispute_qty.to_i), class: "span9", id: "dispute_qty_for_#{dn.id}", onkeyup: "fill_field_dispute_qty(#{dn.id})" %>
+      <% end %>
+    </td>
+    <td><%= dn.stk_unit_desc %></td>
+    <td>
+      <span id="span_remark_<%=dn.id%>" class="control-group">
+        <%= select "everything", "", options_for_select([['ok', ''], 'dispute'], dn.remark.blank?? 'ok' : (dn.remark == 'dispute'? 'dispute' : 'ok')), {}, {class: "span12", value: dn.remark,
+          onchange: "fill_field(#{dn.id})", id: "remark_for_#{dn.id}"} %>
+      </span>
+    </td>
+    <td><%= raw dn.product.name %></td>
+    <td class="text-right"><%= total_format(dn.sol_item_price,"Rp.") %></td>
+    <td class="text-right"><%= total_format(dn.sol_tax_rate*dn.sol_item_price/100*dn.sol_shipped_qty,"Rp.") %></td>
+    <td class="text-right"><%= total_format(dn.sol_shipped_qty*dn.sol_item_price+dn.sol_tax_rate*dn.sol_item_price/100*dn.sol_shipped_qty,"Rp.") %></td>
+    <td style="display:none;"></td>
+  </tr>
+</tr>

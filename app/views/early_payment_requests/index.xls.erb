@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Invoice Number</Data></Cell>
+        <Cell><Data ss:Type="String">Supplier Code</Data></Cell>
+        <Cell><Data ss:Type="String">Invoice Due Date</Data></Cell>
+        <Cell><Data ss:Type="String">Total After Tax</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+      </Row>
+        <% @results_all.each do |pr| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%=pr.purchase_order.invoice_number rescue '' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%=pr.purchase_order.supplier.code%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=pr.purchase_order.invoice_due_date%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=total_format(pr.purchase_order.charges_total, "Rp.")%></Data></Cell>
+          <Cell><Data ss:Type="String"><%=pr.state_name.to_s.capitalize%></Data></Cell>
+        </Row>
+        <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -1,0 +1,106 @@
+<%= javascript_include_tag 'setting/users' %>
+<div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+  <table class="table table-striped table-bordered table-hover", id="supplier-table">
+    <% if current_user.has_role?("superadmin") %>
+      <% unless flag == "mutation_to_another_supplier" %>
+        <thead>
+          <tr>
+            <th class="center">Group Code</th>
+            <th class="center">Group Name</th>
+            <th class="center">Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%if results.blank?%>
+            <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+          <%else%>
+            <% results.each do |group| %>
+              <tr id="row_<%=group.suppliers.try(:first).try(:id) %>">
+                <td><span id="group_code_<%= group.suppliers.try(:first).try(:id) %>"><%= group.code %></span></td>
+                <td><span id="group_name_<%= group.suppliers.try(:first).try(:id) %>"><%= group.name %></span></td>
+                <td>
+                  <%= radio_button_tag 'supplier_id', group.suppliers.try(:first).try(:id) %><span class="lbl"></span>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+        </tbody>
+      <!-- UNTUK MUTASI SUPPLIER -->
+      <% else %>
+        <thead>
+          <tr>
+            <th class="center">Supplier Code</th>
+            <th class="center">Supplier Name</th>
+            <th class="center">Group Name</th>
+            <th class="center">Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%if results.blank?%>
+            <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+          <%else%>
+            <% results.each do |supplier| %>
+              <tr id="row_<%=supplier.id%>">
+                <td>
+                  <span id="supplier_code_<%= supplier.id %>"><%=supplier.code%></span>
+                </td>
+                <td>
+                  <span id="supplier_name_<%= supplier.id %>"><%=supplier.name%></span>
+                </td>
+                <td class="level"><%= supplier.group.name %></td>
+                <td>
+                  <%= hidden_field_tag "selected_user_id", params[:id] %>
+                  <%= radio_button_tag 'supplier_id', supplier.id %><span class="lbl"></span>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+        </tbody>
+      <% end %>
+    <% else %>
+    <%# elsif current_user.is_supplier_admin_group %>
+    <thead>
+      <tr>
+        <th class="center">Supplier Code</th>
+        <th class="center">Supplier Name</th>
+        <th class="center">Group Name</th>
+        <th class="center">Level</th>
+        <th class="center">Select</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if results.blank?%>
+        <tr><td colspan="5" class="center"><span class="red">No match data</span></td></tr>
+      <%else%>
+        <% results.each do |supplier| %>
+          <tr id="row_<%=supplier.id%>">
+            <td>
+              <span id="supplier_code_<%= supplier.id %>"><%=supplier.code%></span>
+            </td>
+            <td>
+              <span id="supplier_name_<%= supplier.id %>"><%=supplier.name%></span>
+            </td>
+            <td class="level"><%= supplier.group.name %></td>
+            <td class="level"><%= supplier.level %></td>
+            <td>
+              <%= radio_button_tag 'supplier_id', supplier.id %><span class="lbl"></span>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  <% end %>
+  </table>
+  <%=render "paginate_supplier", :results => results %>
+  <% if flag == "mutation_to_another_supplier" %>
+    <div class="row-fluid as">
+      <%= button_tag "Cancel", :class => "btn btn-small pull-right", "data-dismiss" => "modal" %>
+      <%= link_to "Change Supplier", "javascript:void(0)", :id => "submit_change_supplier_btn", :remote => true, :class => "btn btn-info btn-small pull-right"%>
+    </div>
+  <% else %>
+    <div class="row-fluid as">
+      <%= button_tag "CANCEL", :class => "btn btn-small pull-right", "data-dismiss" => "modal" %>
+      <%= button_tag "SELECT", :id => "submit_btn", :class => "btn btn-info btn-small pull-right","data-dismiss" => "modal" %>
+    </div>
+  <% end %>
+</div>

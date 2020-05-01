@@ -1,0 +1,15 @@
+<%if @inv.errors.any?%>
+  <%=first_error = @inv.errors.first[0].to_s%>
+  $("#invoice_number").addClass("red").html("<%=@inv.errors[:invoice_number].join(' ')%>");
+  $("#tax_invoice_number").addClass("red").html("<%=@inv.errors[:tax_invoice_number].join(' ')%>");
+  $('html, body').animate({ scrollTop: $("#<%=first_error%>").offset().top - 40 }, 200);
+<% else %>
+    var href= "<%= order_to_payments_print_path(@inv.id, :pdf => :pdf) %>",
+        popUp = window.open(href, '_blank' );
+    if (popUp === null || typeof popUp === "undefined") {
+      alert('Please disable your pop-up blocker and click the "Open" link again.');
+      //location.href = href;
+    } else {
+        window.location = "<%#= order_to_payments_invoice_path(@inv.id) %>";
+    }
+<%end%>

@@ -1,0 +1,38 @@
+      <% if results.blank? %>
+        <tr>
+          <td colspan="8" class="center"><span class="red">No match data</span></td>
+        </tr>
+      <%else%>
+        <% results.each do |user| %>
+          <tr>
+            <td><%= find_group_for_user(user.type_of_user.try(:parent).try(:description)) %></td>
+            <td><%= user.email %></td>
+            <td><%= user.username %></td>
+            <td><%= role_names(user.roles) %></td>
+            <td><%= user.first_name %> <%= user.last_name %></td>
+            <td><%= convert_date(user.last_sign_in_at) %></td>
+            <td>
+              <%= convert_status(user.is_activated) %>
+              <% if is_current_superadmin?  || is_supplier_group? || is_warehouse_group?  %>
+              &nbsp;<%= convert_login(user).html_safe %>
+              <% end %>
+            </td>
+            <td class="td-actions ">
+              <%if can?(:read, user)%>
+                <%=link_to "<i class='icon-eye-open'></i>".html_safe, setting_user_path(user), :class =>"btn btn-mini btn-info"%>
+              <% end %>
+              <% if current_user.has_role?("superadmin") %>
+                <% if !user.has_role?("superadmin") && (user.roles.first.group_flag rescue false) %>
+                  <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_user_path(user), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-edit-user', id: "change-set-area", :title=>"Edit User"%>
+                <% elsif !user.has_role?("superadmin") %>
+                   <%=link_to "<i class='icon-retweet'></i> Mutate to".html_safe, mutation_setting_users_path(user), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-mutation', id: "change-sup-wh", :title => "Change user group" %>
+                <% end %>
+              <% else %>
+                <% unless user.try(:roles).try(:first).try(:group_flag) %>
+                  <%=link_to "<i class='icon-edit'></i>".html_safe, edit_setting_user_path(user), :class =>"btn btn-mini btn-info", :remote=>true,'data-toggle' => "modal", 'data-target'=> '#modal-edit-user', id: "change-set-area", :title=>"Edit User"%>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <%end%>

@@ -1,0 +1,9 @@
+<% if @email.try(:description).blank? %>
+This message contains notice for Good return note with Return Process number: <%= @grtn.rp_number %> that has not receive since <%= @grtn.rp_date %><br /><br />
+<% else %>
+<%= @email.description %><br /><br />
+<% end %>
+
+You can can follow up the document by accessing the following link <%= "#{BASE_URI}returned_processes/#{@grtn.id}" %>.
+
+Thank you.

@@ -1,0 +1,142 @@
+<%if can? :count_po_today_statuses, :dashboard%>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat noBorder">
+          <h4 class="lighter">
+            <i class="icon-folder-open green"></i>
+            Transactional Document Status Today
+          </h4>
+        </div>
+      </div>
+      <div class="infobox infobox-green" style="width: 300px; height: 150px;">
+        <div class="infobox-icon">
+          <i class="icon-shopping-cart"></i>
+        </div>
+        <div class="infobox-data">
+          <div class="infobox-content">
+            PURCHASE ORDER
+            <br />
+            <%= link_to "#{@po_new} New",
+              order_to_payments_purchase_orders_url("search"=>{"field"=>"Status", "detail"=>"new", "new"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_po_today[:open]} Open",
+              order_to_payments_purchase_orders_url("search"=>{"field"=>"Status", "detail"=>"open", "open"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %>
+            <br/>
+            <%= link_to "#{@po_ontime} FullFilled 100% on time",
+              archives_purchase_orders_url("search"=>{"field"=>"Status", "detail"=>"on_time", "on_time"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %>
+            <br/>
+            <%= link_to "#{@po_ontime_less}  FullFilled < 100% on time",
+              archives_purchase_orders_url("search"=>{"field"=>"Status", "detail"=>"on_time_less", "on_time_less"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %>
+            <br/>
+            <%= link_to "#{@po_exp} Expired",
+              archives_purchase_orders_url("search"=>{"field"=>"Status", "detail"=>"expired", "expired"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}) %>
+            <br/>
+          </div>
+        </div>
+      </div>
+      <div class="infobox infobox-blue" style="width: 300px; height: 150px;">
+        <div class="infobox-icon">
+          <i class="icon-truck"></i>
+        </div>
+        <div class="infobox-data">
+          <div class="infobox-content">
+            ADVANCE SHIPMENT NOTES
+            <br />
+            <%= link_to "#{new_asn_today[:new]} New",
+              order_to_payments_advance_shipment_notifications_url("search"=>{field: "Status", detail: "new", "new"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_asn_today[:read].to_i} Read",
+              order_to_payments_advance_shipment_notifications_url("search"=>{field: "Status", detail: "read", read: "on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+          </div>
+        </div>
+      </div>
+      <div class="infobox infobox-pink" style="width: 300px; height: 150px;">
+        <div class="infobox-icon">
+          <i class=" icon-bar-chart"></i>
+        </div>
+        <div class="infobox-data">
+          <div class="infobox-content">
+            GOOD RECEIVE NOTES
+            <br />
+            <%= link_to "#{new_grn_today[:new].to_i} New",
+              order_to_payments_goods_receive_notes_url("search"=>{field: "Status", detail: "new", "new"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_grn_today[:read]} Read",
+              order_to_payments_goods_receive_notes_url("search"=>{field: "Status", detail: "read", "read"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_grn_today[:dispute]} Dispute",
+              order_to_payments_goods_receive_notes_url("search"=>{field: "Status", detail: "dispute", "dispute"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_grn_today[:rev]} Revision",
+              order_to_payments_goods_receive_notes_url("search"=>{field: "Status", detail: "rev", "rev"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_grn_today[:pending]} Pending",
+              order_to_payments_goods_receive_notes_url("search"=>{field: "Status", detail: "pending", "pending"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_grn_today[:accepted]} Accepted",
+              order_to_payments_goods_receive_notes_url("search"=>{field: "Status", detail: "accepted", "accepted"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-fluid"></div>
+    <div class="infobox infobox-red" style="width: 300px; height: 150px">
+        <div class="infobox-icon">
+          <i class="icon-file"></i>
+        </div>
+        <div class="infobox-data">
+          <div class="infobox-content">
+            INVOICE
+            <br />
+            <%= link_to "#{new_inv_today[:new].to_i} New",
+              order_to_payments_invoices_url("search"=>{field: "Status", detail: "new", "new"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_inv_today[:printed].to_i} Printed",
+              order_to_payments_invoices_url("search"=>{field: "Status", detail: "printed", "printed"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_inv_today[:rejected].to_i} Rejected",
+              order_to_payments_invoices_url("search"=>{field: "Status", detail: "rejected", "rejected"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_inv_today[:incomplete].to_i} Incomplete",
+              order_to_payments_invoices_url("search"=>{field: "Status", detail: "incomplete", "incomplete"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_inv_today[:complete].to_i} Complete",
+              archives_invoices_url("search"=>{field: "Status", detail: "complete", "complete"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+          </div>
+        </div>
+      </div>
+      <div class="infobox infobox-orange2" style="width: 300px; height: 150px">
+        <div class="infobox-icon">
+          <i class=" icon-credit-card"></i>
+        </div>
+        <div class="infobox-data">
+          <div class="infobox-content">
+            DEBIT NOTE
+            <br />
+            <%= link_to "#{@dn_pending.to_i} Pending",
+              order_to_payments_debit_notes_url("search"=>{field: "Status", detail: "pending", "pending"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_dn_today[:disputed].to_i} Disputed",
+              order_to_payments_debit_notes_url("search"=>{field: "Status", detail: "disputed", "disputed"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_dn_today[:revisioned].to_i} Revisioned",
+              order_to_payments_debit_notes_url("search"=>{field: "Status", detail: "revisioned", "revisioned"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+            <%= link_to "#{new_dn_today[:accepted].to_i} Accepted",
+              archives_debit_notes_url("search"=>{field: "Status", detail: "accepted", "accepted"=>"on", "period_1"=>Time.now.strftime('%d/%m/%Y'), "period_2"=>Time.now.strftime('%d/%m/%Y')}),
+              style: 'text-decoration:none;' %><br/>
+          </div>
+        </div>
+      </div>
+  </div>
+  <script>
+    get_count_disputed_po()
+  </script>
+<%end%>

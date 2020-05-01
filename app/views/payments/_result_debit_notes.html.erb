@@ -1,0 +1,16 @@
+<%if dn_results.blank?%>
+  <tr><td colspan="6" class="center"><span class="red">No match data</span></td></tr>
+<%else%>
+  <% dn_results.each do |dn| %>
+    <tr id="rew_<%=dn.id%>">
+      <td class="level"><%= dn.reference %></td>
+      <td class="level"><%= dn.supplier.code %></td>
+      <td class="level text-right"><%= total_format(dn.total_amount,"Rp. ") %></td>
+      <td class="level">
+        <center>
+        <%= check_box_tag "select_dn_#{dn.id}", "",false, :class=>"add_dn_second" %><span class="lbl"></span>
+        </center>
+      </td>
+    </tr>
+  <%end%>
+<%end%>

@@ -1,0 +1,10 @@
+<div id="receive-retur">
+  <div class="hr hr8 hr-double hr-dotted"></div>
+  <div class="row-fluid">
+    <div class="span7 pull-left">
+    <%if retur.can_receive? && can?(:create_receive_retur, "ReturnedProcess".constantize)%>
+	  <%=link_to "Receive", new_receive_retur_returned_processes_path(retur.id), :class=> "btn btn-success", :remote=>true%>
+	 <%end%>
+	</div>
+  </div>
+</div>

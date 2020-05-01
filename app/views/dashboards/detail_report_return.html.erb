@@ -1,0 +1,87 @@
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+  <div class="space-6"></div>
+    <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="row-fluid">
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Return Process Number</span>
+                        : <%= @retur.rp_number %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Warehouse</span>
+                        : <%= @retur.purchase_order.warehouse.warehouse_name%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Return From</span>
+                        <%= get_addresses(@retur.purchase_order.warehouse) %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Returned Process Type</span>
+                        : Return Process
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Code</span>
+                        : <%=@retur.purchase_order.supplier.code%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Supplier Name</span>
+                        : <%=@retur.purchase_order.supplier.name%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Return To</span>
+                        <%= get_addresses(@retur.purchase_order.supplier) %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Phone Number</span>
+                        : <%=@retur.purchase_order.supplier.phone_number%>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Returned Date</span>
+                        : <%=convert_date(@retur.rp_date)%>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+              </div><!--row-->
+              <div class="space"></div>
+              <div id="retur-details">
+                <%= render 'detail_retur', :details => @details %>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->

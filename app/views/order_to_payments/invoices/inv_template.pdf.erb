@@ -1,0 +1,206 @@
+	<div class="row-fluid">
+		<div class="span4">
+			<h2 class="text-left">
+				<%= show_image_logo(@company, "mini") %><%=@inv.supplier.name%>
+			</h2>
+            <address>
+              <strong><%=@inv.supplier.name%></strong><br />
+              <%=@inv.supplier.addresses.try(:first).try(:name) %><br />
+              <%=@inv.supplier.addresses.try(:first).try(:street) %><br />
+              <%=@inv.supplier.addresses.try(:first).try(:suburb) %> <%=@inv.supplier.addresses.try(:first).try(:postcode) %>, <%=@inv.supplier.addresses.try(:first).try(:country_code) %><br />
+              <abbr title="Phone">
+                Phone:</abbr> +<%=@inv.supplier.addresses.try(:first).try(:country_code) %> <%=@inv.supplier.addresses.try(:first).try(:phone) %>
+              <abbr title="Fax"><br />
+                Fax:</abbr> +<%=@inv.supplier.addresses.try(:first).try(:country_code) %> <%=@inv.supplier.addresses.try(:first).try(:fax_no) %>
+            </address>
+
+          <ul class='unstyled nana'>
+            <li> <strong>Bill To : <%=@inv.warehouse.warehouse_name%></strong></li>
+            <li class='nanana'><%= @inv.warehouse.try(:addresses).try(:first).try(:name) %></li>
+            <li class='nanana'><%= @inv.warehouse.try(:addresses).try(:first).try(:postcode) %> <%=@inv.warehouse.try(:addresses).try(:first).try(:suburb) %></li>
+            <li class='nanana'><%=@inv.warehouse.addresses.try(:first).try(:country_code) %></li>
+          </ul>
+            <ul class='unstyled nana'>
+            <li> <strong>Ship To : <%=@inv.warehouse.warehouse_name%></strong></li>
+            <li class='nanana'><%=@inv.warehouse.addresses.try(:first).try(:name) %></li>
+            <li class='nanana'><%=@inv.warehouse.addresses.try(:first).try(:postcode) %> <%=@inv.warehouse.addresses.try(:first).try(:suburb) %></li>
+            <li class='nanana'><%=@inv.warehouse.addresses.try(:first).try(:country_code) %></li>
+          </ul>
+		</div>
+		<div class="span4">
+			<h3 class="text-center">
+				PROFORMA INVOICE
+			</h3>
+          <center><span>NPWP.<%=display_npwp(Company.first.npwp)%></span></center>
+		</div>
+		<div class="span4" >
+			<table class="table table-bordered table-meen" id="table-pojok-atas">
+				<thead>
+				</thead>
+              <tbody>
+                <tr>
+                  <th colspan="2">
+                    INVOICE NUMBER
+                  </th>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                     <%=@inv.invoice_number%>
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2">
+                    INVOICE TAX NUMBER
+                  </th>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                     <%=@inv.tax_invoice_number%>
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2">
+                    PAYMENT INVOICE DUE DATE
+                  </th>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                     <%=convert_date(@inv.payment_invoice_due_date) %>
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2">
+                    Tax Invoice Date
+                  </th>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <%=convert_date(@inv.tax_invoice_date)%>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Currency
+                  </th>
+                  <th>
+                    Exch.Rate to IDR
+                  </th>
+                </tr>
+                <tr>
+                  <td><%=@inv.currency_code || "-" %></td>
+                  <td><%=@inv.initial_currency_rate || "-" %></td>
+                </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span4 offset4">
+			<h5 class="text-center">
+              Remit To: <%=@inv.supplier.name%>
+			</h5>
+            <p class='text-center'>
+              <%=@inv.supplier.addresses.try(:first).try(:name) %>, <%=@inv.supplier.addresses.try(:first).try(:street) %> <%=@inv.supplier.addresses.try(:first).try(:suburb) %> <%=@inv.supplier.addresses.try(:first).try(:postcode) %>
+            </p>
+		</div>
+	</div>
+  <div class='row-fluid'>
+    <div class='span12'>
+      <table class="table table-bordered table-meen">
+        <tr>
+          <th class>
+            Terms
+          </th>
+          <th>
+            Print Date
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <%=@inv.term%>
+          </td>
+          <td>
+            <%= @inv.print_invoice_date.strftime('%Y-%m-%d') %>
+          </td>
+        </tr>
+      </table>
+      <table class= "table table-bordered">
+        <thead>
+        <tr>
+          <th class="center">No</th>
+          <th class="center">Barcode</th>
+          <th class="center">Item Code</th>
+          <th class="center">Item Description</th>
+          <th class="center">Received Qty</th>
+          <th class="center">UoM</th>
+          <th class="center">Item Price</th>
+          <th class="center">Total Amount</th>
+          <th class="center">Discount Rate</th>
+          <th class="center">Tax</th>
+          <th class="center">Total Amount After Tax</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%@inv.details_purchase_orders.each_with_index do |detail, index|%>
+        <% po = PurchaseOrder.find_by_order_type_and_po_number('Purchase Order', @inv.po_number) %>
+<% p = detail %>
+<% disc_rate = (DetailsPurchaseOrder.find_by_purchase_order_id_and_product_id(po.id, p.product_id).disc_rate rescue 0) %>
+<% total_amount_after_tax = disc_rate > 0 ? (p.total_amount_before_tax*(100-disc_rate)/100*(100+p.line_tax)/100) : p.total_amount_after_tax %>
+        <tr>
+          <td><%= index+1 %></td>
+          <td><%= detail.product.apn_number %></td>
+          <td><%= detail.product.code %></td>
+          <td><%= detail.product.name.html_safe %></td>
+          <td class="text-right"><%= detail.dispute_qty.to_i %></td>
+          <td><%= detail.product.unit_description %></td>
+          <td class="text-right"><%= total_format(detail.dispute_price, "Rp.") %></td>
+          <td class="text-right"><%= total_format(detail.total_amount_before_tax,"Rp.") %></td>
+          <td class="text-right"><%= DetailsPurchaseOrder.find_by_purchase_order_id_and_product_id(po.id, detail.product_id).disc_rate.to_f rescue 0 %>%</td>
+          <td class="text-right"><%= detail.line_tax %> %</td>
+          <td class="text-right"><%= total_format(total_amount_after_tax , "Rp.") %></td>
+        </tr>
+        <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6 pull-right">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Sub Total Amount</strong></td>
+            <td class="text-right"><strong><%= total_format(@inv.received_total,"Rp.") %></strong></td>
+          </tr>
+          <tr>
+            <td><strong>Total Tax</strong></td>
+            <td class="text-right"><strong><%= total_format(@inv.tax_amount, "Rp.") %></strong></td>
+          </tr>
+          <tr>
+            <td><strong>Total Amount</strong></td>
+            <td class="text-right"><strong><%= total_format(@inv.charges_total, "Rp.") %></strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span4">
+      <%= wicked_pdf_image_tag_for_barcode("assets/barcode/#{@inv.invoice_barcode}") %>
+      <div class="clear"></div>
+      <span><%= @inv.invoice_barcode %></span>
+    </div>
+  </div>
+  <%# if current_user.type_of_user.parent.description == "Supplier" && @inv.po_remark.present? %>
+    <!--div class="hr hr8 hr-double hr-dotted"></div>
+    <div class="row-fluid">
+      <div class="span12">
+        <h4 class="lighter">
+          Remark
+        </h4>
+        <%#= @inv.po_remark %>
+      </div>
+    </div>
+    <div class="hr hr8 hr-double hr-dotted"></div-->
+  <% #end %>
+

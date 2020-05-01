@@ -1,0 +1,71 @@
+<div class="row-fluid">
+  <div class="widget-header">
+    <h5>Line Details</h5>
+  </div>
+  <table class="table table-striped table-bordered" id="return-results-table">
+    <thead>
+      <tr>
+        <th class="center">Item Code</th>
+        <th class="center">Barcode</th>
+        <th class="center">Item Description</th>
+        <th class="center">Return Qty</th>
+        <th class="center">Received Qty</th>
+        <th class="center">Received as Retur</th>
+        <th class="center">UoM</th>
+        <th class="center">Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if details %>
+      <% details.each_with_index do |pod,index|%>
+        <tr>
+          <td><%= pod.product.code%></td>
+          <td><%= pod.product.apn_number %></td>
+          <td><%= pod.product.name.split("<br/>").first %></td>
+          <!-- untuk pengecekan nilai positif dan negatif untuk supplier atau empo baru saya kodekan disini saja -->
+          <td class="text-right"><%= current_user.roles.first.parent.try(:name) == "supplier" ? pod.return_qty : (-pod.return_qty).floor.to_f %></td>
+          <td class="text-right"><%= pod.received_qty.to_i %></td>
+          <td class="text-right"><%= pod.received_as_retur_qty.to_i %></td>
+          <td><%= pod.product.unit_qty %></td>
+          <td><%=pod.remark%></td>
+        </tr>
+      <%end%>
+    <%end%>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#return-results-table tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#return-results-table').DataTable({
+      
+      "aaSorting": [] });
+    $('#return-results-table tfoot th').each(function (i) 
+    {
+      var title = $('#return-results-table thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>

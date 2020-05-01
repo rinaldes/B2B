@@ -1,0 +1,3 @@
+<% if @grpc.can_accept_grpc? && can?(:accept_grpc, @grpc)%>
+  <%=form.submit "Accept", :name => "accept", :class=>'btn btn-success'%>
+<%end%>

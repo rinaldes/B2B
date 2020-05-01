@@ -1,0 +1,35 @@
+<% if params[:action] == "new" || params[:action] == "create"
+  path = setting_service_scheduler_apis_path
+elsif params[:action] == "edit" || params[:action] == "update"
+  path = setting_service_scheduler_api_path(service_scheduler)
+end%>
+<%= form_for service_scheduler, url: path, :html => {:class => 'form-horizontal', :multipart => true} do |f| %>
+<div class="well">
+  <fieldset>
+   <div class="control-group">
+    <label class="control-label" for="Brand">Type Time</label>
+    <div class="controls">
+      <%= f.select(:type_time, [['Hours', 'H'], ['Minutes', 'M']], {:prompt => 'Please select' }) %>
+      <span class="help-block red"><%= service_scheduler.errors[:type_time].join(" and ")%></span>
+    </div>
+  </div>
+    <div class="control-group">
+      <label class="control-label" for="Name">Set Time</label>
+        <div class="controls", id="type-time">
+          <span class="help-block red"><%= service_scheduler.errors[:set_time].join(" and ")%></span>
+        </div>
+        <%= f.text_field :set_time %>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success btn-register-span5" %>
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_service_scheduler_apis_path, :class => "btn btn-small btn-pink btn-register-span5" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>
+<%= javascript_include_tag "setting/service_scheduler_apis.js" %>

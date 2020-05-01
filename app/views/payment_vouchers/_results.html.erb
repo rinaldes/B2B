@@ -1,0 +1,43 @@
+<div id="table_report_wrapper" class="dataTables_wrapper"role="grid">
+  <table class="table table-striped table-bordered table-hover" id="results">
+    <thead>
+      <tr>
+        <th class="center">Voucher</th>
+        <th class="center">Supplier Code</th>
+        <th class="center">Received Date</th>
+        <th class="center">Total</th>
+        <th class="center">Status</class>
+        <th class="center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if results.blank?%>
+      <tr><td colspan="6" class="center"><span class="red">No match data</span></td></tr>
+      <%else%>
+        <% results.each do |pv| %>
+          <tr id="row_<%=pv.id%>">
+            <td class="level"><%= pv.voucher %></td>
+            <td class="level"><%= pv.supplier.code %></td>
+            <td class="level"><%= convert_date(pv.created_at) %></td>
+            <td class="level text-right"><%= total_format(pv.grand_total, "Rp.") %></td>
+            <td class="level"><%= pv.is_approved_name.to_s.capitalize %></td>
+            <td class="td-actions ">
+              <%if can?(:read, pv)%>
+              <div class="btn-group">
+                <%=link_to "<i class='icon-eye-open'></i>VIEW".html_safe, payment_voucher_path(pv.id), :class=>'btn btn-mini btn-info'%>
+              </div>
+              <%end%>
+              <div class="btn-group">
+                <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, order_to_payments_generate_xls_details_asn_url(po.id, :xls) %>
+              </div>
+              <div class="btn-group">
+                <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, order_to_payments_generate_pdf_details_asn_url(po.id), :target => "blank" %>
+              </div>
+            </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+  <%=render "shared/paginate", :results => results %>
+</div>

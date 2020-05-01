@@ -1,0 +1,18 @@
+$(".tabbable>ul>li.active").removeClass("active");
+<% case @count[:for]
+     when "#{PO}"%>
+     $("#1").addClass("active")
+     $("#tab-for-purchase-order #count-tab").html("<%= escape_javascript( render 'po_statuses_count', :count => @count) %>");
+     <%when "#{GRN}"%>
+     $("#2").addClass("active")
+     $("#tab-for-purchase-order #count-tab-2").html("<%= escape_javascript( render 'grn_statuses_count', :count => @count) %>");
+     <%when "#{INV}"%>
+     $("#3").addClass("active")
+     $("#tab-for-purchase-order #count-tab").html("<%= escape_javascript( render 'inv_statuses_count', :count => @count) %>");
+     <%when "#{GRTN}"%>
+     $("#4").addClass("active")
+     $("#tab-for-purchase-order #count-tab").html("<%= escape_javascript( render 'grtn_statuses_count', :count => @count) %>");
+    <%when "#{DN}"%>
+     $("#5").addClass("active")
+     $("#tab-for-purchase-order #count-tab-2").html("<%= escape_javascript( render 'dn_statuses_count', :count => @count) %>");
+<%- end %>

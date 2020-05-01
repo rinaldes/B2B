@@ -1,0 +1,12 @@
+<div id="revise-dispute-grpc">
+  <div class="hr hr8 hr-double hr-dotted"></div>
+  <div class="row-fluid">
+    <div class="span7 pull-left">
+    <% if @grpc.can_revise_grpc? && can?(:make_revise_dispute_grpc, @grpc) %>
+      <% if @f_details.count != 0 %>
+  	    <%=link_to "Reject", order_to_payments_new_revise_dispute_grpc_path(@grpc.id), class: "btn btn-success", remote:true %>
+      <% end %>
+	<%- end%>
+	</div>
+  </div>
+</div>

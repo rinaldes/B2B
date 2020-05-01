@@ -1,0 +1,142 @@
+<%= javascript_include_tag "products.js" %>
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <%if can? :synch_product_based_on_code, Product%>
+          <div class='pull-right'>
+            <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_product_url(params[:id], :xls) %>
+            <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, generate_pdf_details_product_url(params[:id]), :target => "blank" %>
+            <%= link_to "<i class='icon-download-alt'> </i> Synch Now".html_safe, product_synch_product_based_on_code_path(params[:id]), :class => 'btn btn-small btn-info', :remote =>true, :id => "synch-product", :onclick => "update_product_from_api(this)" %>
+          </div>
+        <%end%>
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="row-fluid">
+                <div class="span6">
+
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Item Code</span>
+                        : <%= @product.code %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Item Desc</span>
+                        : <%= @product.name.html_safe %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>APN Number</span>
+                        : <%= @product.apn_number %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Brand</span>
+                        : <%= @product.brand %>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+
+                <div class="span6">
+                  <div class="row-fluid">
+                    <ul class="unstyled spaced">
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Unit Description</span>
+                        : <%= @product.unit_description %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Convertion Factor</span>
+                        : <%= @product.convertion_factor %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Pack Description</span>
+                        : <%= @product.pack_description %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Pack Cubic Size</span>
+                        : <%= @product.pack_cubic_size %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Pack Weight</span>
+                        : <%= @product.pack_weight %>
+                      </li>
+
+                      <li>
+                        <i class="icon-caret-right blue"></i>
+                        <span>Import Tarif</span>
+                        : <%= @product.import_tarif %>
+                      </li>
+                    </ul>
+                  </div>
+                </div><!--/span-->
+              </div><!--row-->
+                <div class="space"></div>
+                <div class="space"></div>
+                <div id="products-po">
+                  <%= render 'details', :suppliers => @suppliers %>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#results tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    // DataTable
+    var table = $('#results').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 7 ] }
+      ],
+      "aaSorting": [] });
+    $('#results tfoot th').each(function (i) 
+    {
+      var title = $('#results thead th').eq($(this).index()).text();
+      // or just var title = $('#sample_3 thead th').text();
+      var serach = '<input type="text" placeholder="Search ' + title + '" />';
+      $(this).html('');
+      $(serach).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+    });
+ 
+    // Apply the search
+
+} );
+</script>
+<style type="text/css">
+  tfoot {
+    display: table-header-group;
+  }
+  tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
+
+

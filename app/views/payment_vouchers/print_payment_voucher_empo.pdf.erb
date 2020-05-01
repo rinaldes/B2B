@@ -1,0 +1,78 @@
+<content>
+    <div id="content-head">
+      <div id="content-left">
+        <div>
+          <%= wicked_pdf_image_tag_for_logo(@company,"mini") %>
+          <span class="medium-text"><%= @company.name %></span><br />
+          <p class="small-text">
+            <%= @company.addresses.present?? @company.addresses.first.office_address : "-No Address-" %><br/>
+            Phone. <%= @company.addresses.present?? @company.addresses.first.phone : "(No Phone)" %><br />
+            Fax: <%= @company.addresses.present?? @company.addresses.first.fax_no : "(No Fax)" %><br />
+          </p>
+        </div>
+        <br />
+        <div class="small-text">
+          To: <%= @result.supplier.name %><br/>
+          <%= @result.supplier.addresses.present?? @result.supplier.addresses.first.name.blank?? "(No Address)" : @result.supplier.addresses.first.name : "(No Address)" %><br/>
+          Phone <%= @result.supplier.addresses.present?? @result.supplier.addresses.first.phone.blank?? "(No Phone)" : @result.supplier.addresses.first.phone : "(No Phone)" %><br/>
+          Fax <%= @result.supplier.addresses.present?? @result.supplier.addresses.first.fax_no.blank?? "(No Fax)" : @result.supplier.addresses.first.fax_no : "(No Fax)" %>
+        </div>
+      </div>
+
+      <div id="content-center">
+        <h3>PAYMENT VOUCHER INVOICES</h3>
+        NPWP. <%= @company.npwp %><br/>
+        Voucher : <%= @result.voucher.present?? @result.voucher : "No Voucher Number" %>
+      </div>
+
+    <div id="content-body">
+      <p class="medium-text text-head">
+
+      </p>
+
+      <table>
+        <tr>
+          <th class="center">
+            Supplier Code
+          </th>
+          <th class="center">
+            Order Date
+          </th>
+          <th class="center">
+            Received Date
+          </th>
+          <th class="center">
+            Payment Invoice Due Date
+          </th>
+          <th class="center">
+            Invoice Number
+          </th>
+          <th class="center">
+            Grand Total
+          </th>
+        </tr>
+        <% @result.payment_voucher_details.each do |detail| %>
+          <tr>
+            <td>
+              <%= @result.supplier.code %>
+            </td>
+            <td>
+              <%= detail.purchase_order.po_date %>
+            </td>
+            <td>
+              <%= detail.purchase_order.received_date %>
+            </td>
+            <td>
+              <%= detail.purchase_order.payment_invoice_due_date %>
+            </td>
+            <td>
+              <%= detail.purchase_order.invoice_number %>
+            </td>
+            <td>
+              <%= detail.purchase_order.charges_total %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    </content>

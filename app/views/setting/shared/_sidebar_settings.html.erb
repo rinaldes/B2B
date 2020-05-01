@@ -1,0 +1,101 @@
+<% if can_access_setting_menu? %>
+  <div id="sidebar" class='sidebar responsive display'>
+    <ul class="nav nav-list">
+      <% if can? :index, :general_setting %>
+        <li class="<%= is_active?(setting_general_settings_path) %>">
+          <%= link_to raw('<i class="icon-cog"></i><span>General Settings</span>'), setting_general_settings_path %>
+        </li>
+      <%end%>
+      <% if can? :read, :company %>
+        <li class="<%= is_active?(setting_companies_path )%>">
+          <%= link_to raw('<i class="icon-plane"></i><span>Company Profile</span>'), setting_companies_path %>
+        </li-->
+      <% end %>
+      <% if can? :index, Role %>
+        <li class="<%= is_active?(setting_roles_path) %>">
+          <%= link_to raw('<i class="icon-cog"></i><span>Roles</span>'), setting_roles_path %>
+        </li>
+      <%end%>
+      <% if (can? :read, :user) || (can? :read, :notification) || (can? :read, :type_of_user) || (can? :read, :type_of_user) %>
+        <li>
+          <a href="#" data-toggle="pill" class="dropdown-toggle sidebar_menus user">
+            <i class="icon-user"></i>
+            <span>USER</span>
+            <b class="arrow icon-angle-down"></b>
+          </a>
+          <ul class="submenu">
+            <% if can? :index, :user %>
+              <li class="<%= is_active?(setting_users_path) %>">
+                <%= link_to raw('<i class="icon-user"></i><span>Users</span>'), setting_users_path %>
+              </li>
+            <%end%>
+            <% if can? :read, :type_of_user %>
+              <li class="<%= is_active?(setting_type_of_users_path) %>">
+                <%= link_to raw('<i class="icon-user"><i class="icon-user"></i></i><span>Type of Users</span>'), setting_type_of_users_path %>
+              </li>
+            <%end%>
+            <% if can? :read, :type_of_user %>
+              <li class="<%= is_active?(setting_user_level_disputes_path) %>">
+                <%= link_to raw('<i class="icon-user"><i class="icon-user"></i></i><span>User Level Disputes</span>'), setting_user_level_disputes_path %>
+              </li>
+            <%end%>
+          </ul>
+        </li>
+      <% end %>
+      <% if can? :index, Notification %>
+      <li class="<%= is_active?(new_setting_image_blast_path) %>">
+        <%= link_to raw('<i class="icon-camera-retro"></i><span>Image Blast</span>'), setting_image_blasts_path %>
+      </li>
+      <%end%>
+      <% if can? :index, Feature %>
+        <li class="<%= is_active?(setting_features_path) %>">
+          <%= link_to raw('<i class="icon-th-list"></i><span>Features</span>'), setting_features_path %>
+        </li>
+      <% end %>
+      <% if can? :create, LdapSetting %>
+        <li class="<%= is_active?(new_setting_ldap_setting_path) %>">
+          <%= link_to raw('<i class="icon-wrench"></i><span>LDAP Settings</span>'), new_setting_ldap_setting_path %>
+        </li>
+      <% end %>
+      <% if can? :create, DisputeSetting %>
+      <li class="<%= is_active?(setting_dispute_settings_path) %>">
+          <%= link_to raw('<i class="icon-wrench"></i><span>Dispute Settings</span>'), setting_dispute_settings_path %>
+        </li>
+      <% end %>
+      <% if can? :create, ApiSetting %>
+        <li class="<%= is_active?(new_setting_api_setting_path) %>">
+          <%= link_to raw('<i class="icon-globe"></i><span>API Settings</span>'), new_setting_api_setting_path %>
+        </li>
+      <% end %>
+      <% if can? :index, :supplier_level %>
+        <li class="<%= is_active?(setting_service_scheduler_apis_path) %>">
+          <%= link_to raw('<i class="icon-tasks"></i><span>Supplier Level Settings</span>'), new_setting_supplier_level_path %>
+        </li>
+      <%end%>
+      <% if can? :index, :service_level %>
+        <li class="<%= is_active?(setting_service_levels_path) %>">
+          <%= link_to raw('<i class="icon-fire"></i><span>Service Levels</span>'), setting_service_levels_path %>
+        </li>
+      <%end%>
+      <% if can? :index, :service_level %>
+        <li class="<%= is_active?(setting_service_scheduler_apis_path) %>">
+          <%= link_to raw('<i class="icon-fire"></i><span>Service Schedule Api</span>'), setting_service_scheduler_apis_path %>
+        </li>
+      <%end%>
+      <% if can? :index, EmailNotification %>
+        <li class="<%= is_active?(setting_email_notifications_path) %>">
+          <%= link_to raw('<i class="icon-envelope-alt"></i><span>Email Notifications</span>'), setting_email_notifications_path %>
+        </li>
+      <%end%>
+      <% if (can? :login_history, :user_log) || (can? :transaction_history, :user_log) %>
+        <li class="<%= is_active?(setting_user_logs_path) %>">
+          <%= link_to raw('<i class="icon-time"></i><span>User Logs</span>'), setting_user_logs_path %>
+        </li>
+      <%end%>
+    </ul><!--/.nav-list-->
+    <div id="sidebar-collapse">
+      <i class="icon-double-angle-left"></i>
+    </div>
+  </div>
+<% end %>
+<%= check_tree_menus(params[:controller]) %>

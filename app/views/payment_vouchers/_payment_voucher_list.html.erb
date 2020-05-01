@@ -1,0 +1,23 @@
+<% @results.each do |pv| %>
+  <tr id="row_<%=pv.id%>">
+    <td class="level"><%= pv.voucher %></td>
+    <td class="level"><%= pv.supplier.code rescue '' %></td>
+    <td class="level"><%= convert_date(pv.created_at) %></td>
+    <td class="level text-right"><%= total_format(pv.grand_total, "Rp.") %></td>
+    <td class="level"><%= pv.is_approved_name.to_s.capitalize rescue '-' %></td>
+    <td class="level"><%= convert_date(pv.invoice_due_date) rescue '' %></td>
+    <td class="td-actions ">
+      <%if can?(:read, pv)%>
+      <div class="btn-group">
+        <%=link_to "<i class='icon-eye-open'></i>VIEW".html_safe, payment_voucher_path(pv.id), :class=>'btn btn-mini btn-info'%>
+      </div>
+      <div class="btn-group">
+        <%=link_to "#{image_tag 'Excel-icon.png'}".html_safe, generate_xls_details_voucher_url(pv.id, :xls) %>
+      </div>
+      <div class="btn-group">
+        <%=link_to "#{image_tag 'PDF-icon.png'}".html_safe, generate_pdf_details_voucher_url(pv.id), :target => "blank" %>
+      </div>
+      <%end%>
+    </td>
+  </tr>
+<%end%>

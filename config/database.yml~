@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: development_b2b
+  #database: warehouse_development
+  username: postgres
+  password: 12345678
+  host: localhost
+  pool: 35

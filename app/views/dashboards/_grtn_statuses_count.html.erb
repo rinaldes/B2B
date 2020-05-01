@@ -1,0 +1,46 @@
+<table class="table table-bordered table-striped status">
+    <thead>
+      <tr>
+        <th class="hidden-phone" width="20%">
+          <i class="icon-caret-right blue"></i>
+          status
+        </th>
+        <th>
+          <i class="icon-caret-right blue"></i>
+          Description
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-yellow arrowed arrowed-in">unread</span>
+        </td>
+        <td><%=count[:unread]%> Unread</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-default arrowed arrowed-in">read</span>
+        </td>
+        <td><%=count[:read]%> Read</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-warning arrowed arrowed-in">disputed</span>
+        </td>
+        <td><%=count[:disputed]%> Disputed</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-pink arrowed arrowed-in">rev</span>
+        </td>
+        <td><%=count[:rev]%> Rev</td>
+      </tr>
+      <tr>
+        <td class="hidden-phone">
+          <span class="label label-large label-success arrowed arrowed-in">accepted</span>
+        </td>
+        <td><%=count[:accepted]%> Accepted</td>
+      </tr>
+    </tbody>
+</table>

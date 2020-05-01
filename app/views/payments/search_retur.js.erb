@@ -1,0 +1,46 @@
+<%if @retur_results.blank?%>
+   $('#table-retur-results > tbody').html('<%= escape_javascript(render "result_retur", :retur_results => @retur_results) %>');
+<%else%>
+  <%if @retur_results.first_page? %>
+	  $('#table-retur-results > tbody').html('<%= escape_javascript(render "result_retur", :retur_results => @retur_results) %>');
+	<%else%>
+	  $('#table-retur-results > tbody').append('<%= escape_javascript(render "result_retur", :retur_results => @retur_results) %>');
+	<%end%>
+	<%if @retur_results.last_page?%>
+      $('#link-to-load-retur').html("<%= escape_javascript(button_tag('No More', :disabled=>'disabled',:class=> 'btn btn-mini btn-default pull-left' ))%>");
+    <%else%>
+      $('#link-to-load-retur').html("<%= escape_javascript(link_to_next_page(@retur_results, 'Load More>>', :params=>@params, :remote => true, :id=>'load-more', :class=> 'btn btn-mini btn-pink pull-left '))%>");
+    <%end%>
+    $("#btn-add-retur").html("<%= escape_javascript(button_tag "<i class='icon-plus'></i> Add".html_safe, :id=> 'add-retur-btn',:class=>'btn btn-info btn-mini pull-right', :onclick=>'add_checked_pv_to_total_results(this,"table-retur-results")', :type=>'button', :disabled=>'disabled')%>");
+   $(function () {
+	  $(".add_retur").bind("click", function(){
+	    var retur_state = false;
+	    $('#table-retur-results thead input:checkbox').each(function () {
+	    if ($(this).is(':checked')) {
+	      retur_state = true
+	     }
+	    });
+	    if (retur_state == true){
+	    	$("#add-retur-btn").prop("disabled", false);
+	    }else {
+	    	$("#add-retur-btn").prop("disabled", true);
+	    }
+	   });
+	  $(".add_retur_second").bind("click", function(){
+	    var retur_state_second = false;
+	    $('#table-retur-results tbody input:checkbox').each(function () {
+	    if ($(this).is(':checked')) {
+	      retur_state_second = true
+	     }
+	    });
+	    if (retur_state_second == true){
+	    	$("#add-retur-btn").prop("disabled", false);
+	    }else {
+	    	$("#add-retur-btn").prop("disabled", true);
+	    }
+	   });
+	});
+<%end%>
+
+//remove class can-aya-data-na on tabs
+$("#panel-retur").removeClass("can-aya-data-na");

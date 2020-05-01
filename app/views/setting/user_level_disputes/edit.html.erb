@@ -1,0 +1,33 @@
+<%= form_for @user_level_dispute, url: setting_user_level_dispute_path(@user_level_dispute), :method => :put do |f| %>
+<div class="well">
+  <fieldset>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.label :user_id %>
+        <%= f.select(:user_id, options_for_select(User.order(:supplier_id, :username).map do |user| ["(" + find_group_for_user(user.type_of_user.try(:parent).try(:description)) + ") " + user.username, user.id] end, @user_level_dispute.user_id)) %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+          <%= f.label :level %>
+        <%= f.text_field :level, :class => "input-xlarge form-control input-lg span6" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+          <%= f.label :dispute_setting_id %>
+        <%= f.select(:dispute_setting_id, options_for_select(DisputeSetting.all.map do |ds| [ds.transaction_type + " " + ds.max_count.to_s + " " + ds.time_type, ds.id] end, @user_level_dispute.dispute_setting_id)) %>
+      </div>
+    </div>
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <%= link_to raw('Cancel<i class="icon-arrow-left icon-on-right"></i>
+              '), setting_user_level_disputes_path, :class => "btn btn-small btn-pink" %>
+        <%= f.button raw('Save<i class="icon-arrow-right icon-on-right"></i>
+              '), :class => "btn btn-small btn-success" %>
+      </div>
+    </div>
+  </fieldset>
+  </div>
+<%end%>

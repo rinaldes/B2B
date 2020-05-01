@@ -1,0 +1,11 @@
+<%= javascript_include_tag "warehouses.js" %>
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <%= render 'shared/filter_and_search_table'%>
+      <div id="table"><%=render "results", :results => @results %></div>
+    </div>
+  </div>
+      <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->

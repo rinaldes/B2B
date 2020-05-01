@@ -1,0 +1,94 @@
+<div class="row-fluid">
+    <div class="span12 infobox-container">
+      <div class="infobox infobox-green  ">
+        <div class="infobox-icon">
+          <i class="icon-shopping-cart"></i>
+        </div>
+
+        <div class="infobox-data">
+          <div class="infobox-content">
+          <%if can? :read, :purchase_order%>
+            <%=link_to "PURCHASE ORDER", order_to_payments_purchase_orders_path, :style=>"text-decoration:none;"%>
+          <%else%>
+            PURCHASE ORDER
+          <%end%>
+           <br />
+            &plusmn <%= PurchaseOrder.search(params).order("created_at DESC").where(:order_type=> "#{PO}").accessible_by(current_ability).readonly(false).count %> Total , <%= new_po %> New
+          </div>
+        </div>
+      </div>
+
+      <div class="infobox infobox-blue  " style="width: 250px;">
+        <div class="infobox-icon">
+          <i class="icon-truck"></i>
+        </div>
+
+        <div class="infobox-data">
+          <div class="infobox-content">
+            <%if can? :read, :advance_shipment_notification%>
+              <%= link_to "ADVANCED SHIPMENT NOTES", order_to_payments_advance_shipment_notifications_path("search"=>{"field"=>"Status", "detail"=>"new read", "read"=>"on", "new"=>"on"}),
+                :style=>"text-decoration:none;"%>
+            <%else%>
+              ADVANCE SHIPMENT NOTES
+            <%end%>
+            <br />
+            <%= new_asn %> New
+          </div>
+        </div>
+      </div>
+      <div class="infobox infobox-pink">
+        <div class="infobox-icon">
+          <i class=" icon-bar-chart"></i>
+        </div>
+        <div class="infobox-data">
+          <div class="infobox-content">
+            <%if can? :read, :goods_receive_note%>
+              <%=link_to "GOOD RECEIVE NOTES", order_to_payments_goods_receive_notes_path("search"=>{"field"=>"Status", "detail"=>"new read", "read"=>"on", "new"=>"on"}), :style=>"text-decoration:none;"%>
+             <%else%>
+               GOOD RECEIVE NOTES
+             <%end%>
+             <br />
+             <%= new_grn %> New
+          </div>
+        </div>
+      </div>
+
+      <div class="infobox infobox-red  ">
+        <div class="infobox-icon">
+          <i class="icon-file"></i>
+        </div>
+
+        <div class="infobox-data">
+          <div class="infobox-content">
+            <%if can? :read, :invoice%>
+              <% stat = current_user.warehouse.present? ? 'printed' : 'new' %>
+              <%= link_to "INVOICE RECEIPT", order_to_payments_invoices_path("search"=>{"field"=>"Status", "detail"=>stat, stat=>"on"}), :style=>"text-decoration:none;" %>
+            <%else%>
+              INVOICE
+            <%end%>
+            <br />
+            <%= new_inv %> New
+          </div>
+        </div>
+      </div>
+
+      <div class="infobox infobox-orange2  ">
+        <div class="infobox-icon">
+          <i class=" icon-credit-card"></i>
+        </div>
+
+        <div class="infobox-data">
+          <div class="infobox-content">
+             <%if can? :read, :debit_note%>
+               <%=link_to "DEBIT NOTE", order_to_payments_debit_notes_path("search"=>{"field"=>"Status", "detail"=>"pending"}, "pending"=>"on"), :style=>"text-decoration:none;"%>
+             <%else%>
+               DEBIT NOTE
+             <%end%>
+             <br />
+             <%= new_dn %> Pending
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!--/row-->

@@ -1,0 +1,5 @@
+var messages = "<%=@message%>"
+<%unless @accepted_retur%>
+  $("#message-accept-error").html("<div class='alert alert-error span12'><button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button><h4><i class='icon-warning-sign red'></i> Warning!</h4><strong>"+messages+"</strong></div>");
+  $('html, body').animate({ scrollBottom: $("#error-message").offset().top - 40 }, 200);
+<%end%>

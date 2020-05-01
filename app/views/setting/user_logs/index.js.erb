@@ -1,0 +1,10 @@
+var val = $("#history_log_selected").val();
+if (val == 0){
+  $("#search_field option[value='Transaction Number / Voucher']").remove();
+  $('#table').html('<%= escape_javascript(render("results_history_login_activity", :results => @results)) %>');
+}else{
+  if ($("#search_field option[value='Transaction Number / Voucher']").length == 0){
+    $("#search_field").append("<option value='Transaction Number / Voucher'>Transaction Number / Voucher</option>")
+  }
+  $('#table').html('<%= escape_javascript(render("results_history_transaction_activity", :results => @results)) %>');
+}

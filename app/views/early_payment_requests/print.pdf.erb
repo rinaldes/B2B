@@ -1,0 +1,69 @@
+<content>
+    <div id="content-head">
+      <div id="content-left">
+        <div>
+          <%= wicked_pdf_image_tag_for_logo(@company,"mini") %>
+          <span class="medium-text"><%= @company.name %></span><br />
+        </div>
+        <br />
+      </div>
+
+      <div id="content-center">
+        <h3>EARLY PAYMENT REQUEST</h3>
+      </div>
+
+    <div id="content-body">
+      <p class="medium-text text-head">
+      </p>
+      <table class="table table-bordered">
+        <tr>
+          <th class="center">
+            Invoice Number
+          </th>
+          <th class="center">
+            Supplier Code
+          </th>
+          <th class="center">
+            Invoice Due Date
+          </th>
+          <th class="center">
+            Total After Tax
+          </th>
+          <th class="center">
+            Status
+          </th>
+        </tr>
+        <% @gt = [] %>
+        <% @results.each do |epr| %>
+          <tr>
+            <td>
+              <%= epr.purchase_order.invoice_number %>
+            </td>
+            <td>
+              <%= epr.purchase_order.supplier.code %>
+            </td>
+            <td>
+              <%= epr.purchase_order.invoice_due_date %>
+            </td>
+            <td class="right">
+              <%= total_format(epr.purchase_order.charges_total, "Rp.") %>
+            </td>
+            <td>
+              <%= epr.state_name %>
+            </td>
+            <% @gt << epr.purchase_order.charges_total %>
+          </tr>
+        <% end %>
+          <tr>
+            <th colspan="3">
+              Total :
+            </th>
+            <th class="right">
+              <%= total_format(grand_total(@gt), "Rp.") %>
+            </th>
+            <th>
+            </th>
+          </tr>
+      </table>
+    </div>
+  </content>

@@ -1,0 +1,74 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Change Email Notification Setting</h3>
+</div>
+<%= form_for user, url:update_change_email_notif_setting_users_path(user), :html => {:class => 'form-horizontal', :remote=> true} do |f| %>
+  <fieldset>
+    <div class="modal-body">
+      <div class="row-fluid">
+        <div class="span12">
+          <span class="span12 checkbox-email"></span>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_po %><span class="lbl"> Receive Email <%=PO%></span>
+            </span>
+           </div>
+           <br>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_asn %><span class="lbl"> Receive Email <%=ASN%></span>
+            </span>
+           </div>
+           <br>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_grn %><span class="lbl"> Receive Email <%=GRN%></span>
+            </span>
+           </div>
+           <br>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_grpc %><span class="lbl"> Receive Email <%=GRPC%></span>
+            </span>
+           </div>
+           <br>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_invoice %><span class="lbl"> Receive Email <%=INV%></span>
+            </span>
+           </div>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_grtn %><span class="lbl"> Receive Email <%=GRTN%></span>
+            </span>
+           </div>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_early_payment_request %><span class="lbl"> Receive Email <%=EPR%></span>
+            </span>
+           </div>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_debit_note %><span class="lbl"> Receive Email <%=DN%></span>
+            </span>
+           </div>
+           <div class="span12">
+            <span class="input-icon input-icon-right">
+             <%= f.check_box :is_received_payment_voucher %><span class="lbl"> Receive Email <%=PV%></span>
+            </span>
+           </div>
+        </div>
+        <div class='span12'>
+          <p> Please check/uncheck email notification you preferred</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row-fluid">
+         <span id="error-message"></span>
+         <%=f.button raw('Save changes'), :class => "btn btn-primary btn-small"%>
+         <button class="btn btn-small" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+  </fieldset>
+<%end%>

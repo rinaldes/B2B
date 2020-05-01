@@ -1,0 +1,9 @@
+$("#new-print").html("<%=escape_javascript(render :partial=>'shared/form_print', :locals => {:order_type => @order_type})%>");
+var val = $("#form_search #search_field").val();
+var val_2 = $("#form_search #search_detail").val();
+var val_3 = $("#form_search #search_period_1").val();
+var val_4 = $("#form_search #search_period_2").val();
+$("#print-form #search_field ").val(val);
+$("#print-form #search-detail").val(val_2);
+$("#print-form #date_1").val(val_3);
+$("#print-form #date_2").val(val_4);

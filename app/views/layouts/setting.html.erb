@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>B2bSystem Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= favicon_link_tag 'favicon.ico' %>
+  <!-- Stylesheet -->
+  <%= stylesheet_link_tag "bootstrap.min.css" %>
+	<%= stylesheet_link_tag "bootstrap-responsive.min.css" %>
+	<%= stylesheet_link_tag "font-awesome.min.css" %>
+	<%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700" %>
+	<%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Open+Sans:400,300" %>
+  <%= stylesheet_link_tag "ace.min.css" %>
+  <%= stylesheet_link_tag "ace-responsive.min.css" %>
+  <%= stylesheet_link_tag "jquery.cleditor.css" %>
+	<%= stylesheet_link_tag "style.css" %>
+	<%= stylesheet_link_tag "datepicker.css", "daterangepicker.css", "bootstrap-timepicker.css" %>
+  
+  <!-- Javascript -->
+  <%= javascript_include_tag "jquery-1.9.1.min.js" %>
+  <%= javascript_include_tag "bootstrap.min" %>
+  <%= javascript_include_tag "jquery_ujs" %>
+  <%= javascript_include_tag "custom_js.js" %>
+  <%= javascript_include_tag "jquery-ui-1.10.3.custom.min.js" %>
+  <%= javascript_include_tag "jquery.ui.touch-punch.min.js" %>
+  <%= javascript_include_tag "flot/jquery.flot.min.js" %>
+  <%= javascript_include_tag "jquery.slimscroll.min.js" %>
+  <%= javascript_include_tag "flot/jquery.flot.pie.min.js" %>
+  <%= javascript_include_tag "flot/jquery.flot.resize.min.js" %>
+  <%= javascript_include_tag "custom_js.js" %>
+  <%= javascript_include_tag "setting/type_of_users.js" %>
+	<%= javascript_include_tag "date-time/bootstrap-datepicker.min.js" %>
+  <!--ace scripts-->
+  <%= javascript_include_tag "ace-elements.min"%>
+  <%= javascript_include_tag "ace.min"%>
+  <%= javascript_include_tag "setting/email_notifications.js" %>
+  <%= javascript_include_tag "jquery.cleditor.min"%>
+  <%= csrf_meta_tags %>
+</head>
+  <body>
+    <div class="container-fluid" id="main-container">
+      <%=render 'shared/topbar', :logo => @logo, :my_company => @my_company%>
+      <%=render 'setting/shared/sidebar_settings' %>
+      <div id="main-content" class="clearfix">
+        <%=render 'shared/breadcumb'%>
+        <span id="flash_notice">
+          <%=render 'shared/flash_message'%>
+        </span>
+        <div id="page-content" class="clearfix">
+          <%=render 'shared/title_page'%>
+        	<%= yield %>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse"><i class="icon-double-angle-up icon-only bigger-110"></i></a>
+  </body>
+  <%= title_page(params[:controller])%>
+
+    <script>
+    function reload_list(params){
+        for (i=0; i<$('input.search').length; i++){
+          input_search = $('input.search')[i]
+          params['search['+input_search.name+']'] = input_search.value
+        }
+        $.ajax({
+          url: '<%= request.env['REQUEST_PATH'] %>'.split('?page')[0],
+          method: "get",
+          data: params,
+          dataType: "script"
+        })
+      }
+
+    $('.sorting').click(function(){
+          reload_list({sort: this.id})
+          $(this).addClass('hide')
+          if($(this).attr('id').split('-')[1] == 'desc')
+            $(this).next().removeClass('hide')
+          else
+            $(this).prev().removeClass('hide')
+        })
+
+    function search_data(e){
+      if (e.keyCode == 13) {
+        reload_list({sort: this.id})
+      }
+    }
+  </script>
+</html>

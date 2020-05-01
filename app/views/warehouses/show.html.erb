@@ -1,0 +1,51 @@
+<%= javascript_include_tag "warehouses.js" %>
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box transparent invoice-box">
+        <div class="widget-body">
+          <div class="widget-main padding-24">
+            <div class="row-fluid">
+              <div class="span6">
+                <div class="row-fluid">
+                  <ul class="unstyled spaced">
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Code</span>
+                      : <strong><%= @warehouse.warehouse_code %></strong>
+                    </li>
+
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Name</span>
+                      : <strong><%= @warehouse.warehouse_name %></strong>
+                    </li>
+                    <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Warehouse Group</span>
+                      : <strong><%= @warehouse.try(:group).try(:name) || "-No Group Warehouse-" %></strong>
+                    </li>
+                    <!-- <li>
+                      <i class="icon-caret-right blue"></i>
+                      <span>Warehouse Area</span>
+                      : <strong><%= @warehouse.try(:area).try(:area_name) %> - <%= @warehouse.try(:area).try(:area_code) %></strong>
+                    </li> -->
+                  </ul>
+                </div>
+              </div><!--/span-->
+            </div><!--row-->
+            <%if can? :synch_warehouse_based_on_code, Warehouse%>
+              <div class='pull-right'>
+                 <%= link_to "<i class='icon-download-alt'> </i> Synch Now".html_safe, synch_warehouse_based_on_code_path(params[:id]), :class => 'btn btn-small btn-info', :remote =>true, :id=>"synch-warehouse", :onclick => "update_warehouse_from_api(this)" %>
+              </div>
+            <%end%>
+            <div class="space"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->

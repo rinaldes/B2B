@@ -1,0 +1,15 @@
+<div class="row-fluid as">
+  <div class="span5">
+    <div class="dataTables_info" id="table_serv_req_info">
+      <%=count_for_records(results)%>
+    </div>
+  </div>
+  <div class="span7">
+    <div class="dataTables_paginate paging_bootstrap pagination" id="pagination">
+      <%= paginate results, :remote => true if results %>
+    </div>
+  </div>
+</div>
+<script>
+  remove_page_gap();
+</script>

@@ -1,0 +1,10 @@
+<div id="accept-dispute-grpc">
+	<div class="hr hr8 hr-double hr-dotted"></div>
+	<div class="row-fluid">
+	  <div class="span7 pull-left">
+	    <%if @grpc.can_raise_dispute_grpc? && can?(:make_dispute_grpc, @grpc)%>
+	    <%=link_to "Raise Price Dispute", order_to_payments_new_dispute_grpc_path(@grpc.id),:class=>"btn btn-info", remote:true%>
+	  <%end%>
+	  </div>
+	</div>
+</div>

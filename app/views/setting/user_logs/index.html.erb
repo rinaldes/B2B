@@ -1,0 +1,13 @@
+<%= javascript_include_tag "setting/user_logs.js" %>
+<div class="row-fluid">
+  <div class="space-6"></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="history">
+        <%= render 'setting/shared/filter_and_search_table' %>
+          <%= render "results_history_login_activity", :results => @results %>
+      </div>
+    </div>
+  </div>
+</div><!--/row-->
+<script>get_history($("#history_log_selected").val())</script>

@@ -1,0 +1,25 @@
+var messages = "<%=@message%>"
+<%if @flag == false%>
+  <%if @retur.instance_of?(ReturnedProcess) && @retur.errors.any? %>
+    $("#error-message").removeClass().addClass("row-fluid").html("<div class='alert alert-error'><button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button><h4><i class='icon-warning-sign red'></i> Check your input again!</h4><strong id='message'><ul></ul></strong></div>");
+      <%if !@retur.errors.messages[:"returned_process_details.received_as_retur_qty"].blank?%>
+        <%@retur.errors.messages[:'returned_process_details.received_as_retur_qty'].each do |msg|%>
+          messages = "<%=msg%>"
+          $("#message ul").append("<li>"+messages+"</li>");
+        <%end%>
+      <%end%>
+     window.location.hash ="#error-message";
+  <%else%>
+    $("#error-message").removeClass().addClass("row-fluid").html("<div class='alert alert-error'><button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button><h4><i class='icon-warning-sign red'></i> Warning!</h4><strong>"+messages+"</strong></div>");
+    window.location.hash ="#error-message";
+  <%end%>
+<%else%>
+  $("#flash-message").html("<div class='alert alert-info'><button data-dismiss='alert' class='close' type='button'><i class='icon-remove'></i></button><i class='icon-ok green'></i> <strong>"+messages+"</strong></div>");
+  $("html, body").animate({ scrollTop: 0 }, "slow");
+  $("#retur-details").html("<%=escape_javascript(render 'details', :details => @details)%>");
+  window.location = "/returned_processes"
+  <%unless @retur_revise.present?%>
+    $("#revise-retur").html("<%=escape_javascript(render 'revise_retur', :retur => @retur)%>");
+    $("#revise-retur").show("slow");
+  <%end%>
+<%end%>

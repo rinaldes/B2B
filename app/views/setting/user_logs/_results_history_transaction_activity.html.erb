@@ -1,0 +1,89 @@
+<div id="table_report_wrapper" class="dataTables_wrapper" role="grid">
+  <table class="table table-striped table-bordered table-hover" id="results">
+    <thead>
+      <tr>
+        <th class="center">User Name</th>
+        <th class="center">Transaction Number / Voucher</th>
+        <th class="center">Activity Type</th>
+        <th class="center">Event</th>
+        <th class="center">Activity Date</th>
+        <th class="center">Activity Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if results.blank? %>
+        <tr>
+          <td colspan="6" class="center"><span class="red">No match data</span></td>
+        </tr>
+      <% else %>
+        <% results.each do |act| %>
+        <%  next if act.log.blank? %>
+          <!--  jika superadmin -->
+          <% if current_user.has_role?("superadmin") %>
+            <tr id="row_<%= act.id %>">
+              <td><%= act.user.try(:login) %></td>
+              <td><%= show_transaction_number(act) %></td>
+              <td><%= act.transaction_type %></td>
+              <th><%= act.event %></th>
+              <td><%= time_ago_in_words(act.created_at) %></td>
+              <td><%= act.updated_at.to_time.localtime.strftime("%H:%M:%S") %> </td>
+            </tr>
+          <% else %>
+          <!-- jika group admin supplier -->
+            <% if is_supplier_group? %>
+              <% if is_only_po_payment_epr_pv?(act) %>
+                <% if current_user.supplier.group.suppliers.collect(&:id).include?(act.log.supplier_id) %>
+                  <tr id="row_<%= act.id %>">
+                    <td><%= act.user.try(:login) %></td>
+                    <td><%= show_transaction_number(act) %></td>
+                    <td><%= act.transaction_type %></td>
+                    <th><%= act.event %></th>
+                    <td><%= time_ago_in_words(act.created_at) %></td>
+                    <td><%= act.updated_at.to_time.localtime.strftime("%H:%M:%S") %> </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <% if current_user.supplier.group.suppliers.collect(&:id).include?(act.log.purchase_order.supplier_id) %>
+                  <tr id="row_<%= act.id %>">
+                    <td><%= act.user.try(:login) %></td>
+                    <td><%= show_transaction_number(act) %></td>
+                    <td><%= act.transaction_type %></td>
+                    <th><%= act.event %></th>
+                    <td><%= time_ago_in_words(act.created_at) %></td>
+                    <td><%= act.updated_at.to_time.localtime.strftime("%H:%M:%S") %> </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            <!-- jika group admin warehouse -->
+            <% elsif is_warehouse_group? %>
+              <% if is_only_po_payment_epr_pv?(act) %>
+                <% if current_user.warehouse.group.warehouses.collect(&:id).include?(act.log.warehouse_id) %>
+                  <tr id="row_<%= act.id %>">
+                    <td><%= act.user.try(:login) %></td>
+                    <td><%= show_transaction_number(act) %></td>
+                    <td><%= act.transaction_type %></td>
+                    <th><%= act.event %></th>
+                    <td><%= time_ago_in_words(act.created_at) %></td>
+                    <td><%= act.updated_at.to_time.localtime.strftime("%H:%M:%S") %> </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <% if current_user.warehouse.group.warehouses.collect(&:id).include?(act.log.purchase_order.warehouse_id) %>
+                  <tr id="row_<%= act.id %>">
+                    <td><%= act.user.try(:login) %></td>
+                    <td><%= show_transaction_number(act) %></td>
+                    <td><%= act.transaction_type %></td>
+                    <th><%= act.event %></th>
+                    <td><%= time_ago_in_words(act.created_at) %></td>
+                    <td><%= act.updated_at.to_time.localtime.strftime("%H:%M:%S") %> </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <%end%>
+    </tbody>
+  </table>
+  <%=render "setting/shared/paginate_ajax_setting", :results => results %>
+</div>

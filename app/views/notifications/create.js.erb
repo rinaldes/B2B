@@ -1,0 +1,6 @@
+$('#form-create-notification').html('<%= escape_javascript(render("form_notification", :notification => @notification)) %>');
+<%unless @notification.errors.any?%>
+  $("#flash-message").html(create_alert_notice_for_js("Notification has been Send"));
+  $('#notification_title').val('');
+  $("#content").cleditor()[0].clear();
+<%end%>
